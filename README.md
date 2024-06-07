@@ -3,7 +3,7 @@ Just me? That's fine.
 
 ## The game:
 
-github.com/4ntoine/pokemonpy
+[github.com/4ntoined/pokemonpy](https://github.com/4ntoined/pokemonpy)
 
 ## To play the game:
 
