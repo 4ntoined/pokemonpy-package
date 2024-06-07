@@ -43,9 +43,9 @@ from .trainerai import cpu
 from . import configurations
 #FreePalestine
 
-class pokemonpygame:
+class game:
     def __init__(self):
-        #defining bedrock game variables and setting variables
+        #defining bedrock game variables
         self.gameversion = '0.1.3'
         self.devs_list = ('Adarius',)
         self.cut_the_line=1.

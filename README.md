@@ -9,18 +9,19 @@ Just me? That's fine.
 
 ```
 myterminal$ python3
-python$ import adadpython.pokemon as pk
-python$ game = pk.pokemonpygame()
-python$ game.startgame()
+python$ import pokemonpy.pokemon as pk
+python$ game1 = pk.game()
+python$ game1.startgame()
 ```
-#### To play with a particular config file:
+
+## To play with a particular config file:
 
 ```
 myterminal$ python3
-python$ import adadpython.pokemon as pk
+python$ import pokemonpy.pokemon as pk
 python$ cpath = '/configurations/config.txt'
-python$ game = pk.pokemonpygame()
-python$ game.startgame(cpath)
+python$ game2 = pk.game()
+python$ game2.startgame(cpath)
 ```
 
 
