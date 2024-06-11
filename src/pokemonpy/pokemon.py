@@ -1104,7 +1104,7 @@ class game:
                 print('You can load previously saved Pokémon')
                 #print("******** Load Pokémon ********\n\nYou can load previously saved Pokémon!")
                 print("(use 'showdown' or 'sd' to load a Pokémon Showdown team.)\n(i.e. 'sd team.sav')")
-                print(f"Currect directory: {self.workingdirectory}")
+                print(f"Current directory: {self.workingdirectory}")
                 while 1: #savefile input loop
                     #shortpause()
                     saveChoice=input("\nWhat save file to load?\n[blank] entry to use default or [b]ack\n: ")
