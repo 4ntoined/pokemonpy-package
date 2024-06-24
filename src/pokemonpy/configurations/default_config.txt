@@ -1,8 +1,8 @@
 aa :: pokemon.py config
 mutepregame :: false
-username :: Leaf
+username :: Kris
 opponentname :: Youngster Joey
 partysize :: 6
 nparty :: 12
 gamewidth :: 64
-loadSave :: false :: pypokemon.sav
+loadSave :: false :: pypokemon.sav save2.npy
