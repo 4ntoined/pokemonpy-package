@@ -46,7 +46,7 @@ from . import configurations
 class game:
     def __init__(self):
         #defining bedrock game variables
-        self.gameversion = '0.2.0'
+        self.gameversion = '0.2.3'
         self.devs_list = ('Adarius',)
         self.cut_the_line=1.
                 
@@ -74,7 +74,8 @@ class game:
         self.workingdirectory = os.getcwd()
         
         #read the config file #config file sets: username, opponentname, mutesetting, psize, nparty, gamewidth, loadparties
-        configname = impr.files(configurations) / configname 
+        if not os.path.isfile(configname):
+            configname = impr.files(configurations) / configname 
         self.readconfig(configname)
         #consider the argument settings
         if mutegame is not None:
@@ -314,7 +315,7 @@ class game:
                 print("\nYou can challenge the best trainers in the world.")
                 shortpause()
                 bigstuff = make_teams()
-                print(f"Recommended level: {bigstuff[4][1][5].level}")
+                print(f"Recommended level: {bigstuff[4][1][5].level-4}")
                 shortpause()
                 aretheysure = input("Will you challenge the Elite 4?\n[y]es or [b]: ")
                 if aretheysure=='b' or aretheysure == 'B':
@@ -1483,7 +1484,7 @@ class game:
                                         pass
                                     else:
                                         poke_s.summary()
-                                        pause=input("Enter anything to contine... ")
+                                        pause=input("Enter anything to continue... ")
                                         pass
                                     pass
                             pass
@@ -1592,9 +1593,9 @@ class game:
                     for i in loadthese:
                         loadedParty = []
                         if i[-4:]=='.npy':
-                            newMons=loadMonNpy(i)
+                            newMons=loadMonNpy(i,configload=True)
                         else:
-                            newMons=loadMon(i)
+                            newMons=loadMon(i,configload=True)
                         if newMons[0] == 0:
                             #do nothing? dk
                             pass

@@ -17,6 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #treat these lines of code with care
 #thank you
 import os
+from importlib import resources as impr
 import time as t
 import calendar as cal
 import hashlib
@@ -25,6 +26,7 @@ from .texter import genborder,magic_text,magic_head,copyrigh
 from . import dex
 from .moves import mov,natures,struggle,futuresigh,tackl,getMoveInfo
 from .trainerai import cpu
+from . import saves
 #classes: mon, battle, field | functions: damage, checkBlackout, loadMon, makeMon, checktype effectiveness, HP, stats
 class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc.
     def __init__(self,level,named,nature=(0,0),hpbase=70,atbase=70,\
@@ -3750,11 +3752,13 @@ def loadShowdown(savefile):
         loadparty.append(newmon)
         pass
     return loadparty
-def loadMonNpy(savefile):
+def loadMonNpy(savefile,configload=False):
     global mov
     #name, level, nature, tipe, base,ev,iv,bornt,bornp,moves?
     #will need to populate pp, otherstuff prob as well
     cheers=False
+    if configload:
+        savefile = impr.files(saves) / savefile
     try:
         poke_arrr = np.load(savefile,allow_pickle=True)
         poke_arrr = poke_arrr.reshape((-1,29))
@@ -3811,7 +3815,9 @@ def loadMonNpy(savefile):
     if not cheers: takehome=[0]
     return takehome
 
-def loadMon(savefile):
+def loadMon(savefile, configload=False):
+    if configload:
+        savefile = impr.files(saves) / savefile
     try:
         dat2 = np.loadtxt(savefile,delimiter='|',dtype='U256')
         dat2 = dat2.reshape((-1,2))
