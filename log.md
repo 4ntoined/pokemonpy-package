@@ -1,11 +1,7 @@
-## pokemonpy log
+## pokemonpy-package log
 
-### v0.2.0
-Todo list:
-* More moves...
-* Snow... a snow-hail switch...
-
-Date: 2024 June XX
+### v0.2.3
+Date: 2024 June 25
 * FIXED: Reverted the battle UI change because I realized I didn't like it.
 * FIXED: Fighting-type moves were super-effective against Fire-types instead of Normal-types. Fixed this.
 * FIXED: Typo in Fake Out description has been corrected.
@@ -13,6 +9,7 @@ Date: 2024 June XX
 * UPDATE: The game now reports Pokémon HP when Pokémon heal or take indirect damage.
 * UPDATE: Added Goku.
 * TECHNICAL UPDATE: The game itself is now a class/function. 
+* TECHNICAL UPDATE: Added a script to run the game (scripts/rungame.py). 
 
 ### v0.1.2
 Date: 2024 April 20
