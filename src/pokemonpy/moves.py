@@ -24,6 +24,11 @@ def movers():
     return
 ## move name // power // accuracy // pp // phys/spec/status // contact? // type // priority // description // code-notes
 moremoves=[
+        ("V-create",180,95,5,0,1,1,0,"The user ignites its forehead and hurls itself at the target.\nLowers user's Def. Sp.D and Spe. stats 1 stage each.","stat self,de:sd:sp,-1:-1:-1,100"),
+
+        ("Prismatic Laser",160,100,10,1,0,10,0,"The user attacks the target with lasers using the power of a prism!\nThe user must rest on the next turn.","mustRest"),
+        ("Eternabeam",160,90,5,1,0,14,0,"The user harnesses Dynamax energy and releases it in a beam!\nThe user must rest on the next turn.","mustRest"),
+        
         ("Hyper Beam",150,90,5,1,0,0,0,"The user attacks with a powerful beam! Must rest on next turn.","mustRest"),
         ("Giga Impact",150,90,5,0,1,0,0,"Must rest on next turn.","mustRest"),
         ("Blast Burn",150,90,5,1,0,1,0,"The user attacks with a fiery explosion! Must rest on next turn","mustRest"),
@@ -31,7 +36,10 @@ moremoves=[
         ("Hydro Cannon",150,90,5,1,0,2,0,"Blast of water! Must rest on next turn.","mustRest"),
         ("Water Spout",150,100,5,1,0,2,0,"The user spouts water to damage the target!\nThe lower the user's HP, the lower this move's power.","spout"), #'spout' = this, eruption, drag energy
         ("Frenzy Plant",150,90,5,1,0,3,0,"Big roots! Must rest on next turn.","mustRest"),
+        ("Chloroblast",150,95,5,1,0,3,0,"The user amasses chlorophyll and launches it at the target!\nThe user loses half of its max HP to recoil damage.","recoil 1/2maxhp"),
+        ("Meteor Assault",150,100,5,0,0,6,0,"The user attacks wildly with its thick leek.\nThe user must rest on next turn.","mustRest"),
         ("Rock Wrecker",150,90,5,0,0,12,0,"Must rest on next turn.","mustRest"),
+        ("Head Smash",150,80,5,0,1,12,0,"The user attacks the target with a full-power headbutt. The user takes 1/2 recoild damage.","recoil 1/2"),
         ("Roar of Time",150,90,5,1,0,14,0,"The user roars to distort time and inflict damage. Must rest on next turn.","mustRest"),
         ("Dragon Energy",150,100,5,1,0,14,0,"The user attacks by converting its life-force into power.\nThe lower the user's HP, the lower this move's power.","spout"),
 
@@ -68,7 +76,7 @@ moremoves=[
         ("Judgement",100,100,10,1,0,0,0,"The user pelts the battlefield with bolts of light from the sky!","null"),
         ("Fusion Flare",100,100,5,1,0,1,0,"The user throws down a giant flame!\nMore powerful if used after Fusion Bolt.","fusion-f thaws"),
         ("Sacred Fire",100,95,5,1,0,1,0,"The target is razed with a mystical fire of great intensity!\n50% chance to burn the target.","thaws burn 50"),
-        ("Crabhammer",100,90,10,0,1,2,0,"The target is hammered with a large pincer.\nIncreased crit' ratio.","highCrit"),
+        ("Crabhammer",100,90,10,0,1,2,0,"The target is hammered with a large pincer.\nIncreased critical hit ratio.","highCrit"),
         ("Fusion Bolt",100,100,5,0,0,4,0,"The user throws down a giant lightning bolt!\nMore powerful if used after Fusion Flare.","fusion-b"),
         ("Earthquake",100,100,10,0,0,8,0,"The user causes a powerful earthquake!","nerfGrassy"), #one day we'll generalize moves having their power nerfed under certain conditions....not today tho
         ("Aeroblast",100,95,5,1,0,9,0,"The user shoots a vortex of air at the target!\nHigh crit. ratio.","highCrit"),
@@ -105,6 +113,7 @@ moremoves=[
         ("Fire Lash",80,100,15,0,1,1,0,"The user strikes with a burning lash.\nLowers the target's Def. stat by 1 stage.","stat targ,de,-1,100"),
         ("Dive",80,100,10,0,1,2,0,"The user dives.\nTwo-turn move.","2turn diving"),
         ("Waterfall",80,100,15,0,1,2,0,"The user charges at the target with a wall of water!\nMay make target flinch.","flinch 20"),
+        ("Aqua Step",80,100,10,0,1,2,0,"The user attacks the target with light and fluid dance steps!\nBoosts user's Spe. stat by 1 stage.","stat self,sp,+1,100"),
         ("Aura Sphere",80,100,20,1,0,6,0,"The user looses a blast of auro from deep within its body.\nThis attack will not miss.","noMiss"),
         ("Dig",80,100,10,0,1,8,0,"The user digs.\nTwo-turn move.","2turn digging"),
         ("Zen Headbutt",80,90,15,0,1,10,0,"The user focuses its willpower into its head and attacks the target!\n20% chance to make the target flinch.","flinch 20"),
@@ -126,6 +135,7 @@ moremoves=[
         ("Facade",70,100,20,0,1,0,0,"An attack that does double damage if the user is poisoned, burned, or paralyzed.","facade"),
         ("Retaliate",70,100,5,0,1,0,0,"The user gets revenge for a fainted ally.\nDoubles in power if an ally fainted in the previous turn.","retaliate"),
         ("Headbutt",70,100,15,0,1,0,0,"The user sticks out its head and attacks!\n30% chance to flinch target.","flinch 30"),
+        ("Aqua Cutter",70,100,20,0,0,2,0,"the user expels pressurized water to cut the tatget like a blade!\nIncreased critcal hit ratio.","highCrit"),
         ("Shadow Claw",70,100,15,0,1,13,0,"The user materializes a sharp claw from the shadows and slashes at the target!\nHigh crit. ratio.","highCrit"),
         ("Night Slash",70,100,15,0,1,15,0,"The user sneaks in and slashes the target the instant it gets the opportunity\nHigh crit. ratio.","highCrit"),
         
@@ -156,6 +166,7 @@ moremoves=[
         ("Weather Ball",50,100,10,1,0,0,0,"The user harnesses the power of the weather to attack!\nChanges type and doubles power in non-clear weather.","weatherball"),
         ("Cut",50,95,30,0,1,0,0,"The use cuts the target with a scythe or claw!","null"),
         ("Flame Charge",50,100,20,0,1,1,0,"The user cloaks itself in flames and builds momentum to attack!\nRaises user's Spe. 1 stage.","stat self,sp,1,100"),
+        ("Chilling Water",50,100,20,1,0,2,0,"The user attacks the target with water so cold it saps the target's power!\nLowers target's Atk. stat 1 stage.","stat targ,at,-1,100"),
         ("Metal Claw",50,95,35,0,1,16,0,"The user rakes the target with steel claws!\nMay raise the user's Atk. 1 stage.","stat self,at,1,10"),
         
         ("Fake Out",40,100,10,0,1,0,+3,"The user hits first and makes the target flinch!\nOnly works on the first turn after the user enters battle.\This move has +3 priority","flinch 100 fakeout"), #need priority AND first-turn tracking

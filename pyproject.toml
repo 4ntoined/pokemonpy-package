@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 name = "pokemonpy"
 version = "0.0.0"
 authors = [
-  { name="Antoine" },
+  { name="Adarius" },
 ]
 description = "A package that contains a Pokémon simulation game."
 readme = "README.md"

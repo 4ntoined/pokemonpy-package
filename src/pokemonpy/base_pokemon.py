@@ -1135,10 +1135,14 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
             #check for recoil, apply recoil if present
             if "recoil" in notes:
                 amnt=notes[1+int(np.argwhere(np.array(notes)=="recoil"))]
-                if amnt=="1/3":
+                if amnt =="1/2":
+                    attacker.recoil(recoilDmg,1./2.)
+                elif amnt=="1/3":
                     attacker.recoil(recoilDmg,1./3.)
                 elif amnt=="1/4":
                     attacker.recoil(recoilDmg,1./4.)
+                elif amnt=="1/2maxhp":
+                    attacker.recoil(attacker.maxhp,1./2.)
                 elif amnt=="1/4maxhp":
                     attacker.recoil(attacker.maxhp,1./4.)
                 #more possible recoil amounts?
