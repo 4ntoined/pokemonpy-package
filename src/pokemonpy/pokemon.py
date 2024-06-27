@@ -46,7 +46,7 @@ from . import configurations
 class game:
     def __init__(self):
         #defining bedrock game variables
-        self.gameversion = '0.2.3'
+        self.gameversion = '0.2.4'
         self.devs_list = ('Adarius',)
         self.cut_the_line=1.
                 

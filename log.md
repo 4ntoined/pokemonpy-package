@@ -1,5 +1,9 @@
 ## pokemonpy-package log
 
+### v0.2.4
+Date: 2024 June 27
+* UPDATE: Some new moves.
+
 ### v0.2.3
 Date: 2024 June 25
 * FIXED: Reverted the battle UI change because I realized I didn't like it.
