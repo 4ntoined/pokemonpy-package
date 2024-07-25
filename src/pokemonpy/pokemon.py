@@ -125,6 +125,7 @@ class game:
             "\n\nWhat to do: "
         ############   give the player a starter  ###############
         self.players_parties = []
+        lvl0 = 156
         #players random starters
         pnames = self.rng.choice(easter_strings, self.nparty, replace = True)
         for i in range(self.nparty):
