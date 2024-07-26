@@ -38,7 +38,7 @@ moremoves=[
         ("Frenzy Plant",150,90,5,1,0,3,0,"The user slams the target with roots from an enormous tree!\nThe user must rest on next turn.","mustRest"),
         ("Chloroblast",150,95,5,1,0,3,0,"The user amasses chlorophyll and launches it at the target!\nThe user loses half of its max HP to recoil damage.","recoil 1/2maxhp"),
         ("Meteor Assault",150,100,5,0,0,6,0,"The user attacks wildly with its thick leek!\nThe user must rest on next turn.","mustRest"),
-        ("Rock Wrecker",150,90,5,0,0,12,0,"The user launches ahuge boulder at the target!\n The user must rest on next turn.","mustRest bullet"), #bulletproof ability is immune
+        ("Rock Wrecker",150,90,5,0,0,12,0,"The user launches a huge boulder at the target!\n The user must rest on next turn.","mustRest bullet"), #bulletproof ability is immune
         ("Head Smash",150,80,5,0,1,12,0,"The user attacks the target with a full-power headbutt!\nThe user takes 1/2 recoil damage.","recoil 1/2"),
         ("Roar of Time",150,90,5,1,0,14,0,"The user shouts a roar that distorts time and inflicts chronological damage on the target!\nThe user must rest on next turn.","mustRest"),
         ("Dragon Energy",150,100,5,1,0,14,0,"The user attacks by converting its life-force into power!\nThe lower the user's HP, the lower this move's power.","spout"),
@@ -94,7 +94,7 @@ moremoves=[
         ("Sacred Fire",     100,95,5,1,0,1,0,"The target is razed with a mystical fire of great intensity!\n50% chance to burn the target, thaws the user if frozen.","thaws burn 50"),
         ("Crabhammer",      100,90,10,0,1,2,0,"The target is hammered with a large pincer!\nIncreased crit' ratio.","highCrit"),
         ("Fusion Bolt",     100,100,5,0,0,4,0,"The user throws down a giant lightning bolt!\nMore powerful if used after Fusion Flare.","fusion-b"),
-        ("Earthquake",      100,100,10,0,0,8,0,"The user causes a powerful earthquake!\nPower is halfed if used on Grassy Terrain.","nerfGrassy"), #one day we'll generalize moves having their power nerfed under certain conditions....not today tho
+        ("Earthquake",      100,100,10,0,0,8,0,"The user causes a powerful earthquake!\nPower is halved if used on Grassy Terrain.","nerfGrassy"), #one day we'll generalize moves having their power nerfed under certain conditions....not today tho
         ("Aeroblast",       100,95,5,1,0,9,0,"The user shoots a vortex of air at the target!\nIncreased crit. ratio.","highCrit"),
         ("Psystrike",       100,100,10,1,0,10,0,"The user materializes an odd psychic wave to attack!\nDamage is calculated with the user's Sp.A and the target's Def.","psystrike"), #will use psystrike tag for psyshock and secret sword
         ("Stone Edge",      100,80,5,0,0,12,0,"The user stabs the target from below with sharpened stones!\nIncreased crit' ratio.","highCrit"),
