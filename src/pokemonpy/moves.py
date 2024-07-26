@@ -43,7 +43,8 @@ moremoves=[
         ("Roar of Time",150,90,5,1,0,14,0,"The user roars to distort time and inflict damage. Must rest on next turn.","mustRest"),
         ("Dragon Energy",150,100,5,1,0,14,0,"The user attacks by converting its life-force into power.\nThe lower the user's HP, the lower this move's power.","spout"),
 
-        ("Boomburst",140,100,10,1,0,0,0,"The user attacks with a terrible, explosive sound!","null"), #sound move
+        ("Boomburst",140,100,10,1,0,0,0,"The user attacks with a terrible, explosive sound!","sound"), #sound move
+        ("Psycho Boost",140,90,5,1,0,10,0,"The user attacks with all its might.\nLowers the user's Sp.A 2 stages.","stat self,sa,-2,100"),
 
         ("Skull Bash",130,100,10,0,1,0,0,"The user tucks its head in and charges at the target.\nTwo-turn move.","2turn skullbash"), #needs to raise defense 1 stage on the prep
         ("Overheat",130,90,5,1,0,1,0,"The user attacks with its full power!\nRecoil drops user's Sp.A 2 stages.","stat self,sa,-2,100"),
@@ -69,16 +70,19 @@ moremoves=[
         ("Solar Beam",120,100,10,1,0,3,0,"The user focuses sunlight into a beam to attack!\nTwo-turn move, one-turn in harsh sunlight.","2turn solar"),
         ("Volt Tackle",120,100,15,0,1,4,0,"User takes 1/3 recoil damage.","recoil 1/3 para 10"),
         ("Zap Cannon",120,50,5,1,0,4,0,"The user fires an eletric blast like a cannon!\n100% chance to paralyze.","para 100"),
-        ("Close Combat",120,100,5,0,1,6,0,"The user drops their guard to achieve an all out attack. Lowers the user's Def. Sp.D 1 stage each.","stat self,de:sd,-1:-1,100"),
-        ("Superpower",120,100,15,0,1,6,0,"The user draws on its latent potential and attacks the target with great power.\nLowers the user's Atk. Def. 1 stage each.","stat self,at:de,-1:-1,100"),
-        ("Focus Blast",120,70,5,1,0,6,0,"The user heightens its mental focus an unleashs its power\n10% chance to lower the target's Sp.D 1 stage.","stat targ,sa,-1,10"),
+        ("Close Combat",120,100,5,0,1,6,0,"The user drops their guard to achieve an all out attack! Lowers the user's Def. Sp.D 1 stage each.","stat self,de:sd,-1:-1,100"),
+        ("Superpower",120,100,15,0,1,6,0,"The user draws on its latent potential and attacks the target with great power!\nLowers the user's Atk. Def. 1 stage each.","stat self,at:de,-1:-1,100"),
+        ("Focus Blast",120,70,5,1,0,6,0,"The user heightens its mental focus an unleashs its power!\n10% chance to lower the target's Sp.D 1 stage.","stat targ,sa,-1,10"),
+        ("Precipice Blades",120,85,10,0,0,8,0,"The user manifests the power of the land and attacks the target with fearsome blades of stone!","null"),
         ("Brave Bird",120,100,15,0,1,9,0,"Takes 1/3 recoil damage.","recoil 1/3"),
+        ("Dragon Ascent",120,100,5,0,1,9,0,"The user attacks by dropping out of the sky at high speed! Lowers the user's Def. Sp.D 1 stage each.","stat self,de:sd,-1:-1,100"),
         ("Future Sight",120,100,5,1,0,10,0,"The user looks into the future and predicts an attack.","futuresight"),
         ("Megahorn",120,85,10,0,1,11,0,"The user rams into the target with its tough and impressive horn!","null"),
         ("Shadow Force",120,100,5,0,1,13,0,"The user disappears and strikes the target on the next turn.","shadowforce 2turn semi-invul"),
         ("Dragon Fist",120,100,5,0,1,14,0,"If the user doesn't do it, who will?\nLowers the user's Spe. stat 1 stage.","stat self,sp,-1,100"),
 
         ("Fire Blast",110,85,5,1,0,1,0,"The user attacks with a blast of all-consuming flames.\n10% chance to burn target.","burn 10"),
+        ("Origin Pulse",110,85,10,1,0,2,0,"The user attacks the target with countless beams of glowing blue light!","launching"), #launching = powered by mega-launcher
         ("Hydro Pump",110,80,5,1,0,2,0,"The user blasts the target with a huge volume of water under great pressure!","null"),
         ("Thunder",110,70,10,1,0,4,0,"The user drops a wicked lightningbolt on the target to inflict damage!\n30% chance to paralyze.","para 30 thunder"),
         ("Blizzard",110,70,5,1,0,5,0,"The user summons a howling blizzard to strike the target.\n10% chance to freeze.","frze 10 blizzard"), #doesn't miss in hail, need to program
@@ -93,9 +97,10 @@ moremoves=[
         ("Earthquake",100,100,10,0,0,8,0,"The user causes a powerful earthquake!","nerfGrassy"), #one day we'll generalize moves having their power nerfed under certain conditions....not today tho
         ("Aeroblast",100,95,5,1,0,9,0,"The user shoots a vortex of air at the target!\nHigh crit. ratio.","highCrit"),
         ("Psystrike",100,100,10,1,0,10,0,"The user materializes an odd psychic wave to attack!\nDamage is calculated with the user's Sp.A and the target's Def.","psystrike"), #will use psystrike tag for psyshock and secret sword
-        ("Stone Edge",100,80,5,0,0,12,0,"The user stabs the target from below with sharpened stones!\nHigh crit. ratio.","highCrit"),
-        ("Core Enforcer",100,100,10,1,0,14,0,"The user unleases a super sick laser and draws a 'Z'!","null"), #otherwise would suppress abilities, but we have none
-        ("Iron Tail",100,75,15,0,1,16,0,"The user slams the target wit a steel-hard tail!\n30% chance to lower target's Def. 1 stage.","stat targ,de,-1,30"),
+        ("Stone Edge",100,80,5,0,0,12,0,"The user stabs the target from below with sharpened stones!\Increased crit' ratio.","highCrit"),
+        ("Core Enforcer",100,100,10,1,0,14,0,"The user unleashes a super sick laser and draws a 'Z'!","null"), #otherwise would suppress abilities, but we have none
+        ("Spacial Rend",100,95,5,1,0,14,0,"The user tears the fabric of space aroud the target!\nIncreased crit' ratio.","null"), #otherwise would suppress abilities, but we have none
+        ("Iron Tail",100,75,15,0,1,16,0,"The user slams the target with a steel-hard tail!\n30% chance to lower target's Def. 1 stage.","stat targ,de,-1,30"),
 
         ("Heat Wave",95,90,10,1,0,1,0,"The user exhales hot breath on the target.\n10% chance to burn.","burn 10"),
         ("Moonblast",95,100,15,1,0,17,0,"The user calls on the power of the Moon to attack the target!\n30% chance to lower the target's Sp.A 1 stage.","stat targ,sa,-1,30"),
@@ -108,17 +113,18 @@ moremoves=[
         ("Thunderbolt",90,100,15,1,0,4,0,"The user attacks with a bolt of lightning! 10% chance to paralyze.","para 10"),
         ("Ice Beam",90,100,15,1,0,5,0,"The user focuses a stream of ice at the target! 10% chance to freeze.","frze 10"),
         ("Triple Arrows",90,100,10,0,1,6,0,"The user kicks, then fires three arrows!\nIncreased crit. ratio, 50% chance to lower target's Def. 1 stage, 30% chance to flinch.","highCrit flinch 30 stat targ,de,-1,50"),
-        ("Sludge Bomb",90,100,10,1,0,7,0,"Unsanitary sludge is hurled at the target.\n30% chance to poison the target.","pois 30"),
+        ("Sludge Bomb",90,100,10,1,0,7,0,"Unsanitary sludge is hurled at the target!\n30% chance to poison the target.","pois 30"),
         ("Earth Power",90,100,10,1,0,8,0,"The user makes the ground under the target erupt with power!\nMay lower target's Sp.D 1 stage.","stat targ,sd,-1,10"),
-        ("Thousand Arrows",90,100,10,0,0,8,0,"The user creates arrows from the very ground and hurls them at the target.\nHits ungrounded targets and grounds them.","arrows"),
+        ("Thousand Arrows",90,100,10,0,0,8,0,"The user creates arrows from the very ground and hurls them at the target!\nHits ungrounded targets and grounds them.","arrows"),
         ("Fly",90,95,15,0,1,9,0,"dedc","2turn flying"),
         ("Psychic",90,100,10,1,0,10,0,"The user hits the target with a strong telekinetic force!\nMay lower target's Sp.D 1 stage.","stat targ,sd,-1,10"),
+        ("Mystical Power",90,70,10,1,0,10,0,"The user attacks by emitting a mysterious power!\Raises the user's Sp.A 1 stage.","stat self,sa,+1,100"),
         ("Attack Order",90,100,15,0,0,11,0,"The user attacks with a powerful flame! High crit' ratio.","highCrit"),
         ("Phantom Force",90,100,10,0,1,13,0,"dedc","2turn shadowforce"),
         ("Play Rough",90,90,10,0,1,17,0,"The user attacks by playing rough with the target!\n10% chance to lower the target's Atk. 1 stage.","stat targ,at,-1,10"),
         ("Strange Steam",90,95,10,1,0,17,0,"The user mixes a special steam and shoots it at the target!\n20% chance to confuse the target.","conf 20"),
         
-        ("Blaze Kick",85,90,10,0,1,1,0,"The user attacks with a fiery fist.\n10% chance to burn and high crit' ratio/.","highCrit burn 10"),
+        ("Blaze Kick",85,90,10,0,1,1,0,"The user attacks with a fiery kick.\n10% chance to burn and high crit' ratio/.","highCrit burn 10"),
         ("Kamehameha",85,100,10,1,0,2,0,"The user concentrates their ki and releases it in a beam!\n50% chance to lower the target's Def. stat by 2 stages.","stat targ,de,-2,50"),
         ("Secret Sword",85,100,10,1,0,6,0,"The user uses odd power to cut with its long horn!\nDamage is calculated with the user's Sp.A and the target's Def.","psystrike"),
         ("Bounce",85,85,5,0,1,9,0,"dedc","2turn flying para 30"),
