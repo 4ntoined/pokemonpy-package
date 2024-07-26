@@ -1,5 +1,10 @@
 ## pokemonpy-package log
 
+### v0.2.5
+Date: 2024 July XX
+Working on:
+- Some new moves.
+
 ### v0.2.4
 Date: 2024 June 27
 * UPDATE: Some new moves.
