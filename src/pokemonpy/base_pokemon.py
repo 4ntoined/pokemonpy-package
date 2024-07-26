@@ -21,6 +21,7 @@ from importlib import resources as impr
 import time as t
 import calendar as cal
 import hashlib
+import textwrap
 import numpy as np
 from .texter import genborder,magic_text,magic_head,copyrigh
 from . import dex
@@ -4017,12 +4018,15 @@ def print_dex():
 def moveInfo(moveCode):
     global mov, typeStrings, move_dict
     move=mov[moveCode]
+    descr_parts = move['desc'].splitlines()
     #print(f"------------ {move['name']} ------------")
     #stats_dict = dict([('HP',0),('Atk',1),('Def',2),('SpA',3),('SpD',4),('Spe',5)])
     print('\n'+magic_text(txt=f"{move['name']}",spacing=' ',cha='-',long=game_width))
     print(f"Power: {move['pwr']} | Accuracy: {move['accu']}%")
     print(f"[{typeStrings[move['type']]}] | [{move_dict[move['special?']]}] | PP: {move['pp']}")
-    print("-\n"+move['desc'])
+    print("-\n",end="")
+    for i in descr_parts: print(textwrap.fill(i, game_width))
+    #textwrap.fill(move['desc'], game_width))
     if move['contact?']:    print("-The user makes contact with the target.")
     else:                   print("-The user does not make contact with the target.")
     return
