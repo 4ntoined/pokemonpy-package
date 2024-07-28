@@ -86,9 +86,9 @@ moremoves=[
         ("Fire Blast",      110,85,5,1,0,1,0,"The user attacks with a blast of all-consuming flames!\n10% chance to burn.","burn 10"),
         ("Origin Pulse",    110,85,10,1,0,2,0,"The user attacks the target with countless beams of glowing blue light!","launching"), #launching = powered by mega-launcher
         ("Hydro Pump",      110,80,5,1,0,2,0,"The user blasts the target with a huge volume of water under great pressure!","null"),
-        ("Thunder",         110,70,10,1,0,4,0,"The user drops a wicked lightningbolt on the target to inflict damage!\n30% chance to paralyze.","para 30 thunder"),
+        ("Thunder",         110,70,10,1,0,4,0,"The user drops a wicked lightningbolt on the target to inflict damage!\n30% chance to paralyze.","para 30 noMissRain thunder"),
         ("Blizzard",        110,70,5,1,0,5,0,"The user summons a howling blizzard to strike the target!\n10% chance to freeze, doesn't miss in hail.","frze 10 blizzard"), #doesn't miss in hail, need to program
-        ("Hurricane",       110,70,10,1,0,9,0,"The user wraps its target in a fierce wind from a furious storm!\n30% chance to confuse, doesn't miss in rain.","conf 30 thunder"),
+        ("Hurricane",       110,70,10,1,0,9,0,"The user wraps its target in a fierce wind from a furious storm!\n30% chance to confuse, doesn't miss in rain.","conf 30 noMissRain thunder"),
         ("Clanging Scales", 110,100,5,1,0,14,0,"The user rubs the scales on its body and makes a hugh noise to inflict damage on the target!\nLowers the user's Def. 1 stage.","stat self,de,-1,100 sound"),
         #normal 0,fire 1,water 2,grass 3,electric 4,ice 5,fighting 6,poison 7,
         #ground 8,flying 9,psychic 10,bug 11,rock 12,ghost 13,dragon 14,
@@ -116,13 +116,17 @@ moremoves=[
         ("Sacred Fire",     100,95,5,1,0,1,0,"The target is razed with a mystical fire of great intensity!\n50% chance to burn the target, thaws the user if frozen.","thaws burn 50"),
         ("Crabhammer",      100,90,10,0,1,2,0,"The target is hammered with a large pincer!\nIncreased crit' ratio.","highCrit"),
         ("Fusion Bolt",     100,100,5,0,0,4,0,"The user throws down a giant lightning bolt!\nMore powerful if used after Fusion Flare.","fusion-b"),
+        ("Wildbolt Storm",  100,80,10,1,0,4,0,"The user summons a thunderous tempest and savagely attacks the target with lightning and wind!\n20% chance to paralyze, doesn't miss in rain.","para 20 noMissRain"),
         ("Earthquake",      100,100,10,0,0,8,0,"The user causes a powerful earthquake!\nPower is halved if used on Grassy Terrain.","nerfGrassy"), #one day we'll generalize moves having their power nerfed under certain conditions....not today tho
+        ("Sandsear Storm",  100,80,10,1,0,8,0,"The user wraps the target in fierce winds and searlingly hot sand!\n20% chance burn, doesn't miss in rain.","burn 20 noMissRain"),
         ("Aeroblast",       100,95,5,1,0,9,0,"The user shoots a vortex of air at the target!\nIncreased crit. ratio.","highCrit"),
+        ("Bleakwind Storm", 100,80,10,1,0,9,0,"The user attacks with savagely cold winds that cause both body and spirit to tremble!\n30% chance to lower the target's Spe. 1 stage, doesn't miss in rain.","stat targ,sp,-1,30 noMissRain"),
         ("Psystrike",       100,100,10,1,0,10,0,"The user materializes an odd psychic wave to attack!\nDamage is calculated with the user's Sp.A and the target's Def.","psystrike"), #will use psystrike tag for psyshock and secret sword
         ("Stone Edge",      100,80,5,0,0,12,0,"The user stabs the target from below with sharpened stones!\nIncreased crit' ratio.","highCrit"),
         ("Core Enforcer",   100,100,10,1,0,14,0,"The user unleashes a super sick laser and draws a 'Z'!","null"), #otherwise would suppress abilities, but we have none
         ("Spacial Rend",    100,95,5,1,0,14,0,"The user tears the fabric of space aroud the target!\nIncreased crit' ratio.","null"), #otherwise would suppress abilities, but we have none
         ("Iron Tail",       100,75,15,0,1,16,0,"The user slams the target with a steel-hard tail!\n30% chance to lower target's Def. 1 stage.","stat targ,de,-1,30"),
+        ("Springtide Storm", 100,80,10,1,0,9,0,"The user wraps the target in fierce winds brimming with love and hate!\n30% chance to lower the target's Atk. 1 stage.","stat targ,at,-1,30"),
 
         ("Heat Wave",   95,90,10,1,0,1,0,"The user exhales hot breath on the target!\n10% chance to burn.","burn 10"),
         ("Moonblast",   95,100,15,1,0,17,0,"The user calls on the power of the Moon to attack the target!\n30% chance to lower the target's Sp.A 1 stage.","stat targ,sa,-1,30"),
