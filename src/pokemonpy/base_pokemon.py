@@ -681,7 +681,7 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
             #if counter is at 0, undo confusion
             if self.confusionCounter==0:
                 self.confused=False
-                print(f"{self.name} snaps out of confusion!")
+                print(f"\n{self.name} snaps out of confusion!")
             #if still confused, chance to hurt self, end move()
             else:
                 print(f"\n{self.name} is confused!")
@@ -932,8 +932,14 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                             healamount = 2.*self.maxhp/3.
                         else:
                             healamount = self.maxhp/2.
+                    if 'blessing' in notas:
+                        healamount = self.maxhp/4.
                     self.healing(healamount)
                 ### end of healing ###
+                ### healing conditions ###
+                if 'refresh' in notas:
+                    self.refreshing()
+                ### end of healing conditions
                 if ('veil' in notas) and (self.field.weather != 'hail'):
                     print("The move fails! There isn't enough hail...")
                     micropause()
@@ -1159,10 +1165,22 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
         if self.currenthp > self.maxhp:
             self.currenthp = self.maxhp
         self.currenthpp = 100. * self.currenthp/self.maxhp
-        print(f"{self.name} restores some health! ({format(self.currenthpp,'.2f')}% HP)")
+        print(f"\n{self.name} restores some health! ({format(self.currenthpp,'.2f')}% HP)")
         #print(f"{self.name} heals {format(100.*amount/self.maxhp,'.2f')}% HP!")
         micropause()
         pass
+    def refreshing(self):
+        self.sleep=False        
+        self.frozen=False
+        self.burned=False
+        self.paralyzed=False
+        self.poisoned=False
+        self.badlypoisoned=False
+        self.confused=False
+        self.sleepCounter=0
+        self.poisonCounter=0
+        self.confusionCounter=0
+        print(f"{self.name} is cured of all status conditions!")
     def aquaheal(self):
         amnt = np.floor(self.maxhp/16.)
         print(f"{self.name} is healed by its Aqua Ring!")
@@ -3371,6 +3389,12 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
         if power<1.:
             power = 1.
         pass
+    #### crush grip ####
+    if 'crushgrip' in note:
+        power = np.floor( 120.*defender.currenthp/defender.maxhp )
+        if power<1.:
+            power = 1.
+        pass
     #### rollout #### 
     if 'rollout' in note: 
         if attacker.curled: #another boost if poke has used defense curl
@@ -3378,8 +3402,8 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
         power *= 2. ** (float(attacker.rolling_out))
     #### getting caught ####
     #digging diving flying
-    if ('gust' in note) and defender.flying:
-        caught_bonus = 2.
+    if (('gust' in note) or ('thunder' in note) or ('arrows' in note)) and defender.flying:
+        caught_bonus = 1.
         damages.append(f"{defender.name} is struck in the sky!")
     if ('surf' in note) and defender.diving:
         caught_bonus = 2.
