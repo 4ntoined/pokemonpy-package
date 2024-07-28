@@ -4,6 +4,7 @@
 Date: 2024 July XX
 Working on:
 - Some new moves.
+	- focusing on signature moves
 - Text-wrap for move descriptions
 - psychic terrain needs to block priority moves used against grounded mons
 

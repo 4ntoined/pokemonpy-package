@@ -778,7 +778,7 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
         ## moves bypass accuracy under certain conditions
         elif ('blizzard' in notas) and (self.field.weather=='hail'):
             hitCheck=True
-        elif ('thunder' in notas) and (self.field.weather=='rain'):
+        elif ('noMissRain' in notas) and (self.field.weather=='rain'):
             hitCheck=True
         else:
             #check evasion and accuracy stats
