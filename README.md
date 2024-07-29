@@ -84,8 +84,6 @@ bb = battle(parties[0],parties[1],fields[0],usr_name='Your Name',cpu_name='The O
 bb.startbattle()
 ```
 
-That's a Pokémon battle in 4 lines. I'm a legend.
-
 Try:
 ```
 from pokemonpy.base_pokemon import *
@@ -96,3 +94,102 @@ parties[0][0].appraisal()
 parties[0][0].save('poke.sav')
 ```
 
+Here's something, how to make (and save) an elite 4:
+```
+## this script will create a new elite 4 (or elite n, where n is some positive integer) and save them to pokemon.py save files
+
+import numpy as np
+import pokemonpy
+import pokemonpy.base_pokemon as bp
+from pokemonpy.texter import magic_text, magic_head
+
+rng = np.random.default_rng()
+
+bp.game_width = 64      # sets the length of banners and headers and textwrap
+n = 4                   # number of trainers
+p = 6                   # number of Pokémon for each trainer
+l = 200                 # Pokémon level
+m = 4                   # number of moves to add onto the default; default is 6
+savename = 'save.sav'   #savefile where the trainers are save
+
+parties, fields = bp.maker(n, p, n, level=l, how_created='elite')   #create n random 'elite' parties and n randomized battlefields
+trainer_names = rng.choice(bp.easter_strings,n,replace=True)        #select 'names' from a list of strings in the game's code
+
+# these for loops train all the elite Pokémon and saves each party
+for i in range(n):
+    # take a party
+    for a in parties[i]:
+        # train everyone in the party
+        # a is a pokémon
+        a.perfect_ivs()
+        a.full_evs()
+        a.add_random_moves(number = m)
+        #a.summary()   #uncomment to see all the elite Pokémon summaries
+        #a.appraisal() #uncomment for base stat breakdown
+        pass
+    bp.saveParty('save.sav', parties[i], overwrite=True)    #save the party to a joint save
+    bp.saveParty(trainer_names[i]+'.sav', parties[i])       #save the party to its own save, might get appended with another party if they happen to have the same random name
+    pass
+```
+
+How to make and battle an elite 4!
+```
+### this script will create an elite n and a party for the user and set the user against the elite n in succession
+
+import numpy as np
+import pokemonpy
+import pokemonpy.base_pokemon as bp
+from pokemonpy.texter import magic_text, magic_head
+
+rng = np.random.default_rng()
+
+bp.game_width = 64      # sets the length of banners and headers and textwrap
+n = 4                   # number of trainers
+p = 6                   # number of Pokémon for each trainer
+l = 200                 # Pokémon level
+m = 4                   # number of moves to add onto the default; default is 6
+myname = 'RED'          # your name
+
+parties, fields = bp.maker(n, p, n, level=l, how_created='elite')   #create n random 'elite' parties and n randomized battlefields
+trainer_names = rng.choice(bp.easter_strings,n,replace=True)        #select 'names' from a list of strings in the game's code
+
+# a party for the player
+mine = bp.makeParty(numb=int(p*2), level = int(l+50), how_created = 'starter')
+
+# these for loops train all the elite Pokémon and saves each party
+for i in range(n):
+    # train a party
+    for a in parties[i]:
+        # train everyone in the party
+        # a is a pokémon
+        a.perfect_ivs()
+        a.full_evs()
+        a.add_random_moves(number = m)
+        #a.summary()   #uncomment to see all the elite Pokémon summaries
+        #a.appraisal() #uncomment for base stat breakdown
+        pass
+    # battle the party
+    # heal before battle
+    for b in mine:
+        b.withdraw()
+        b.restore()
+    # battle each party
+    bb = bp.battle(mine,parties[i],fields[i],usr_name=myname,cpu_name=trainer_names[i])
+    bb.start_withai(e4=True)
+    pass
+```
+
+Move Catalogue:
+```
+import pokemonpy
+import pokemonpy.base_pokemon as bp
+from pokemonpy.texter import magic_text
+
+bp.game_width = 64      # sets the length of banners and headers and textwrap
+
+for i in range(len(bp.mov)):
+    print(magic_text(f"Index: {i}", cha="@", spacing="  ", long=bp.game_width))
+    bp.moveInfo(i)
+    print("\n\n",end="")
+```
+What else...?
