@@ -7,6 +7,14 @@ Working on:
 	- focusing on signature moves
 - Text-wrap for move descriptions
 - psychic terrain needs to block priority moves used against grounded mons
+- readme scripts
+
+* UPDATE: Big focus on moves.
+	* Updated/standardized move descriptions.
+	* Some _slight_ new move mechanics.
+	* Textwrap in move descriptions.
+	* Lots of new moves with a focus on signature moves and status moves.
+* TECHNICAL UPDATE: Readme is updated with more involved sample scripts
 
 ### v0.2.4
 Date: 2024 June 27

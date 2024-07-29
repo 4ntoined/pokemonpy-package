@@ -125,7 +125,7 @@ for i in range(n):
         a.full_evs()
         a.add_random_moves(number = m)
         #a.summary()   #uncomment to see all the elite Pokémon summaries
-        #a.appraisal() #uncomment for base stat breakdown
+        #a.appraise() #uncomment for base stat breakdown
         pass
     bp.saveParty('save.sav', parties[i], overwrite=True)    #save the party to a joint save
     bp.saveParty(trainer_names[i]+'.sav', parties[i])       #save the party to its own save, might get appended with another party if they happen to have the same random name
@@ -166,7 +166,7 @@ for i in range(n):
         a.full_evs()
         a.add_random_moves(number = m)
         #a.summary()   #uncomment to see all the elite Pokémon summaries
-        #a.appraisal() #uncomment for base stat breakdown
+        #a.appraise() #uncomment for base stat breakdown
         pass
     # battle the party
     # heal before battle

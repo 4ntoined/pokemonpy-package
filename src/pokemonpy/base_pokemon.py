@@ -4040,7 +4040,7 @@ def print_dex():
     return
 #moves have pwr, phys/spec, type, accu, descipt
 def moveInfo(moveCode):
-    global mov, typeStrings, move_dict
+    global mov, typeStrings, move_dict, contact_textyes, contact_textnot
     move=mov[moveCode]
     descr_parts = move['desc'].splitlines()
     #print(f"------------ {move['name']} ------------")
@@ -4051,8 +4051,8 @@ def moveInfo(moveCode):
     print("-\n",end="")
     for i in descr_parts: print(textwrap.fill(i, game_width))
     #textwrap.fill(move['desc'], game_width))
-    if move['contact?']:    print("-The user makes contact with the target.")
-    else:                   print("-The user does not make contact with the target.")
+    if move['contact?']:    print(contact_textyes)
+    else:                   print(contact_textnot)
     return
 ##zz:textprint
 def readEvIv(dato):
@@ -4156,6 +4156,9 @@ stats_dict = dict([('HP',0),('Atk',1),('Def',2),('SpA',3),('SpD',4),('Spe',5)]) 
 move_dict = dict([(2,'Status'),(1,'Special'),(0,'Physical')])                  #used for move info displaying
 Weathers=['clear','sunny','rain','sandstorm','hail']
 Terrains=['none','electric','grassy','misty','psychic']
+contact_textyes = textwrap.fill("-The user makes contact with the target.", game_width)
+contact_textnot = textwrap.fill("-The user does not make contact with the target.", game_width)
+
 struggle_i=struggle #move index of struggle
 futuresight_i = futuresigh
 tackle_i = tackl

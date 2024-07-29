@@ -185,7 +185,7 @@ moremoves=[
         ("Brick Break",75,100,15,0,1,6,0,"The user attacks with a swift chop!\nRemoves Light Screen, Reflect, Aurora Veil from the opponent's side.","breakScreens"),
         ("Air Slash",75,95,15,1,0,9,0,"The user attacks with a blade of air that slices the sky!\n30% chance to make the target flinch.","flinch 30"),
         ("Signal Beam",75,100,15,1,0,11,0,"The user attacks with an odd beam of light!\n10% chance to confuse.","conf 10"),
-        ("Bitter Malice",75,100,10,1,0,15,0,"The user attacks the target with spine-chilling resentment!\nLowers the target's Atk. 1 stage.","stat targ,at,-1,100"),
+        ("Bitter Malice",75,100,10,1,0,13,0,"The user attacks the target with spine-chilling resentment!\nLowers the target's Atk. 1 stage.","stat targ,at,-1,100"),
         
         #("Dizzy Punch",70,100,10,0,1,0,0,"","conf 20"), Why did dizzy punch get kicked out of the game :(
         ("Facade",70,100,20,0,1,0,0,"An attack that does double damage if the user is poisoned, burned, or paralyzed.","facade"),
@@ -336,10 +336,10 @@ moremoves=[
         ("Soft-Boiled",     0,100,5,2,0,0,0,"The user eats a tasty egg and restores half its max HP!","heals recover noMiss noTarg "),
         ("Slack-Off",       0,100,5,2,0,0,0,"The user takes a well-deserved break and restores half its max HP!","heals recover noMiss noTarg "),
         ("Aqua Ring",       0,100,20,2,0,2,0,"The user envelops itself with a veil of healing waters!","aquaring noMiss noTarg"),
-        ("Take Heart",      0,100,10,2,0,2,0,"The user focuses on the positives to lift its spirits!\nRaises the user's Sp.A Sp.D 1 stage each, heals status conditions.","stat self,sa:sd,1:1,100 refresh noMiss noTarg")
+        ("Take Heart",      0,100,10,2,0,2,0,"The user focuses on the positives to lift its spirits!\nRaises the user's Sp.A Sp.D 1 stage each, heals status conditions.","stat self,sa:sd,1:1,100 refresh noMiss noTarg"),
         ("Synthesis",       0,100,5,2,0,3,0,"The user takes in sunlight to restore HP!\nRestores more HP in harsh sunlight, less in non-sunny, non-clear weather.","heals synthesis noMiss noTarg"),
-        ("Lunar Blessing",  0,100,5,2,0,10,0,"The user receives a blessing from the crescent moon!\nRestores 25% maxHP, heals status conditions.","heals blessing refresh noMiss noTarg")
-    
+        ("Lunar Blessing",  0,100,5,2,0,10,0,"The user receives a blessing from the crescent moon!\nRestores 25% maxHP, heals status conditions.","heals blessing refresh noMiss noTarg"),
+
          #stat(istic) changes
         ("Harden",          0,100,40,2,0,0,0,"The user stiffens the muscles in its body!\nRaises the user's Def. 1 stage.","stat self,de,1 noMiss noTarg"),
         ("Defense Curl",    0,100,40,2,0,0,0,"The user curls up to hide its weak spots!\nRaises the user's Def. 1 stage.","stat self,de,1 noMiss curled noTarg"),
