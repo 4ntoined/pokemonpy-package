@@ -36,7 +36,7 @@ With the package installed, you can start the game using the `rungame.py` script
 You can give the script some optional arguments when you call it:
 
 ```
-python3 rungame.py -m -c config_file_path -n "your name" -o "rivals name" -w how_big_to_display_the_game -p number_of_starter_parties -s number_of_pokémon_per_party`
+python3 rungame.py -m -c config_file_path -n "your name" -o "rivals name" -w how_big_to_display_the_game -p number_of_starter_parties -s number_of_pokémon_per_party
 
 -m to mute the game start-up
 -c to tell the game to use a particular configuration file
@@ -126,14 +126,14 @@ for i in range(n):
         #a.summary()   #uncomment to see all the elite Pokémon summaries
         #a.appraise()  #uncomment for base stat breakdown
         pass
-    bp.saveParty(savename, parties[i], overwrite=True)                        #save the party to a joint save
-    bp.saveParty(trainer_names[i]+'.sav', parties[i], overwrite = True)       #save the party to its own save, might get appended with another party if they happen to have the same random name
+    bp.saveParty(savename, parties[i], overwrite=True)                        # save the party to a joint save
+    bp.saveParty(trainer_names[i]+'.sav', parties[i], overwrite = True)       # save the party to its own save, might get appended with another party if they happen to have the same random name
     pass
 ```
 
 How to make and battle an elite 4!
 ```
-### this script will create an elite n and a party for the user and set the user against the elite n in succession
+## this script will create an elite n and a party for the user and set the user against the elite n in succession
 
 import numpy as np
 import pokemonpy
@@ -148,8 +148,8 @@ l = 200                 # Pokémon level
 m = 4                   # number of moves to add onto the default; default is 6
 myname = 'RED'          # your name
 
-parties, fields = bp.maker(n, p, n, level=l, how_created='elite')   #create n random 'elite' parties and n randomized battlefields
-trainer_names = rng.choice(bp.easter_strings,n,replace=True)        #select 'names' from a list of strings in the game's code
+parties, fields = bp.maker(n, p, n, level=l, how_created='elite')   # create n random 'elite' parties and n randomized battlefields
+trainer_names = rng.choice(bp.easter_strings,n,replace=True)        # select 'names' from a list of strings in the game's code
 
 # a party for the player
 mine = bp.makeParty(numb=int(p*2), level = int(l+50), how_created = 'starter')
