@@ -128,7 +128,7 @@ moremoves=[
         ("Stone Edge",          100,80,5,0,0,12,0,"The user stabs the target from below with sharpened stones!\nIncreased crit' ratio.","highCrit"),
         ("Diamond Storm",       100,95,5,0,0,12,0,"The user whips up a storm of diamonds to damage the target!\n50% chance to raise the user's Def. 2 stages.","stat self,de,2,50"),
         ("Core Enforcer",       100,100,10,1,0,14,0,"The user unleashes a super sick laser and draws a 'Z'!","null"), #otherwise would suppress abilities, but we have none
-        ("Spacial Rend",        100,95,5,1,0,14,0,"The user tears the fabric of space aroud the target!\nIncreased crit' ratio.","null"), #otherwise would suppress abilities, but we have none
+        ("Spacial Rend",        100,95,5,1,0,14,0,"The user tears the fabric of space around the target!\nIncreased crit' ratio.","null"), #otherwise would suppress abilities, but we have none
         ("Iron Tail",           100,75,15,0,1,16,0,"The user slams the target with a steel-hard tail!\n30% chance to lower target's Def. 1 stage.","stat targ,de,-1,30"),
         ("Springtide Storm",    100,80,10,1,0,9,0,"The user wraps the target in fierce winds brimming with love and hate!\n30% chance to lower the target's Atk. 1 stage.","stat targ,at,-1,30"),
 
@@ -320,12 +320,12 @@ moremoves=[
         ("Grassy Terrain",   0,100,10,2,0,3,0,"The user covers the battlefield with grass for 5 turns!\nGrass-type moves from grounded Pokémon get a 30% boost, grounded Pokémon heal 1/16 of their max HP each turn, Bulldoze, Earthquake, Magnitude are halved in power.","grassy noMiss noTarg"),
         ("Electric Terrain", 0,100,10,2,0,4,0,"The user electrifies the battlefield for 5 turns!\nElectric-type moves from grounded Pokémon get a 30% boost, grounded Pokémon cannot be put to sleep.","electric noMiss noTarg"),
         ("Psychic Terrain",  0,100,10,2,0,10,0,"The user makes the battlefield weird for 5 turns!\nPsychic-type moves from grounded Pokémon get a 30% boost, grounded Pokémon cannot be hit by priority moves.","psychic noMiss noTarg"),
-        ("Misty Terrain",    0,100,10,2,0,17,0,"The user covers the battlefield in mist for 5 turns!\nDragon-type moves targeting grounded Pokémon get a 50% nerf, grounded Pokémon cannot be afflicted with a status confition.","misty noMiss noTarg"),
+        ("Misty Terrain",    0,100,10,2,0,17,0,"The user covers the battlefield in mist for 5 turns!\nDragon-type moves targeting grounded Pokémon get a 50% nerf, grounded Pokémon cannot be afflicted with a status condition.","misty noMiss noTarg"),
          #entry hazards
-        ("Spikes",        0,100,20,2,0,8,0,"The user spreads spikes on the targets's side of the field!\nStack up to 3 times.","noMiss spikes noTarg"),
+        ("Spikes",        0,100,20,2,0,8,0,"The user spreads spikes on the target's side of the field!\nStack up to 3 times.","noMiss spikes noTarg"),
         ("Toxic Spikes",  0,100,20,2,0,7,0,"The user sends out toxic barbs on the target's side of the field!\nPokémon are poisoned on entry, stacks up to 2 times for bad poison.","noMiss toxspk noTarg"),
         ("Sticky Web",    0,100,20,2,0,11,0,"The user weaves a web on the target's side of the field!\nLowers Spe. 1 stage upon entry.","noMiss sticky noTarg"),
-        ("Stealth Rocks", 0,100,20,2,0,12,0,"The user spreads pointed stones on the targets's side of the field!\nDoes rock-type damge.","noMiss rocks noTarg"),
+        ("Stealth Rocks", 0,100,20,2,0,12,0,"The user spreads pointed stones on the target's side of the field!\nDoes rock-type damge.","noMiss rocks noTarg"),
          #reflect, lightscreen
         ("Aurora Veil",  0,100,20,2,0,5,0,"The user draws on the hail to create a barrier that reduces damage from physical and special attacks for 5 turns!\nFails if it isn't hailing.","veil needHail noTarg"),
         ("Reflect",      0,100,20,2,0,10,0,"The user creates a wall of light that reduces damage from physical attacks for 5 turns!","reflect noMiss noTarg"),
