@@ -24,73 +24,73 @@ def movers():
     return
 ## move name // power // accuracy // pp // phys/spec/status // contact? // type // priority // description // code-notes
 moremoves=[
-        ("V-create",180,95,5,0,1,1,0,"The user ignites its forehead and hurls itself at the target!\nLowers user's Def. Sp.D and Spe. 1 stage each.","stat self,de:sd:sp,-1:-1:-1,100"),
+        ("V-create",180,95,5,0,1,1,0,"The user ignites its forehead and hurls itself at the target!\n-Lowers user's Def. Sp.D and Spe. 1 stage each.","stat self,de:sd:sp,-1:-1:-1,100"),
 
-        ("Prismatic Laser",160,100,10,1,0,10,0,"The user attacks the target with lasers using the power of a prism!\nThe user must rest on the next turn.","mustRest"),
-        ("Eternabeam",160,90,5,1,0,14,0,"The user harnesses Dynamax energy and releases it in a beam!\nThe user must rest on the next turn.","mustRest"),
+        ("Prismatic Laser",160,100,10,1,0,10,0,"The user attacks the target with lasers using the power of a prism!\n-The user must rest on the next turn.","mustRest"),
+        ("Eternabeam",160,90,5,1,0,14,0,"The user harnesses Dynamax energy and releases it in a beam!\n-The user must rest on the next turn.","mustRest"),
         
-        ("Hyper Beam",150,90,5,1,0,0,0,"The user attacks with a powerful beam!\nThe user must rest on next turn.","mustRest"),
-        ("Giga Impact",150,90,5,0,1,0,0,"The user charges at the target using every bit of its power!\nThe user must rest on next turn.","mustRest"),
-        ("Blast Burn",150,90,5,1,0,1,0,"The user razes the target with a fiery explosion!\nThe user must rest on next turn","mustRest"),
-        ("Eruption",150,100,5,1,0,1,0,"The user attacks with explosive fury!\nThe lower the user's HP, the lower this move's power.","spout"),
-        ("Hydro Cannon",150,90,5,1,0,2,0,"The user attacks the target with a watery blast!\nThe user must rest on next turn.","mustRest"),
-        ("Water Spout",150,100,5,1,0,2,0,"The user spouts water to damage the target!\nThe lower the user's HP, the lower this move's power.","spout"), #'spout' = this, eruption, drag energy
-        ("Frenzy Plant",150,90,5,1,0,3,0,"The user slams the target with roots from an enormous tree!\nThe user must rest on next turn.","mustRest"),
-        ("Chloroblast",150,95,5,1,0,3,0,"The user amasses chlorophyll and launches it at the target!\nThe user loses half of its max HP to recoil damage.","recoil 1/2maxhp"),
-        ("Meteor Assault",150,100,5,0,0,6,0,"The user attacks wildly with its thick leek!\nThe user must rest on next turn.","mustRest"),
-        ("Rock Wrecker",150,90,5,0,0,12,0,"The user launches a huge boulder at the target!\n The user must rest on next turn.","mustRest bullet"), #bulletproof ability is immune
-        ("Head Smash",150,80,5,0,1,12,0,"The user attacks the target with a full-power headbutt!\nThe user takes 1/2 recoil damage.","recoil 1/2"),
-        ("Roar of Time",150,90,5,1,0,14,0,"The user shouts a roar that distorts time and inflicts chronological damage on the target!\nThe user must rest on next turn.","mustRest"),
-        ("Dragon Energy",150,100,5,1,0,14,0,"The user attacks by converting its life-force into power!\nThe lower the user's HP, the lower this move's power.","spout"),
+        ("Hyper Beam",150,90,5,1,0,0,0,"The user attacks with a powerful beam!\n-The user must rest on next turn.","mustRest"),
+        ("Giga Impact",150,90,5,0,1,0,0,"The user charges at the target using every bit of its power!\n-The user must rest on next turn.","mustRest"),
+        ("Blast Burn",150,90,5,1,0,1,0,"The user razes the target with a fiery explosion!\n-The user must rest on next turn.","mustRest"),
+        ("Eruption",150,100,5,1,0,1,0,"The user attacks with explosive fury!\n-Power = 150 x userHP%.","spout"),
+        ("Hydro Cannon",150,90,5,1,0,2,0,"The user attacks the target with a watery blast!\n-The user must rest on next turn.","mustRest"),
+        ("Water Spout",150,100,5,1,0,2,0,"The user spouts water to damage the target!\n-Power = 150 x userHP%.","spout"), #'spout' = this, eruption, drag energy
+        ("Frenzy Plant",150,90,5,1,0,3,0,"The user slams the target with roots from an enormous tree!\n-The user must rest on next turn.","mustRest"),
+        ("Chloroblast",150,95,5,1,0,3,0,"The user amasses chlorophyll and launches it at the target!\n-The user loses half of its max HP to recoil damage.","recoil 1/2maxhp"),
+        ("Meteor Assault",150,100,5,0,0,6,0,"The user attacks wildly with its thick leek!\n-The user must rest on next turn.","mustRest"),
+        ("Rock Wrecker",150,90,5,0,0,12,0,"The user launches a huge boulder at the target!\n-The user must rest on next turn\n-Bomb/ball move.","mustRest bullet"), #bulletproof ability is immune
+        ("Head Smash",150,80,5,0,1,12,0,"The user attacks the target with a full-power headbutt!\n-The user takes 1/2 recoil damage.","recoil 1/2"),
+        ("Roar of Time",150,90,5,1,0,14,0,"The user shouts a roar that distorts time and inflicts chronological damage on the target!\n-The user must rest on next turn.","mustRest"),
+        ("Dragon Energy",150,100,5,1,0,14,0,"The user attacks by converting its life-force into power!\n-Power = 150 x userHP%.","spout"),
 
         ("Boomburst",       140,100,10,1,0,0,0,"The user attacks with a terrible, explosive sound!","sound"), #sound move
-        ("Freeze Shock",    140,90,5,0,0,5,0,"On the next turn, the user hits the target with electrically charged ice!\nTwo-turn move, 30% chance to paralyze.","2turn para 30"),
-        ("Ice Burn",        140,90,5,1,0,5,0,"On the next turn, the user surrounds the target withan ultra-cold, freezing wind!\nTwo-turn move, 30% chance to burn.","2turn burn 30"),
-        ("Psycho Boost",    140,90,5,1,0,10,0,"The user attacks with all its might!\nLowers the user's Sp.A 2 stages.","stat self,sa,-2,100"),
+        ("Freeze Shock",    140,90,5,0,0,5,0,"On the next turn, the user hits the target with electrically charged ice!\n-Two-turn move\n-30% chance to paralyze.","2turn para 30"),
+        ("Ice Burn",        140,90,5,1,0,5,0,"On the next turn, the user surrounds the target withan ultra-cold, freezing wind!\n-Two-turn move\n-30% chance to burn.","2turn burn 30"),
+        ("Psycho Boost",    140,90,5,1,0,10,0,"The user attacks with all its might!\n-Lowers the user's Sp.A 2 stages.","stat self,sa,-2,100"),
 
-        ("Skull Bash",      130,100,10,0,1,0,0,"The user tucks its head in and charges at the target!\nTwo-turn move.","2turn skullbash"), #needs to raise defense 1 stage on the prep
-        ("Overheat",        130,90,5,1,0,1,0,"The user attacks with its full power!\nLowers the user's Sp.A 2 stages.","stat self,sa,-2,100"),
-        ("Blue Flare",      130,85,5,1,0,1,0,"The user engulfs the target in an beautiful, intense blue flame!\n20% chance to leave a burn.","burn 20"),
-        ("Leaf Storm",      130,90,5,1,0,3,0,"The user whips up a storm of leaves around the target!\nLowers the user's Sp.A 2 stages.",'stat self,sa,-2,100'),
-        ("Draco Meteor",    130,90,5,1,0,14,0,"The user calls upon its draconic powers and unleashes a storm of meteors!\nLowers the user's Sp.A 2 stages.","stat self,sa,-2,100"),
+        ("Skull Bash",      130,100,10,0,1,0,0,"The user tucks its head in and charges at the target!\n-Two-turn move.\n-Raises the user's Def. 1 stage on the first turn.","2turn skullbash"), #needs to raise defense 1 stage on the prep
+        ("Overheat",        130,90,5,1,0,1,0,"The user attacks with its full power!\n-Lowers the user's Sp.A 2 stages.","stat self,sa,-2,100"),
+        ("Blue Flare",      130,85,5,1,0,1,0,"The user engulfs the target in an beautiful, intense blue flame!\n-20% chance to leave a burn.","burn 20"),
+        ("Leaf Storm",      130,90,5,1,0,3,0,"The user whips up a storm of leaves around the target!\n-Lowers the user's Sp.A 2 stages.",'stat self,sa,-2,100'),
+        ("Draco Meteor",    130,90,5,1,0,14,0,"The user calls upon its draconic powers and unleashes a storm of meteors!\n-Lowers the user's Sp.A 2 stages.","stat self,sa,-2,100"),
 
-        ("Solar Blade", 125,100,10,0,1,3,0,"The user focuses sunlight into a blade to attack!\nTwo-turn move, one-turn in harsh sunlight.","2turn solar"),
+        ("Solar Blade", 125,100,10,0,1,3,0,"The user focuses sunlight into a blade to attack!\n-Two-turn move\n-Skips the charging turn in harsh sunlight.\n-Power is halved in rain, sandstorm, hail.","2turn solar"),
 
         #("Tera Starstorm",120,100,5,1,0,0,0,"The user bombards the target with the power of its crystals... \nand eliminates them.","null"),
-        ("Double-Edge", 120,100,15,0,1,0,0,"The user rushes the target with a reckless tackle!\nThe user takes 1/3 recoil damage.","recoil 1/3"),
-        ("Head Charge", 120,100,15,0,1,0,0,"The user charges with its head and powerful guard hair!\nThe user takes 1/4 recoil damage.","recoil 1/4"),
+        ("Double-Edge", 120,100,15,0,1,0,0,"The user rushes the target with a reckless tackle!\n-The user takes 1/3 recoil damage.","recoil 1/3"),
+        ("Head Charge", 120,100,15,0,1,0,0,"The user charges with its head and powerful guard hair!\n-The user takes 1/4 recoil damage.","recoil 1/4"),
         ("Mega Kick",   120,75,5,0,1,0,0,"The user launches a kick with muscle-packed power!","null"),
-        ("Crush Grip",  1,100,5,0,1,0,0,"The user crushes the target with great force!\nPower = 120 x targetHP%","crushgrip"),
-        ("Techno Blast [Normal]",   120,100,5,1,0,0,0,"The user fires a beam of light at its target!\nThis is the Normal-type drive.","null"),
-        ("Techno Blast [Fire]",     120,100,5,1,0,1,0,"The user fires a beam of light at its target!\nThis is the Fire-type drive.","null"),
-        ("Techno Blast [Water]",    120,100,5,1,0,2,0,"The user fires a beam of light at its target!\nThis is the Water-type drive.","null"),
-        ("Techno Blast [Electric]", 120,100,5,1,0,4,0,"The user fires a beam of light at its target!\nThis is the Electric-type drive.","null"),
-        ("Techno Blast [Ice]",      120,100,5,1,0,5,0,"The user fires a beam of light at its target!\nThis is the Ice-type drive.","null"),
-        ("Flare Blitz",         120,100,15,0,1,1,0,"The user cloaks itself in fire and charges the target!\nThe user takes 1/3 recoil damage, 10% chance to burn, thaws the user if frozen.","recoil 1/3 burn 10 thaws"),
-        ("Pyro Ball",           120,90,5,0,0,1,0,"The user turns a small stone to a fiery meteor and launches it at the target!\n10% chance to burn, thaws the user if frozen.","burn 10 thaws"),
-        ("Wave Crash",          120,100,10,0,1,2,0,"The user summons a giant wave and crashes into the target!\nThe user takes 1/3 recoil damage.","recoil 1/3"),
-        ("Wood Hammer",         120,100,15,0,1,3,0,"The user slams its rugged body into the target!\nThe user takes 1/3 recoil damage.","recoil 1/3"),
-        ("Seed Flare",          120,85,5,1,0,3,0,"The user emits a shockwave from its body to attack the target!\n40% chance to lower the target's Sp.D 2 stages.","stat targ,sd,-2,40"),
-        ("Solar Beam",          120,100,10,1,0,3,0,"The user focuses sunlight into a beam to attack!\nTwo-turn move, one-turn in harsh sunlight.","2turn solar"),
-        ("Volt Tackle",         120,100,15,0,1,4,0,"The user electrifies itself and charges the target!\nThe user takes 1/3 recoil damage, 10% chance to paralyze.","recoil 1/3 para 10"),
-        ("Zap Cannon",          120,50,5,1,0,4,0,"The user fires an eletric blast like a cannon!\n100% chance to paralyze.","para 100"),
-        ("Close Combat",        120,100,5,0,1,6,0,"The user drops their guard to achieve an all out attack!\nLowers the user's Def. Sp.D 1 stage each.","stat self,de:sd,-1:-1,100"),
-        ("Superpower",          120,100,15,0,1,6,0,"The user draws on its latent potential and attacks the target with great power!\nLowers the user's Atk. Def. 1 stage each.","stat self,at:de,-1:-1,100"),
-        ("Focus Blast",         120,70,5,1,0,6,0,"The user heightens its mental focus an unleashs its power!\n10% chance to lower the target's Sp.D 1 stage.","stat targ,sa,-1,10"),
+        ("Crush Grip",  1,100,5,0,1,0,0,"The user crushes the target with great force!\n-Power = 120 x targetHP%","crushgrip"),
+        ("Techno Blast [Normal]",   120,100,5,1,0,0,0,"The user fires a beam of light at its target!\n-This is the Normal-type drive.","null"),
+        ("Techno Blast [Fire]",     120,100,5,1,0,1,0,"The user fires a beam of light at its target!\n-This is the Fire-type drive.","null"),
+        ("Techno Blast [Water]",    120,100,5,1,0,2,0,"The user fires a beam of light at its target!\n-This is the Water-type drive.","null"),
+        ("Techno Blast [Electric]", 120,100,5,1,0,4,0,"The user fires a beam of light at its target!\n-This is the Electric-type drive.","null"),
+        ("Techno Blast [Ice]",      120,100,5,1,0,5,0,"The user fires a beam of light at its target!\n-This is the Ice-type drive.","null"),
+        ("Flare Blitz",         120,100,15,0,1,1,0,"The user cloaks itself in fire and charges the target!\n-The user takes 1/3 recoil damage\n-10% chance to burn\n-Thaws the user if frozen.","recoil 1/3 burn 10 thaws"),
+        ("Pyro Ball",           120,90,5,0,0,1,0,"The user turns a small stone to a fiery meteor and launches it at the target!\n-10% chance to burn\n-Thaws the user if frozen\n-Bomb/ball move.","burn 10 thaws bullet"),
+        ("Wave Crash",          120,100,10,0,1,2,0,"The user summons a giant wave and crashes into the target!\n-The user takes 1/3 recoil damage.","recoil 1/3"),
+        ("Wood Hammer",         120,100,15,0,1,3,0,"The user slams its rugged body into the target!\n-The user takes 1/3 recoil damage.","recoil 1/3"),
+        ("Seed Flare",          120,85,5,1,0,3,0,"The user emits a shockwave from its body to attack the target!\n-40% chance to lower the target's Sp.D 2 stages.","stat targ,sd,-2,40"),
+        ("Solar Beam",          120,100,10,1,0,3,0,"The user focuses sunlight into a beam to attack!\n-Two-turn move\n-Skips the charging turn in harsh sunlight\n-Power is halved in rain, sandstorm, hail.","2turn solar"),
+        ("Volt Tackle",         120,100,15,0,1,4,0,"The user electrifies itself and charges the target!\n-The user takes 1/3 recoil damage\n-10% chance to paralyze.","recoil 1/3 para 10"),
+        ("Zap Cannon",          120,50,5,1,0,4,0,"The user fires an eletric blast like a cannon!\n-100% chance to paralyze\n-Ball/bomb move.","para 100 bullet"),
+        ("Close Combat",        120,100,5,0,1,6,0,"The user drops their guard to achieve an all out attack!\n-Lowers the user's Def. Sp.D 1 stage each.","stat self,de:sd,-1:-1,100"),
+        ("Superpower",          120,100,15,0,1,6,0,"The user draws on its latent potential and attacks the target with great power!\n-Lowers the user's Atk. Def. 1 stage each.","stat self,at:de,-1:-1,100"),
+        ("Focus Blast",         120,70,5,1,0,6,0,"The user heightens its mental focus an unleashs its power!\n-10% chance to lower the target's Sp.D 1 stage\n-Bomb/ball move.","stat targ,sa,-1,10 bullet"),
         ("Precipice Blades",    120,85,10,0,0,8,0,"The user manifests the power of the land and attacks the target with fearsome blades of stone!","null"),
-        ("Brave Bird",          120,100,15,0,1,9,0,"The user tucks in its wings and charges at a low altitude!\nThe user takes 1/3 recoil damage.","recoil 1/3"),
-        ("Dragon Ascent",       120,100,5,0,1,9,0,"The user attacks by dropping out of the sky at high speed! Lowers the user's Def. Sp.D 1 stage each.","stat self,de:sd,-1:-1,100"),
+        ("Brave Bird",          120,100,15,0,1,9,0,"The user tucks in its wings and charges at a low altitude!\n-The user takes 1/3 recoil damage.","recoil 1/3"),
+        ("Dragon Ascent",       120,100,5,0,1,9,0,"The user attacks by dropping out of the sky at high speed!\n-Lowers the user's Def. Sp.D 1 stage each.","stat self,de:sd,-1:-1,100"),
         ("Future Sight",        120,100,5,1,0,10,0,"The user looks into the future and predicts an attack!","futuresight"),
         ("Megahorn",            120,85,10,0,1,11,0,"The user rams into the target with its tough and impressive horn!","null"),
-        ("Shadow Force",        120,100,5,0,1,13,0,"The user disappears into the dark and strikes the target on the next turn!","shadowforce 2turn semi-invul"),
-        ("Dragon Fist",         120,100,5,0,1,14,0,"If the user doesn't do it, who will?\nLowers the user's Spe. 1 stage.","stat self,sp,-1,100"),
+        ("Shadow Force",        120,100,5,0,1,13,0,"The user disappears into the dark and strikes the target on the next turn!\n-Two turn move.","shadowforce 2turn semi-invul"),
+        ("Dragon Fist",         120,100,5,0,1,14,0,"If the user doesn't do it, who will?\n-Lowers the user's Spe. 1 stage.","stat self,sp,-1,100"),
 
-        ("Fire Blast",      110,85,5,1,0,1,0,"The user attacks with a blast of all-consuming flames!\n10% chance to burn.","burn 10"),
-        ("Origin Pulse",    110,85,10,1,0,2,0,"The user attacks the target with countless beams of glowing blue light!","launching"), #launching = powered by mega-launcher
+        ("Fire Blast",      110,85,5,1,0,1,0,"The user attacks with a blast of all-consuming flames!\n-10% chance to burn.","burn 10"),
+        ("Origin Pulse",    110,85,10,1,0,2,0,"The user attacks the target with countless beams of glowing blue light!\n-Pulse move","pulse"), #pulse = powered by mega-launcher
         ("Hydro Pump",      110,80,5,1,0,2,0,"The user blasts the target with a huge volume of water under great pressure!","null"),
-        ("Steam Eruption",  110,95,5,1,0,2,0,"The user immerses the target in a superheated steam!\n30% chance to burn, thaws a frozen user or target.","burn 30 thaws thawsTarg"),
-        ("Thunder",         110,70,10,1,0,4,0,"The user drops a wicked lightningbolt on the target to inflict damage!\n30% chance to paralyze.","para 30 noMissRain thunder"),
-        ("Blizzard",        110,70,5,1,0,5,0,"The user summons a howling blizzard to strike the target!\n10% chance to freeze, doesn't miss in hail.","frze 10 blizzard"), #doesn't miss in hail, need to program
+        ("Steam Eruption",  110,95,5,1,0,2,0,"The user immerses the target in a superheated steam!\n-30% chance to burn\n-thaws a frozen user or target.","burn 30 thaws thawsTarg"),
+        ("Thunder",         110,70,10,1,0,4,0,"The user drops a wicked lightningbolt on the target to inflict damage!\n-30% chance to paralyze.","para 30 noMissRain thunder"),
+        ("Blizzard",        110,70,5,1,0,5,0,"The user summons a howling blizzard to strike the target!\n-10% chance to freeze\n-Bypasses accuracy check in hail.","frze 10 blizzard"), #doesn't miss in hail, need to program
         ("Hurricane",       110,70,10,1,0,9,0,"The user wraps its target in a fierce wind from a furious storm!\n30% chance to confuse, doesn't miss in rain.","conf 30 noMissRain thunder"),
         ("Clanging Scales", 110,100,5,1,0,14,0,"The user rubs the scales on its body and makes a hugh noise to inflict damage on the target!\nLowers the user's Def. 1 stage.","stat self,de,-1,100 sound"),
         #normal 0,fire 1,water 2,grass 3,electric 4,ice 5,fighting 6,poison 7,
@@ -135,48 +135,51 @@ moremoves=[
         ("Heat Wave",   95,90,10,1,0,1,0,"The user exhales hot breath on the target!\n10% chance to burn.","burn 10"),
         ("Moonblast",   95,100,15,1,0,17,0,"The user calls on the power of the Moon to attack the target!\n30% chance to lower the target's Sp.A 1 stage.","stat targ,sa,-1,30"),
         
-        ("Flamethrower",90,100,15,1,0,1,0,"The user attacks with a powerful flame!\n10% chance to burn.","burn 10"),
-        ("Surf",90,100,15,1,0,2,0,"The user swamps everything around it with a giant wave!","surf"), #hits during dive
-        ("Muddy Water",90,85,10,1,0,2,0,"The user attacks by shooting muddy water at the target!\n30% chance to lower the target's Accu.","stat targ,ac,-1,30"),
-        ("Aqua Tail",90,90,10,0,1,2,0,"The user swings its tail like a vicious wave in a raging storm!","null"),
-        ("Leaf Blade",90,100,15,0,1,3,0,"The user attacks with a sharpened leaf!\nIncreased crit' ratio.","highCrit"),
-        ("Thunderbolt",90,100,15,1,0,4,0,"The user attacks with a bolt of lightning!\n10% chance to paralyze.","para 10"),
-        ("Ice Beam",90,100,15,1,0,5,0,"The user focuses a stream of ice at the target!\n10% chance to freeze.","frze 10"),
-        ("Triple Arrows",90,100,10,0,1,6,0,"The user kicks, then fires three arrows!\nIncreased crit. ratio, 50% chance to lower target's Def. 1 stage, 30% chance to make the target flinch.","highCrit flinch 30 stat targ,de,-1,50"),
-        ("Sludge Bomb",90,100,10,1,0,7,0,"Unsanitary sludge is hurled at the target!\n30% chance to poison.","pois 30"),
-        ("Earth Power",90,100,10,1,0,8,0,"The user makes the ground under the target erupt with power!\n10% chance to lower target's Sp.D 1 stage.","stat targ,sd,-1,10"),
-        ("Thousand Arrows",90,100,10,0,0,8,0,"The user creates arrows from the very ground and hurls them at the target!\nHits ungrounded targets and grounds them.","arrows"),
-        ("Fly",90,95,15,0,1,9,0,"The user flies up into the sky, then attacks on the next turn!\nVulnerable to Gust, Smack Down, Sky Uppercut, Thunder, Twister, Hurricane on the first turn.","2turn flying"),
-        ("Psychic",90,100,10,1,0,10,0,"The user hits the target with a strong telekinetic force!\n10% chance to lower target's Sp.D 1 stage.","stat targ,sd,-1,10"),
-        ("Mystical Power",90,70,10,1,0,10,0,"The user attacks by emitting a mysterious power!\Raises the user's Sp.A 1 stage.","stat self,sa,+1,100"),
-        ("Attack Order",90,100,15,0,0,11,0,"The user attacks with a powerful flame! Increased crit' ratio.","highCrit"),
-        ("Phantom Force",90,100,10,0,1,13,0,"The user vanishes into another plane, then strikes the target on the next turn!","2turn shadowforce"),
-        ("Play Rough",90,90,10,0,1,17,0,"The user attacks by playing rough with the target!\n10% chance to lower the target's Atk. 1 stage.","stat targ,at,-1,10"),
-        ("Strange Steam",90,95,10,1,0,17,0,"The user mixes a special steam and shoots it at the target!\n20% chance to confuse.","conf 20"),
+        ("Flamethrower",    90,100,15,1,0,1,0,"The user attacks with a powerful flame!\n10% chance to burn.","burn 10"),
+        ("Surf",            90,100,15,1,0,2,0,"The user swamps everything around it with a giant wave!","surf"), #hits during dive
+        ("Muddy Water",     90,85,10,1,0,2,0,"The user attacks by shooting muddy water at the target!\n30% chance to lower the target's Accu.","stat targ,ac,-1,30"),
+        ("Aqua Tail",       90,90,10,0,1,2,0,"The user swings its tail like a vicious wave in a raging storm!","null"),
+        ("Leaf Blade",      90,100,15,0,1,3,0,"The user attacks with a sharpened leaf!\nIncreased crit' ratio.","highCrit"),
+        ("Energy Ball",     90,100,10,1,0,3,0,"The user draws power from nature and fires it at the target!\n10% chance to lower the target's Sp.D 1 stage, bomb/ball move.","stat targ,sd,-1,10 bullet"),
+        ("Thunderbolt",     90,100,15,1,0,4,0,"The user attacks with a bolt of lightning!\n10% chance to paralyze.","para 10"),
+        ("Ice Beam",        90,100,15,1,0,5,0,"The user focuses a stream of ice at the target!\n10% chance to freeze.","frze 10"),
+        ("Triple Arrows",   90,100,10,0,1,6,0,"The user kicks, then fires three arrows!\nIncreased crit. ratio, 50% chance to lower target's Def. 1 stage, 30% chance to make the target flinch.","highCrit flinch 30 stat targ,de,-1,50"),
+        ("Sludge Bomb",     90,100,10,1,0,7,0,"The user hurls unsanitary sludge at the target!\n30% chance to poison, ball/bomb move.","pois 30 bullet"),
+        ("Earth Power",     90,100,10,1,0,8,0,"The user makes the ground under the target erupt with power!\n10% chance to lower target's Sp.D 1 stage.","stat targ,sd,-1,10"),
+        ("Thousand Arrows", 90,100,10,0,0,8,0,"The user creates arrows from the very ground and hurls them at the target!\nHits ungrounded targets and grounds them.","arrows"),
+        ("Fly",             90,95,15,0,1,9,0,"The user flies up into the sky, then attacks on the next turn!\nVulnerable to Gust, Smack Down, Sky Uppercut, Thunder, Twister, Hurricane on the first turn.","2turn flying"),
+        ("Psychic",         90,100,10,1,0,10,0,"The user hits the target with a strong telekinetic force!\n10% chance to lower target's Sp.D 1 stage.","stat targ,sd,-1,10"),
+        ("Mystical Power",  90,70,10,1,0,10,0,"The user attacks by emitting a mysterious power!\Raises the user's Sp.A 1 stage.","stat self,sa,+1,100"),
+        ("Attack Order",    90,100,15,0,0,11,0,"The user attacks with a powerful flame! Increased crit' ratio.","highCrit"),
+        ("Phantom Force",   90,100,10,0,1,13,0,"The user vanishes into another plane, then strikes the target on the next turn!","2turn shadowforce"),
+        ("Play Rough",      90,90,10,0,1,17,0,"The user attacks by playing rough with the target!\n10% chance to lower the target's Atk. 1 stage.","stat targ,at,-1,10"),
+        ("Strange Steam",   90,95,10,1,0,17,0,"The user mixes a special steam and shoots it at the target!\n20% chance to confuse.","conf 20"),
         
         ("Blaze Kick",85,90,10,0,1,1,0,"The user attacks with a fiery kick!\n10% chance to burn, increased crit' ratio.","highCrit burn 10"),
         ("Kamehameha",85,100,10,1,0,2,0,"The user concentrates their ki and releases it in a beam!\n50% chance to lower the target's Def. 2 stages.","stat targ,de,-2,50"),
         ("Secret Sword",85,100,10,1,0,6,0,"The user uses odd power to cut with its long horn!\nDamage is calculated with the user's Sp.A and the target's Def.","psystrike"),
         ("Bounce",85,85,5,0,1,9,0,"The user bounces up high on the first turn, then drops onto the target on the next turn!\nVulnerable to Gust, Smack Down, Sky Uppercut, Thunder, Twister, Hurricane on the first turn.","2turn flying para 30"),
-        ("Dragon Pulse",85,100,10,1,0,14,0,"The user summons a beastly beam from its mouth!","launching"),
+        ("Dragon Pulse",85,100,10,1,0,14,0,"The user summons a beastly beam from its mouth!\nPulse move.","pulse"),
         
-        ("Extreme Speed",80,100,5,0,1,0,+2,"The user charges at the target with blinding speed!\nPriority +2.","null"),
-        ("Lava Plume",80,100,15,1,0,1,0,"The user torches its surroundings with an inferno of flames!\n30% chance to burn.","burn 30"),
-        ("Fire Lash",80,100,15,0,1,1,0,"The user strikes with a burning lash!\nLowers the target's Def. 1 stage.","stat targ,de,-1,100"),
-        ("Dive",80,100,10,0,1,2,0,"The user dives on the first turn, then resurfaces to attack on the next turn!\nDouble damage from Surf, Whirlpool on the first turn.","2turn diving"),
-        ("Waterfall",80,100,15,0,1,2,0,"The user charges at the target with a wall of water!\n20% chance to make the target flinch.","flinch 20"),
-        ("Aqua Step",80,100,10,0,1,2,0,"The user attacks the target with light and fluid dance steps!\nRaises the user's Spe. 1 stage.","stat self,sp,+1,100"),
-        ("Scald",80,100,15,1,0,2,0,"The user shoots boiling-hot water at the target!\n30% chance to burn, will thaw a frozen user or target.","burn 30 thaws thawsTarg"),
-        ("Aura Sphere",80,100,20,1,0,6,0,"The user looses a blast of aura from deep within its body!\nBypasses accuracy checks.","noMiss"),
-        ("Dig",80,100,10,0,1,8,0,"The user burrows into the ground on the first turn, then attacks on the next turn!\nDouble damage from Earthquake, Magnitude, Fissure on the first turn.","2turn digging"),
-        ("Zen Headbutt",80,90,15,0,1,10,0,"The user focuses its willpower into its head and attacks the target!\n20% chance to make the target flinch.","flinch 20"),
-        ("Esper Wing",80,100,10,1,0,10,0,"The user slashes the target with aura-enriched wings!\nRaises the user's Spe. 1 stage, increased crit' ratio.","highCrit stat self,sp,1,100"),
-        ("Psyshock",80,100,10,1,0,10,0,"The user materializes an odd psychic wave to attack!\nDamage is calculated with the user's Sp.A and the target's Def.","psystrike"),
-        ("X-Scissor",80,100,15,0,1,11,0,"The user slashes the target by crossing its claws!","null"),
-        ("Dragon Claw",80,100,15,0,1,14,0,"The user slashes the target with sharp claws!","null"),
-        ("Crunch",80,100,15,0,1,15,0,"The user crunches on the target with sharp fangs!\n20% chance to lower the target's Def. 1 stage.","stat targ,de,-1,20"),
-        ("Dark Pulse",80,100,15,1,0,15,0,"The user releases a terrible aura imbued with dark thoughts!\n20% chance to make the target flinch.","flinch 20"),
-        ("Flash Cannon",80,100,10,1,0,16,0,"The user gathers all its light energy and releases it all at once at the target!\n10% chance to lower target's Sp.D 1 stage.","stat targ,sd,-1,10"),
+        ("Extreme Speed",   80,100,5,0,1,0,+2,"The user charges at the target with blinding speed!\nPriority +2.","null"),
+        ("Lava Plume",      80,100,15,1,0,1,0,"The user torches its surroundings with an inferno of flames!\n30% chance to burn.","burn 30"),
+        ("Fire Lash",       80,100,15,0,1,1,0,"The user strikes with a burning lash!\nLowers the target's Def. 1 stage.","stat targ,de,-1,100"),
+        ("Dive",            80,100,10,0,1,2,0,"The user dives on the first turn, then resurfaces to attack on the next turn!\nDouble damage from Surf, Whirlpool on the first turn.","2turn diving"),
+        ("Waterfall",       80,100,15,0,1,2,0,"The user charges at the target with a wall of water!\n20% chance to make the target flinch.","flinch 20"),
+        ("Aqua Step",       80,100,10,0,1,2,0,"The user attacks the target with light and fluid dance steps!\nRaises the user's Spe. 1 stage.","stat self,sp,+1,100"),
+        ("Scald",           80,100,15,1,0,2,0,"The user shoots boiling-hot water at the target!\n30% chance to burn, will thaw a frozen user or target.","burn 30 thaws thawsTarg"),
+        ("Seed Bomb",       80,100,15,0,0,3,0,"The user attacks by pummeling the target with hard-shelled seeds!\nBomb/ball move.","bullet"),
+        ("Aura Sphere",     80,100,20,1,0,6,0,"The user looses a blast of aura from deep within its body!\nBypasses accuracy checks, bomb/ball move, pulse move.","noMiss bullet pulse"),
+        ("Dig",             80,100,10,0,1,8,0,"The user burrows into the ground on the first turn, then attacks on the next turn!\nDouble damage from Earthquake, Magnitude, Fissure on the first turn.","2turn digging"),
+        ("Zen Headbutt",    80,90,15,0,1,10,0,"The user focuses its willpower into its head and attacks the target!\n20% chance to make the target flinch.","flinch 20"),
+        ("Esper Wing",      80,100,10,1,0,10,0,"The user slashes the target with aura-enriched wings!\nRaises the user's Spe. 1 stage, increased crit' ratio.","highCrit stat self,sp,1,100"),
+        ("Psyshock",        80,100,10,1,0,10,0,"The user materializes an odd psychic wave to attack!\nDamage is calculated with the user's Sp.A and the target's Def.","psystrike"),
+        ("X-Scissor",       80,100,15,0,1,11,0,"The user slashes the target by crossing its claws!","null"),
+        ("Shadow Ball",     80,100,15,1,0,13,0,"The user hurls a shadowy blob at the target!\n20% chance to lower the target's Sp.D 1 stage, ball/bomb move.","stat targ,sd,-1,20 bullet"),
+        ("Dragon Claw",     80,100,15,0,1,14,0,"The user slashes the target with sharp claws!","null"),
+        ("Crunch",          80,100,15,0,1,15,0,"The user crunches on the target with sharp fangs!\n20% chance to lower the target's Def. 1 stage.","stat targ,de,-1,20"),
+        ("Dark Pulse",      80,100,15,1,0,15,0,"The user releases a terrible aura imbued with dark thoughts!\n20% chance to make the target flinch, pulse move.","flinch 20 pulse"),
+        ("Flash Cannon",    80,100,10,1,0,16,0,"The user gathers all its light energy and releases it all at once at the target!\n10% chance to lower target's Sp.D 1 stage.","stat targ,sd,-1,10"),
         
         ("Crush Claw",75,95,10,0,1,0,0,"The user slashes the target with hard, sharp claws!\n50% chance to lower the target's Def. 1 stage.","stat targ,de,-1,50"), 
         ("Relic Song",  75,100,10,1,0,0,0,"The user sings an ancient song and attacks by appealing to the heart of the target!\n10% chance to impose sleep.","sound sleep 10"),
@@ -189,55 +192,56 @@ moremoves=[
         
         #("Dizzy Punch",70,100,10,0,1,0,0,"","conf 20"), Why did dizzy punch get kicked out of the game :(
         ("Facade",70,100,20,0,1,0,0,"An attack that does double damage if the user is poisoned, burned, or paralyzed.","facade"),
-        ("Retaliate",70,100,5,0,1,0,0,"The user gets revenge for a fainted ally!\nDoubles in power if an ally fainted in the previous turn.","retaliate"),
-        ("Headbutt",70,100,15,0,1,0,0,"The user sticks out its head and attacks!\n30% chance to make the target flinch.","flinch 30"),
-        ("Aqua Cutter",70,100,20,0,0,2,0,"The user expels pressurized water to cut the target like a blade!\nIncreased crit' ratio.","highCrit"),
-        ("Scorching Sands",70,100,10,1,0,8,0,"The user buries the target in searing-hot sand!\n30% chance to burn the target, thaws the user if frozen.","burn 30 thaws thawsTarg"), #thawsTarg is brand new, i believe fire type moves thaw the target by default and this does that because its a hot/burning move but it is not Fire-type so I'll have to work that in gameside
-        ("Shadow Claw",70,100,15,0,1,13,0,"The user materializes a sharp claw from the shadows and slashes at the target!\nIncreased crit' ratio.","highCrit"),
-        ("Night Slash",70,100,15,0,1,15,0,"The user sneaks in and slashes the target the instant it gets the opportunity!\nIncreased crit' ratio.","highCrit"),
+        ("Retaliate",70,100,5,0,1,0,0,"The user gets revenge for a fainted ally!\n-Doubles in power if an ally fainted in the previous turn.","retaliate"),
+        ("Headbutt",70,100,15,0,1,0,0,"The user sticks out its head and attacks!\n-30% chance to make the target flinch.","flinch 30"),
+        ("Aqua Cutter",70,100,20,0,0,2,0,"The user expels pressurized water to cut the target like a blade!\n-Increased crit' ratio.","highCrit"),
+        ("Scorching Sands",70,100,10,1,0,8,0,"The user buries the target in searing-hot sand!\n-30% chance to burn the target\n-Thaws the user if frozen.","burn 30 thaws thawsTarg"), #thawsTarg is brand new, i believe fire type moves thaw the target by default and this does that because its a hot/burning move but it is not Fire-type so I'll have to work that in gameside
+        ("Shadow Claw",70,100,15,0,1,13,0,"The user materializes a sharp claw from the shadows and slashes at the target!\n-Increased crit' ratio.","highCrit"),
+        ("Night Slash",70,100,15,0,1,15,0,"The user sneaks in and slashes the target the instant it gets the opportunity!\n-Increased crit' ratio.","highCrit"),
         
-        ("Stomp",65,100,20,0,1,0,0,"The user forcefully stomps on the target!\n30% chance to make the target flinch.","flinch 30 noMissMinimize"), #doesn't miss if target used minimize
-        ("Fire Fang",65,95,15,0,1,1,0,"The user bites with flame-cloaked fangs!\n10% chance to make the target flinch, 10% chance to burn.","burn 10 flinch 10"),
-        ("Bubble Beam",65,100,20,1,0,2,0,"The user forcefully ejects a spray of bubbles at the target!\n10% chance to lower target's Spe. 1 stage.","stat targ,sp,-1,10"),
-        ("Octazooka",65,85,10,1,0,2,0,"The user sprays ink in the target's face!\n50% chance to lower the target's Accu. 1 stage.","stat targ,ac,-1,50 bullet"), #bullet-move
-        ("Thunder Fang",65,95,15,0,1,4,0,"The user bites with electrified fangs!\n10% chance to make the target flinch, 10% chance to paralyze.","para 10 flinch 10"),
-        ("Spark",65,100,20,0,1,4,0,"The user attacks the target with an electrically charged tackle!\n30% chance to paralyze.","para 30"),
-        ("Ice Fang",65,95,15,0,1,5,0,"The user bites with frozen fangs!\n10% chance to make the target flinch, 10% chance to freeze.","frze 10 flinch 10"),
-        ("Glaciate",65,95,10,1,0,5,0,"The user blows freezing cold air at the target!\nLowers the target's Spe. 1 stage.","stat targ,sp,-1,100"),
-        ("Hex",65,100,10,1,0,13,0,"The user attacks relentlessly, doing double damage to a target with status conditions!","hex"),
-        ("Ceaseless Edge",65,90,15,0,1,15,0,"The user slashes its shell blade at the target!\nPuts up Spikes on the target's side.","spikes"), #this might not work... i will have to see if we check for spikes tags in damaging moves
+        ("Stomp",           65,100,20,0,1,0,0,"The user forcefully stomps on the target!\n-30% chance to make the target flinch.","flinch 30 noMissMinimize"), #doesn't miss if target used minimize
+        ("Fire Fang",       65,95,15,0,1,1,0,"The user bites with flame-cloaked fangs!\n-10% chance to make the target flinch\n-10% chance to burn.","burn 10 flinch 10"),
+        ("Bubble Beam",     65,100,20,1,0,2,0,"The user forcefully ejects a spray of bubbles at the target!\n-10% chance to lower target's Spe. 1 stage.","stat targ,sp,-1,10"),
+        ("Octazooka",       65,85,10,1,0,2,0,"The user sprays ink in the target's face!\n-50% chance to lower the target's Accu. 1 stage\n-Bomb/ball move.","stat targ,ac,-1,50 bullet"), #bullet-move
+        ("Thunder Fang",    65,95,15,0,1,4,0,"The user bites with electrified fangs!\n-10% chance to make the target flinch\n-10% chance to paralyze.","para 10 flinch 10"),
+        ("Spark",           65,100,20,0,1,4,0,"The user attacks the target with an electrically charged tackle!\n-30% chance to paralyze.","para 30"),
+        ("Ice Fang",        65,95,15,0,1,5,0,"The user bites with frozen fangs!\n-10% chance to make the target flinch\n-10% chance to freeze.","frze 10 flinch 10"),
+        ("Glaciate",        65,95,10,1,0,5,0,"The user blows freezing cold air at the target!\n-Lowers the target's Spe. 1 stage.","stat targ,sp,-1,100"),
+        ("Hex",             65,100,10,1,0,13,0,"The user attacks relentlessly, doing double damage to a target with status conditions!","hex"),
+        ("Ceaseless Edge",  65,90,15,0,1,15,0,"The user slashes its shell blade at the target!\n-Puts up Spikes on the target's side.","spikes"), #this might not work... i will have to see if we check for spikes tags in damaging moves
         
-        ("Swift",60,100,20,1,0,0,0,"The user shoots star-shaped rays at the target!\nBypasses accuracy checks.","noMiss"),
-        ("Flame Wheel",60,100,15,0,1,1,0,"The user covers itself in fire and rolls into the target!\n10% chance to burn, thaws the user if frozen.","burn 10 thaws"),
+        ("Swift",60,100,20,1,0,0,0,"The user shoots star-shaped rays at the target!\n-Bypasses accuracy checks.","noMiss"),
+        ("Flame Wheel",60,100,15,0,1,1,0,"The user covers itself in fire and rolls into the target!\n-10% chance to burn\n-thaws the user if frozen.","burn 10 thaws"),
         ("Incinerate",60,100,15,1,0,1,0,"The user attacks with a destructive fire!","null"),#no items to burn up rn
-        ("Water Pulse",60,100,20,1,0,2,0,"The user attacks the target with a pulsing blast of water!\n20% chance to confuse.","conf 20"),
-        ("Frost Breath",60,90,10,1,0,5,0,"The user blows cold breath on the target!\nThis move always lands a critical hit.","frostbreath"),
-        ("Storm Throw",60,100,10,0,1,6,0,"The user strikes the target with a fierce blow!\nThis move always lands a critical hit.","frostbreath"),
-        ("Air Cutter",60,95,25,1,0,9,0,"The user launches razor-sharp winds to slash opponents!\nIncreased crit' ratio.","highCrit"),
-        ("Silver Wind",60,100,5,1,0,11,0,"The user attacks with powderly scales carried on the wind!\n10% chance to raise all stats 1. stage.","stat self,at:de:sa:sd:sp,1:1:1:1:1,10"), #not in SwSh, but IN LegendsArceus so we move!
-        ("Ominous Wind",60,100,5,1,0,13,0,"The user attacks with a mysterious wind.\n10% chance to raise all stats 1 stage.","stat self,at:de:sa:sd:sp,1:1:1:1:1,10"),
-        ("Infernal Parade",60,100,15,1,0,13,0,"The user attacks with a myriad of fireballs!\n30% chance to burn, damage is doubled when the target has a status condition.","hex burn 30"),
+        ("Water Pulse",60,100,20,1,0,2,0,"The user attacks the target with a pulsing blast of water!\n-20% chance to confuse\n-Pulse move.","conf 20 pulse"),
+        ("Frost Breath",60,90,10,1,0,5,0,"The user blows cold breath on the target!\n-This move always lands a critical hit.","frostbreath"),
+        ("Storm Throw",60,100,10,0,1,6,0,"The user strikes the target with a fierce blow!\n-This move always lands a critical hit.","frostbreath"),
+        ("Air Cutter",60,95,25,1,0,9,0,"The user launches razor-sharp winds to slash opponents!\n-Increased crit' ratio.","highCrit"),
+        ("Silver Wind",60,100,5,1,0,11,0,"The user attacks with powderly scales carried on the wind!\n-10% chance to raise all stats 1. stage.","stat self,at:de:sa:sd:sp,1:1:1:1:1,10"), #not in SwSh, but IN LegendsArceus so we move!
+        ("Ominous Wind",60,100,5,1,0,13,0,"The user attacks with a mysterious wind.\n-10% chance to raise all stats 1 stage.","stat self,at:de:sa:sd:sp,1:1:1:1:1,10"),
+        ("Infernal Parade",60,100,15,1,0,13,0,"The user attacks with a myriad of fireballs!\n-30% chance to burn\n-Damage is doubled when the target has a status condition.","hex burn 30"),
         #("Feint Attack",60,100,20,0,1,15,0,"",""), uhhh feint attack was nixed in gen 8, and i just programmed night slash so maybes thats a fine replacement?
-        ("Bite",60,100,25,0,1,15,0,"The user bites the target with viciously sharp fangs!\n30% chance to make the target flinch.","flinch 30"),
+        ("Bite",60,100,25,0,1,15,0,"The user bites the target with viciously sharp fangs!\n-30% chance to make the target flinch.","flinch 30"),
         
-        ("Icy Wind",55,95,15,1,0,5,0,"The user attacks with a gust of chilled air!\nLowers the target's Spe. 1 stage.","stat targ,sp,-1,100"),
+        ("Icy Wind",55,95,15,1,0,5,0,"The user attacks with a gust of chilled air!\n-Lowers the target's Spe. 1 stage.","stat targ,sp,-1,100"),
         ("Acrobatics",110,100,15,0,1,9,0,"The user nimbly strikes the target!","null"), #Im going to just double acrobatics' power bc its canon and we dont have items yet
         
-        ("Weather Ball",50,100,10,1,0,0,0,"The user harnesses the power of the weather to attack!\nChanges type and doubles power in non-clear weather.","weatherball"),
-        ("Cut",50,95,30,0,1,0,0,"The user cuts the target with a scythe or claw!","null"),
-        ("Flame Charge",50,100,20,0,1,1,0,"The user cloaks itself in flames and builds momentum to attack!\nRaises the user's Spe. 1 stage.","stat self,sp,1,100"),
-        ("Chilling Water",50,100,20,1,0,2,0,"The user attacks the target with water so cold it saps the target's power!\nLowers target's Atk. 1 stage.","stat targ,at,-1,100"),
-        ("Metal Claw",50,95,35,0,1,16,0,"The user rakes the target with steel claws!\n10% chance to raise the user's Atk. 1 stage.","stat self,at,1,10"),
+        ("Weather Ball",    50,100,10,1,0,0,0,"The user harnesses the power of the weather to attack!\n-Changes type and doubles power in non-clear weather, ball/bomb move.","weatherball bullet"),
+        ("Terrain Pulse",   50,100,10,1,0,0,0,"The user utilizes the energy of the terrain to attack!\n-Changes type and doubles power in terrain, pulse move.","terrainpulse pulse"),
+        ("Cut",             50,95,30,0,1,0,0,"The user cuts the target with a scythe or claw!","null"),
+        ("Flame Charge",    50,100,20,0,1,1,0,"The user cloaks itself in flames and builds momentum to attack!\n-Raises the user's Spe. 1 stage.","stat self,sp,1,100"),
+        ("Chilling Water",  50,100,20,1,0,2,0,"The user attacks the target with water so cold it saps the target's power!\n-Lowers target's Atk. 1 stage.","stat targ,at,-1,100"),
+        ("Metal Claw",      50,95,35,0,1,16,0,"The user rakes the target with steel claws!\n-10% chance to raise the user's Atk. 1 stage.","stat self,at,1,10"),
         
-        ("Fake Out",40,100,10,0,1,0,+3,"The user hits first and makes the target flinch!\nPriority +3, only works on the first turn after the user enters battle.","flinch 100 fakeout"), #need priority AND first-turn tracking
-        ("Quick Attack",40,100,30,0,1,0,+1,"The user lunges at the target so fast it becomes invisible!\nPriority +1.","null"),
+        ("Fake Out",40,100,10,0,1,0,+3,"The user hits first and makes the target flinch!\n-Priority +3\n-Only works on the first turn after the user enters battle.","flinch 100 fakeout"), #need priority AND first-turn tracking
+        ("Quick Attack",40,100,30,0,1,0,+1,"The user lunges at the target so fast it becomes invisible!\n-Priority +1.","null"),
         ("Tackle",40,100,35,0,1,0,0,"The user charges to attack!","null"),
-        ("Ember",40,100,25,1,0,1,0,"The user attacks with small flames!\n10% chance to burn.","burn 10"),
-        ("Aqua Jet",40,100,20,0,1,2,+1,"The user covers itself in water and lunges at the target!\nPriority +1.","null"),
+        ("Ember",40,100,25,1,0,1,0,"The user attacks with small flames!\n-10% chance to burn.","burn 10"),
+        ("Aqua Jet",40,100,20,0,1,2,+1,"The user covers itself in water and lunges at the target!\n-Priority +1.","null"),
         ("Gust",40,100,35,1,0,9,0,"The user whips up a gust of wind with its wings and launches it at the target!","gust"),
-        ("Twister",40,100,20,1,0,14,0,"The user whips up a vicious tornado to tear at the target!\n20% chance to make the target flinch.","gust flinch 20"),
+        ("Twister",40,100,20,1,0,14,0,"The user whips up a vicious tornado to tear at the target!\n-20% chance to make the target flinch.","gust flinch 20"),
         
-        ("Rollout",30,90,20,0,1,12,0,"The user rolls into the target for fives turns!\nDoubles in damage for each consecutive hit.","rollout"),
+        ("Rollout",30,90,20,0,1,12,0,"The user rolls into the target for fives turns!\n-Doubles in damage for each consecutive hit.","rollout"),
 
         #z-moves,                power,accuracy,PP,phys/spec,contact,type,prority,flavor-text,tags
         #("Breakneak Blitz (P)"  ,200,100,1,0,1,0,0,"The user builds momentum using its Z-Power and crashes into the target at full speed!","zmove"),
@@ -306,8 +310,8 @@ moremoves=[
 
         
         #counter and mirror coat,
-        ("Counter",     1,100,20,0,1,6,-5,"An attack for countering any physical move.\nInflicts on the target double the damage taken by the user.","counter"),
-        ("Mirror Coat", 1,100,20,1,0,10,-5,"An attack for countering any special move.\nInflicts on the target double the damage taken by the user.","mirrorcoat"),#]
+        ("Counter",     1,100,20,0,1,6,-5,"An attack for countering any physical move.\n-Inflicts on the target double the damage taken by the user.","counter"),
+        ("Mirror Coat", 1,100,20,1,0,10,-5,"An attack for countering any special move.\n-Inflicts on the target double the damage taken by the user.","mirrorcoat"),#]
 #moves22 = [
         #status moves
          #weather moves
@@ -317,15 +321,15 @@ moremoves=[
         #("Snowscape", 0,100,5,2,0,5,0,"The user summons a cloudy cold front that produces snow!","snow noMiss noTarg"),
         ("Sandstorm",  0,100,5,2,0,12,0,"The user calls on the local sands to whip up a sandstorm!","sand noMiss noTarg"),
          #terrain moves
-        ("Grassy Terrain",   0,100,10,2,0,3,0,"The user covers the battlefield with grass for 5 turns!\nGrass-type moves from grounded Pokémon get a 30% boost, grounded Pokémon heal 1/16 of their max HP each turn, Bulldoze, Earthquake, Magnitude are halved in power.","grassy noMiss noTarg"),
-        ("Electric Terrain", 0,100,10,2,0,4,0,"The user electrifies the battlefield for 5 turns!\nElectric-type moves from grounded Pokémon get a 30% boost, grounded Pokémon cannot be put to sleep.","electric noMiss noTarg"),
-        ("Psychic Terrain",  0,100,10,2,0,10,0,"The user makes the battlefield weird for 5 turns!\nPsychic-type moves from grounded Pokémon get a 30% boost, grounded Pokémon cannot be hit by priority moves.","psychic noMiss noTarg"),
-        ("Misty Terrain",    0,100,10,2,0,17,0,"The user covers the battlefield in mist for 5 turns!\nDragon-type moves targeting grounded Pokémon get a 50% nerf, grounded Pokémon cannot be afflicted with a status condition.","misty noMiss noTarg"),
+        ("Grassy Terrain",   0,100,10,2,0,3,0,"The user covers the battlefield with grass for 5 turns!\n-Grass-type moves from grounded Pokémon get a 30% boost\n-Grounded Pokémon heal 1/16 of their max HP each turn\n-Bulldoze, Earthquake, Magnitude are halved in power.","grassy noMiss noTarg"),
+        ("Electric Terrain", 0,100,10,2,0,4,0,"The user electrifies the battlefield for 5 turns!\n-Electric-type moves from grounded Pokémon get a 30% boost\n-Grounded Pokémon cannot be put to sleep.","electric noMiss noTarg"),
+        ("Psychic Terrain",  0,100,10,2,0,10,0,"The user makes the battlefield weird for 5 turns!\n-Psychic-type moves from grounded Pokémon get a 30% boost\n-Grounded Pokémon cannot be hit by priority moves.","psychic noMiss noTarg"),
+        ("Misty Terrain",    0,100,10,2,0,17,0,"The user covers the battlefield in mist for 5 turns!\n-Dragon-type moves targeting grounded Pokémon get a 50% nerf\n-Grounded Pokémon cannot be afflicted with a status condition.","misty noMiss noTarg"),
          #entry hazards
-        ("Spikes",        0,100,20,2,0,8,0,"The user spreads spikes on the target's side of the field!\nStack up to 3 times.","noMiss spikes noTarg"),
-        ("Toxic Spikes",  0,100,20,2,0,7,0,"The user sends out toxic barbs on the target's side of the field!\nPokémon are poisoned on entry, stacks up to 2 times for bad poison.","noMiss toxspk noTarg"),
-        ("Sticky Web",    0,100,20,2,0,11,0,"The user weaves a web on the target's side of the field!\nLowers Spe. 1 stage upon entry.","noMiss sticky noTarg"),
-        ("Stealth Rocks", 0,100,20,2,0,12,0,"The user spreads pointed stones on the target's side of the field!\nDoes rock-type damge.","noMiss rocks noTarg"),
+        ("Spikes",        0,100,20,2,0,8,0,"The user spreads spikes on the target's side of the field!\n-Stack up to 3 times.","noMiss spikes noTarg"),
+        ("Toxic Spikes",  0,100,20,2,0,7,0,"The user sends out toxic barbs on the target's side of the field!\n-Pokémon are poisoned on entry, stacks up to 2 times for bad poison.","noMiss toxspk noTarg"),
+        ("Sticky Web",    0,100,20,2,0,11,0,"The user weaves a web on the target's side of the field!\n-Lowers Spe. 1 stage upon entry.","noMiss sticky noTarg"),
+        ("Stealth Rocks", 0,100,20,2,0,12,0,"The user spreads pointed stones on the target's side of the field!\n-Does rock-type damge.","noMiss rocks noTarg"),
          #reflect, lightscreen
         ("Aurora Veil",  0,100,20,2,0,5,0,"The user draws on the hail to create a barrier that reduces damage from physical and special attacks for 5 turns!\nFails if it isn't hailing.","veil needHail noTarg"),
         ("Reflect",      0,100,20,2,0,10,0,"The user creates a wall of light that reduces damage from physical attacks for 5 turns!","reflect noMiss noTarg"),
@@ -336,28 +340,29 @@ moremoves=[
         ("Soft-Boiled",     0,100,5,2,0,0,0,"The user eats a tasty egg and restores half its max HP!","heals recover noMiss noTarg "),
         ("Slack-Off",       0,100,5,2,0,0,0,"The user takes a well-deserved break and restores half its max HP!","heals recover noMiss noTarg "),
         ("Aqua Ring",       0,100,20,2,0,2,0,"The user envelops itself with a veil of healing waters!","aquaring noMiss noTarg"),
-        ("Take Heart",      0,100,10,2,0,2,0,"The user focuses on the positives to lift its spirits!\nRaises the user's Sp.A Sp.D 1 stage each, heals status conditions.","stat self,sa:sd,1:1,100 refresh noMiss noTarg"),
-        ("Synthesis",       0,100,5,2,0,3,0,"The user takes in sunlight to restore HP!\nRestores more HP in harsh sunlight, less in non-sunny, non-clear weather.","heals synthesis noMiss noTarg"),
-        ("Lunar Blessing",  0,100,5,2,0,10,0,"The user receives a blessing from the crescent moon!\nRestores 25% maxHP, heals status conditions.","heals blessing refresh noMiss noTarg"),
+        ("Take Heart",      0,100,10,2,0,2,0,"The user focuses on the positives to lift its spirits!\n-Raises the user's Sp.A Sp.D 1 stage each\n-Heals status conditions.","stat self,sa:sd,1:1,100 refresh noMiss noTarg"),
+        ("Synthesis",       0,100,5,2,0,3,0,"The user takes in sunlight to restore HP!\n-Restores 50% maxHP in clear weather\n-66.66% maxHP in harsh sunlight\n-25% in rain, sandstorm, hail.","heals synthesis noMiss noTarg"),
+        ("Lunar Blessing",  0,100,5,2,0,10,0,"The user receives a blessing from the crescent moon!\n-Restores 25% maxHP\n-Heals status conditions.","heals blessing refresh noMiss noTarg"),
 
          #stat(istic) changes
-        ("Harden",          0,100,40,2,0,0,0,"The user stiffens the muscles in its body!\nRaises the user's Def. 1 stage.","stat self,de,1 noMiss noTarg"),
-        ("Defense Curl",    0,100,40,2,0,0,0,"The user curls up to hide its weak spots!\nRaises the user's Def. 1 stage.","stat self,de,1 noMiss curled noTarg"),
-        ("Swords Dance", 0,100,20,2,0,0,0,"The user uplifts the fighting spirit with a frenetic dance!\nRaises the user's Atk. 2 stages.","stat self,at,2 noMiss noTarg"),
-        ("Growth",       0,100,20,2,0,0,0,"The user's body grows all at once!\nRaises the user's Atk. Sp.A 1 stage each. Two each in harsh sunlight.","stat self,at:sa,1:1 noMiss growth noTarg"),
-        ("Double Team",  0,100,15,2,0,0,0,"The user moves so quick it creates afterimages!\nRaises the user's Evas. 1 stage.","stat self,ev,1 noMiss noTarg"),
-        ("Confide",      0,100,20,2,0,0,0,"The user tells the target a (quite inappropriate) secret!\nLowers the target's Sp.A 1 stage.","stat targ,sa,-1 noMiss"),
-        ("Growl",        0,100,40,2,0,0,0,"The user growls cutely to disarm the target!\nLowers the target's Atk. 1 stage.","stat targ,at,-1"),
-        ("Withdraw",     0,100,40,2,0,2,0,"The user withdraws into its body!\nRaises the user's Def. 1 stage.","stat self,de,1,100 noMiss noTarg"),
-        ("Victory Dance", 0,100,10,2,0,6,0,"The user performs an intense dance to usher in victory!\nRaises the user's Atk. Def. Spe. 1 stage each.","stat self,at:de:sp,1:1:1,100 noMiss noTarg"),
-        ("Amnesia",      0,100,20,2,0,10,0,"The user empties its mind and forgets its concerns!\Raises the user's Sp.D 2 stages.","stat self,sd,2 noMiss noTarg"),
-        ("String Shot",  0,95,40,2,0,11,0,"The user spins silk to bind the target!\nLowers the target's Spe. 1 stage.","stat targ,sp,-1"),
-        ("Quiver Dance", 0,100,20,2,0,11,0,"The user lightly performs a beautiful, mystic dance!\nRaises the user's Sp.A Sp.D Spe. 1 stage each.","stat self,sa:sd:sp,1:1:1,100 noMiss noTarg"),
-        ("Dragon Dance", 0,100,20,2,0,14,0,"The user vigorously performs a mystic, poweful dance!\nRaises the user's Atk. Spe. 1 stage each.","stat self,at:sp,1:1 noMiss noTarg"),
-        ("Nasty Plot",   0,100,20,2,0,15,0,"The user stimulates the brain by thinking bad thoughts!\nRaises the user's Sp.A 2 stages.","stat self,sa,2 noMiss noTarg"),
-        ("Metal Sound",  0,85,40,2,0,16,0,"The user creates horrible metal-scraping sounds to unnerve the target!\nLowers the target's Sp.D 2 stages.","stat targ,sd,-2 sound"), #sound-based, soundproof ability is immune,
-        ("Shelter",         0,100,10,2,0,16,0,"The user makes its skin as hard as an iron shield!\nRaises the user's Def. 2 stages.","stat self,de,2,100 noMiss noTarg"),
-        ("Geomancy",     0,100,10,2,0,17,0,"The user absorbs energy from its surroundings and powers up on the next turn!\nRaises the user's Sp.A Sp.D Spe. 2 stages each. Two-turn move.","stat self,sa:sd:sp,2:2:2 noMiss 2turn geomance noTarg"),
+        ("Focus Energy",    0,100,30,2,0,0,0,"The user takes a deep breath and heightens its focus!\n-Increases chances of landing crit' hits.","focusenergy noMiss noTarg"),
+        ("Harden",          0,100,40,2,0,0,0,"The user stiffens the muscles in its body!\n-Raises the user's Def. 1 stage.","stat self,de,1 noMiss noTarg"),
+        ("Defense Curl",    0,100,40,2,0,0,0,"The user curls up to hide its weak spots!\n-Raises the user's Def. 1 stage.","stat self,de,1 noMiss curled noTarg"),
+        ("Swords Dance", 0,100,20,2,0,0,0,"The user uplifts the fighting spirit with a frenetic dance!\n-Raises the user's Atk. 2 stages.","stat self,at,2 noMiss noTarg"),
+        ("Growth",       0,100,20,2,0,0,0,"The user's body grows all at once!\n-Raises the user's Atk. Sp.A 1 stage each\n-2 stages each in harsh sunlight.","stat self,at:sa,1:1 noMiss growth noTarg"),
+        ("Double Team",  0,100,15,2,0,0,0,"The user moves so quick it creates afterimages!\n-Raises the user's Evas. 1 stage.","stat self,ev,1 noMiss noTarg"),
+        ("Confide",      0,100,20,2,0,0,0,"The user tells the target a (quite inappropriate) secret!\n-Lowers the target's Sp.A 1 stage.","stat targ,sa,-1 noMiss"),
+        ("Growl",        0,100,40,2,0,0,0,"The user growls cutely to disarm the target!\n-Lowers the target's Atk. 1 stage.","stat targ,at,-1"),
+        ("Withdraw",     0,100,40,2,0,2,0,"The user withdraws into its body!\n-Raises the user's Def. 1 stage.","stat self,de,1,100 noMiss noTarg"),
+        ("Victory Dance", 0,100,10,2,0,6,0,"The user performs an intense dance to usher in victory!\n-Raises the user's Atk. Def. Spe. 1 stage each.","stat self,at:de:sp,1:1:1,100 noMiss noTarg"),
+        ("Amnesia",      0,100,20,2,0,10,0,"The user empties its mind and forgets its concerns!\n-Raises the user's Sp.D 2 stages.","stat self,sd,2 noMiss noTarg"),
+        ("String Shot",  0,95,40,2,0,11,0,"The user spins silk to bind the target!\n-Lowers the target's Spe. 1 stage.","stat targ,sp,-1"),
+        ("Quiver Dance", 0,100,20,2,0,11,0,"The user lightly performs a beautiful, mystic dance!\n-Raises the user's Sp.A Sp.D Spe. 1 stage each.","stat self,sa:sd:sp,1:1:1,100 noMiss noTarg"),
+        ("Dragon Dance", 0,100,20,2,0,14,0,"The user vigorously performs a mystic, poweful dance!\n-Raises the user's Atk. Spe. 1 stage each.","stat self,at:sp,1:1 noMiss noTarg"),
+        ("Nasty Plot",   0,100,20,2,0,15,0,"The user stimulates the brain by thinking bad thoughts!\n-Raises the user's Sp.A 2 stages.","stat self,sa,2 noMiss noTarg"),
+        ("Metal Sound",  0,85,40,2,0,16,0,"The user creates horrible metal-scraping sounds to unnerve the target!\n-Lowers the target's Sp.D 2 stages.","stat targ,sd,-2 sound"), #sound-based, soundproof ability is immune,
+        ("Shelter",         0,100,10,2,0,16,0,"The user makes its skin as hard as an iron shield!\n-Raises the user's Def. 2 stages.","stat self,de,2,100 noMiss noTarg"),
+        ("Geomancy",     0,100,10,2,0,17,0,"The user absorbs energy from its surroundings and powers up on the next turn!\n-Raises the user's Sp.A Sp.D Spe. 2 stages each. Two-turn move.","stat self,sa:sd:sp,2:2:2 noMiss 2turn geomance noTarg"),
          #stat(us) conditions
         ("Will-O-Wisp",     0,85,15,2,0,1,0,"The user shoots a sinister flame to burn the target!","burn 100"),
         ("Stun Spore",      0,75,30,2,0,3,0,"The user releases spores that paralyze the target!","para 100 typeImmune grass"), #typeImmune for poke types with immunities
@@ -400,7 +405,7 @@ zzz2 = np.argwhere( zzzs )
 zzzset = [ i[0] for i in zzz2 ]
 ### xx ###
 
-#Natures?
+#Natures
 #no idea the best way to store this data
 #okay got it
 #atk = 0, def = 1, spatk = 2, spdef = 3, speed = 4
@@ -411,6 +416,33 @@ natures = [ ["Hardy","Lonely","Adamant","Naughty","Brave"], \
                        ["Timid","Hasty","Jolly","Naive","Serious"] ]
 natures = np.array(natures,dtype=object)
 #
+
+#Abilities
+abilities = [
+    #ability name, flavor text
+    ("Rough Skin",""),
+    #immunities
+    ("Levitate",""),
+    ("Bulletproof","The Pokémon is immune to ball and bomb moves."), #immunity to moves with "bullet" in the notes
+    ("Soundproof",""),
+    ("Sap Sipper",""),
+    ("Wind Rider",""),
+    ("Wind Power",""),
+    ("Volt Absorb",""),
+    ("Water Absorb",""),
+    ("Lightningrod",""),
+    #attackpower boosts
+    ("Guts",""),
+    ("Tough Claws","Boosts by 30% the power of moves that make contact with the target."),
+    ("Mega Launcher","Boosts by 50% the power of pulse moves."),
+    ("Overgrow","Boosts by 50% the power of Grass-type moves when HP is less than 1/3 maximum HP."),
+    ("Blaze","Boosts by 50% the power of Fire-type moves when HP is less than 1/3 maximum HP."),
+    ("Torrent","Boosts by 50% the power of Water-type moves when HP is less than 1/3 maximum HP."),
+    ("Swarm","Boosts by 50% the power of Bug-type moves when HP is less than 1/3 maximum HP."),
+    ("Technician","Boosts by 50% the power of moves with base power 60 or less."), #doesn't apply to confusion damage, considers variable base power, (Gust, acrobatics)
+    
+    ("The Last Ability","null")
+]
 if __name__ == "__main__":
     np.save("saved_movedex.npy",mov)
     #np.save("saved_natures.npy",natures)

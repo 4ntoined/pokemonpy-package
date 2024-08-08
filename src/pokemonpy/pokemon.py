@@ -46,9 +46,10 @@ from . import configurations
 class game:
     def __init__(self):
         #defining bedrock game variables
-        self.gameversion = '0.2.4'
+        self.gameversion = '0.2.5'
         self.devs_list = ('Adarius',)
         self.cut_the_line=1.
+        self.full_restore=1.
                 
         #setting variables 
         self.mute_set = False
@@ -119,7 +120,7 @@ class game:
         #FreePalestine
         self.game_width = base_pokemon.game_width
         self.oddw = self.game_width % 2 == 1
-        self.mainmenu = "\n[about]\n[cheats]\n[quit]\n"+genborder(cha='-',num=self.game_width)+\
+        self.mainmenu = "\n[about]\n[cheats]\n[moves]\n[quit]\n"+genborder(cha='-',num=self.game_width)+\
             "\n[P] Party\n[B] Battle!\n[4] Elite 4\n[N] Nursery" + \
             "\n[T] Training\n[X] Boxes\n[L] Load Game\n[C] Pokémon Center\n[S] Battle Setting"+ \
             "\n\nWhat to do: "
@@ -300,7 +301,6 @@ class game:
                         print(f"{self.opponentname}! Yes, of course!")
                         shortpause() #kills
                     else:
-                        #print("*like I'm hearing a ghost*: What was that?")
                         pass
                     # should be the end of the classic setting block
                 #zz:classicsettings
@@ -1493,20 +1493,27 @@ class game:
                     else: #?
                         pass
                 #after parties menu while loop
+            #aa:movecatalog
+            if userChoice == "moves":
+                for i in range(len(mov)):
+                    print(magic_text(f"Index: {i}", cha="@", spacing="  ", long=self.game_width))
+                    moveInfo(i)                                                              
+                    #print("\n\n",end="")
+                    pass
+                shortpause()
             ####what's the next spot?####
             if userChoice == "cheats":
                 yoo = input("\nYo, what's up?...")
                 if yoo == "eliter":
                     #print(cut_the_line)
                     self.cut_the_line *= -1.
-                    print('\nReceived.')
-                    micropause()
+                    cheat_receipt()
                 elif yoo == "champed":
                     hallfame_count = 2024
-                    print('\nReceived.')
-                    micropause()
-                elif yoo == '14':
-                    print('4 million?')
+                    cheat_receipt()
+                elif yoo == 'chansey':
+                    self.full_restore *= -1.
+                    #cheat_receipt()
                 pass
             #end of game, loops back to main screen
         return
@@ -1639,6 +1646,11 @@ class game:
     pass
 
 cutline_dict = dict([( 1., False ), ( -1., True )])
+
+def cheat_receipt():
+    print('\nReceived.')
+    micropause()
+    return
 
 if __name__ == "__main__":
     pass

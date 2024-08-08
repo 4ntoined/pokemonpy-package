@@ -76,7 +76,7 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
         self.maxhp=HP(self.level,self.hpb,self.hpiv,self.hpev)
         self.currenthp=self.maxhp
         self.currenthpp=100.
-        ##final stats, with evs, ivs, and one day natures==============##
+        ##final stats, with evs, ivs, and natures==============##
         self.attack=stats(self.level,self.atb,self.ativ,self.atev,self.nature_multipliers[0])
         self.defense=stats(self.level,self.deb,self.deiv,self.deev,self.nature_multipliers[1])
         self.spatk=stats(self.level,self.sab,self.saiv,self.saev,self.nature_multipliers[2])
@@ -85,7 +85,7 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
         ##=============================================================##
         self.name=named
         self.tipe=tipe
-        self.levitate = False
+        self.ability = ''
         #pokemon has 2 types
         if len(tipe)>1: self.dualType=True
         #pokemon is singly-typed
@@ -127,6 +127,7 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
         self.poisonCounter=0
         self.confusionCounter=0
         #
+        self.pumped=False #for critical hit tiers
         self.counter_damage = (0.0, "none") #damage points taken, "phys" or "spec"
         self.flinched=False #might not necessarily need this? idk
         self.resting=False #for moves where pokemon need to recharge
@@ -330,6 +331,7 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
         #reset bad poison counter
         if self.poisonCounter>0:
             self.poisonCounter=1
+        self.pumped=False
         self.resting=False
         self.flinched=False
         self.charged=False
@@ -963,6 +965,11 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                         self.aquaring=True
                         print(f"{self.name} is covered by a veil of water!")
                 ### end of a ring ###
+                ## focus energy ##
+                if 'focusenergy' in notas:
+                    self.getPumped()
+                    print(f"{self.name} is getting pumped!")
+                    micropause()
                 #what's next
                 return
             ##==========================    end of status moves    =======================================##
@@ -1189,6 +1196,9 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
     #flinching
     def flinch(self):
         self.flinched=True
+    # getting pumped # focus energy # critical hits
+    def getPumped(self):
+        self.pumped = True
     #recoil, gonna experiment with spacing here I guess whatever
     def recoil(self, damagedone, recoilAmount):
         self.currenthp -= damagedone * recoilAmount
@@ -3345,7 +3355,7 @@ class field:
 ##zz:fieldclass
 #aa:damagefunction #aa:functions
 def damage(attacker,defender,power,moveTipe,isSpecial,note):
-    global statStages, crit_tiers
+    global statStages, crit_tiers, weather_dict, terrain_dict, pumped_dict
     ####damage read-out strings####
     damages=[]
     ####set some variable straight
@@ -3433,18 +3443,24 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
     elif ('fusion-f' in note) and attacker.field.fusionb:
         power*=2.
         damages.append("The flames are strengthened by the lingering bolts!")
-    ####weather ball#### doubles power and changes type
+    ####weather ball#### doubles power and changes type in non-clear weather
     if ('weatherball' in note) and (attacker.field.weather!='clear'):
-        power*=2.
-        if attacker.field.weather=="sunny":
-            moveTipe=1
-        if attacker.field.weather=="rain":
-            moveTipe=2
-        if attacker.field.weather=="sandstorm":
-            moveTipe=12
-        if attacker.field.weather=="hail":
-            moveTipe=5
+        power *= 2.
+        moveTipe = weather_dict[attacker.field.weather]
+        #if attacker.field.weather=="sunny":
+        #    moveTipe=1
+        #if attacker.field.weather=="rain":
+        #    moveTipe=2
+        #if attacker.field.weather=="sandstorm":
+        #    moveTipe=12
+        #if attacker.field.weather=="hail":
+        #    moveTipe=5
         damages.append("Weather Ball changes type!")
+    #### terrain pulse #### doubles power and changes type on active terrain
+    if ('terrainpulse' in note) and (attacker.grounded) and (attacker.field.terrain!='none'):
+        power *= 2.
+        moveTipe = terrain_dict[attacker.field.terrain]
+        damages.append("Terrain Pulse changes type!")
     #solarbeam gets nerfed in inclement weather
     if ("solar" in note) and (attacker.field.weather=="rain" or attacker.field.weather=="sandstorm" or attacker.field.weather=="hail"):
         power*=0.5
@@ -3490,11 +3506,11 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
             pass
     ####critical hit chance####
     critical=1.
-    crit = 0
+    crit = pumped_dict[attacker.pumped] #0 if not pumped, 2 if pumped
     if 'frostbreath' in note:     critical = 1.5  #guaranteed crit
     else:
-        if "highCrit" in note:                  crit+=1         #better chances
-        elif "fetch_holding_leek" in note:      crit+=1         #better chances
+        if "highCrit" in note:                  crit+=1         #better chances for certain moves
+        elif "fetch_holding_leek" in note:      crit+=1         #better chances if you're 'fetch holding a leek 
         if crit > 3:                            crit=3          #catch overflow
         if rng.integers(1,crit_tiers[crit])==1: critical=1.5    #hitting a crit
     if critical == 1.5:         #it's a critical hit
@@ -3502,9 +3518,9 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
             attack/=statNerf    #undo it
         if statBoost>1:         #if change is productive to defender
             defense/=statBoost  #undo it
-        damages.append("It's a critical hit!")
         screennerf=1.0 #critical hits bypass screens
         burn=1.0 #critical hits bypass burn-attack-nerf
+        damages.append("It's a critical hit!")
     if screennerf < 1.0:    damages.append(f"Protected by {screen_tag[screen_i]}")
     ####random fluctuation 85%-100%
     rando=rng.integers(85,101)*0.01
@@ -4040,17 +4056,17 @@ def print_dex():
     return
 #moves have pwr, phys/spec, type, accu, descipt
 def moveInfo(moveCode):
-    global mov, typeStrings, move_dict, contact_textyes, contact_textnot
+    global mov, typeStrings, move_dict, game_width
+    contact_textyes = textwrap.fill("-The user makes contact with the target.", game_width)
+    contact_textnot = textwrap.fill("-The user does not make contact with the target.", game_width)
     move=mov[moveCode]
     descr_parts = move['desc'].splitlines()
     #print(f"------------ {move['name']} ------------")
-    #stats_dict = dict([('HP',0),('Atk',1),('Def',2),('SpA',3),('SpD',4),('Spe',5)])
     print('\n'+magic_text(txt=f"{move['name']}",spacing=' ',cha='-',long=game_width))
     print(f"Power: {move['pwr']} | Accuracy: {move['accu']}%")
     print(f"[{typeStrings[move['type']]}] | [{move_dict[move['special?']]}] | PP: {move['pp']}")
     print("-\n",end="")
     for i in descr_parts: print(textwrap.fill(i, game_width))
-    #textwrap.fill(move['desc'], game_width))
     if move['contact?']:    print(contact_textyes)
     else:                   print(contact_textnot)
     return
@@ -4154,10 +4170,11 @@ stageStrings=["fell severely","fell harshly","fell","[BLANK]","rose","rose sharp
 nature_stat_str = ["Atk","Def","SpA","SpD","Spe"]
 stats_dict = dict([('HP',0),('Atk',1),('Def',2),('SpA',3),('SpD',4),('Spe',5)]) #used for showdown save loading
 move_dict = dict([(2,'Status'),(1,'Special'),(0,'Physical')])                  #used for move info displaying
+weather_dict = dict([('clear',0),('sunny',1),('rain',2),('hail',5),('sandstorm',12)])  #used for turning weather into weatherball typing
+terrain_dict = dict([('none',0),('grassy',3),('electric',4),('psychic',10),('misty',17)]) #used for turning terrain into Terrain Pulse typing
+pumped_dict = dict([(False,0),(True,2)])
 Weathers=['clear','sunny','rain','sandstorm','hail']
 Terrains=['none','electric','grassy','misty','psychic']
-contact_textyes = textwrap.fill("-The user makes contact with the target.", game_width)
-contact_textnot = textwrap.fill("-The user does not make contact with the target.", game_width)
 
 struggle_i=struggle #move index of struggle
 futuresight_i = futuresigh
