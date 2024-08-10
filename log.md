@@ -1,35 +1,24 @@
 ## pokemonpy-package log
 
-### v0.3.0
-Date: 2024 August change the pokemon.py gameversion variable
-
-Working on:
-- Abilities
-- game versioning for save files
-- move unification (get spikes working on ceaseless edge)
-- snow
-
 ### v0.2.5
 Date: 2024 August XX
 
 Working on:
 - Some new moves.
 	- focusing on signature moves
-- Text-wrap for move descriptions
 - psychic terrain needs to block priority moves used against grounded mons
-- readme scripts
-- grounding/ungrounding
 
 * UPDATE: Big focus on moves.
+	* Lots of new moves with a focus on signature moves and status moves.
 	* Updated/standardized move descriptions.
 	* Some _slight_ new move mechanics.
-		* Terrain Pulse
-		* Crush Grip
-		* Chloroblast
-		* Focus Energy
+		* Terrain Pulse - changes type on terrain
+		* Crush Grip - does damage based on targets HP%
+		* Chloroblast - user loses 1/2 max HP in recoil
+		* Focus Energy - Pokémon can get pumped, increased chance of landing crit's 
+		* Revelation Dance - changes type based on user's primary type
 	* Textwrap in move descriptions.
-	* Lots of new moves with a focus on signature moves and status moves.
-	* [move] main menu option
+	* [moves] main menu option prints descriptions of all moves.
 * TECHNICAL UPDATE: Readme is updated with more involved sample scripts
 
 ### v0.2.4

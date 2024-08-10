@@ -927,6 +927,11 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                 if 'heals' in notas:
                     if 'recover' in notas:
                         healamount = self.maxhp/2.
+                    if 'shoreup' in notas:
+                        if self.field.weather == 'sandstorm':
+                            healamount = 2.*self.maxhp/3.
+                        else:
+                            healamount = self.maxhp/2.
                     if 'synthesis' in notas:
                         if (self.field.weather == 'rain') or (self.field.weather == 'sandstorm') or (self.field.weather == 'hail'):
                             healamount = self.maxhp/4.
@@ -3443,6 +3448,10 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
     elif ('fusion-f' in note) and attacker.field.fusionb:
         power*=2.
         damages.append("The flames are strengthened by the lingering bolts!")
+    #### revelation dance #### changes type to match user's primary type
+    if 'revelation' in note:
+        moveTipe = plaintiffTipe[0]
+        damages.append(f"Revelation Dance becomes a {typeStrings[moveTipe]}-type move!")
     ####weather ball#### doubles power and changes type in non-clear weather
     if ('weatherball' in note) and (attacker.field.weather!='clear'):
         power *= 2.
