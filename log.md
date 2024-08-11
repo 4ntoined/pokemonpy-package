@@ -7,6 +7,7 @@ Working on:
 - Some new moves.
 	- focusing on signature moves
 - psychic terrain needs to block priority moves used against grounded mons
+- scald and scorching sands need to thaw a frozen target like fire-type moves
 
 * UPDATE: Big focus on moves.
 	* Lots of new moves with a focus on signature moves and status moves.
@@ -17,6 +18,7 @@ Working on:
 		* Chloroblast - user loses 1/2 max HP in recoil
 		* Focus Energy - Pokémon can get pumped, increased chance of landing crit's 
 		* Revelation Dance - changes type based on user's primary type
+		* Collision Course/Electro Drift - damage boost for supereffective hits
 	* Textwrap in move descriptions.
 	* [moves] main menu option prints descriptions of all moves.
 * TECHNICAL UPDATE: Readme is updated with more involved sample scripts

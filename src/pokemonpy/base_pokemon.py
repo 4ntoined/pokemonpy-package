@@ -3541,8 +3541,6 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
     ####type effectiveness####
     tyype=checkTypeEffectiveness(moveTipe,defendantTipe)
     ## flying pokemon being targeted with ground move is grounded, should lose flying type
-    #print(moveTipe,defendantTipe,defender.grounded)
-    ## 
     if (moveTipe==8) and (9 in defendantTipe): #be wary of grounds attacking flyings
         if defender.grounded: #easy
             if defender.dualType:
@@ -3553,7 +3551,13 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
                 tyype = 1.0
         elif ('arrows' in note): #pokemon not grounded yet, but arrows hits flying regardless
             tyype = 1.0
-    #elif ('arrows' in note) and defender.:
+            pass
+        pass
+    #### collision course and electro drift damage boost
+    collided = 1.
+    if ('collision' in note) and (tyype >= 2.):
+        collided = 5461./4096.
+        damages.append("The supereffective hit is more powerful than normal!")
     #check if the burn nerf survives (non-crit and non-facade)
     if burn<1.0:
         damages.append("The burn reduces damage...")
@@ -3567,7 +3571,7 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
         damages = ["failed"]
     else:
         ####modifiers united####
-        damageModifier = weatherBonus * critical * rando * STAB * tyype * burn * screennerf * caught_bonus
+        damageModifier = weatherBonus * critical * rando * STAB * tyype * burn * screennerf * caught_bonus * collided
         ####damage calculation####
         ans= np.floor( ((((2.*level)/5. + 2.)*power*attack/defense)/50. + 2.)*damageModifier )
     return ans,tyype,damages

@@ -23,7 +23,7 @@ def getMoveInfo(moveIndex):
 def movers():
     return
 # missing: absorb moves, protect moves, minimize mechanics, multi-hit moves, Flying Press, Transform, Forest's Curse/Soak/Burn Up/etc.,
-#          trapping moves, binding moves,
+#          trapping moves, binding moves, nature's madness/ruination, endeavor, sucker punch,
 ## move name // power // accuracy // pp // phys/spec/status // contact? // type // priority // description // code-notes
 moremoves=[
         ("V-create",180,95,5,0,1,1,0,"The user ignites its forehead and hurls itself at the target!\n-Lowers user's Def. Sp.D and Spe. 1 stage each.","stat self,de:sd:sp,-1:-1:-1,100"),
@@ -103,7 +103,7 @@ moremoves=[
         ("Future Sight",        120,100,5,1,0,10,0,"The user looks into the future and predicts an attack!","futuresight"),
         ("Megahorn",            120,85,10,0,1,11,0,"The user rams into the target with its tough and impressive horn!","null"),
         ("Shadow Force",        120,100,5,0,1,13,0,"The user disappears into the dark and strikes the target on the next turn!\n-Two turn move.","shadowforce 2turn semi-invul"),
-        ("Dragon Fist",         120,100,5,0,1,14,0,"If the user doesn't do it, who will?\n-Lowers the user's Spe. 1 stage.","stat self,sp,-1,100"),
+        ("Dragon Fist",         120,100,5,0,1,14,0,"If the user doesn't do it, who will?\n-Raises the user's Spe. 1 stage.\n-Lowers the user's Def. 2 stages, Sp.D 1 stage.","stat self,de:sd:sp,-2:-1:1,100"),
 
         ("Fire Blast",      110,85,5,1,0,1,0,"The user attacks with a blast of all-consuming flames!\n-10% chance to burn.","burn 10"),
         ("Origin Pulse",    110,85,10,1,0,2,0,"The user attacks the target with countless beams of glowing blue light!\n-Pulse move","pulse"), #pulse = powered by mega-launcher
@@ -139,7 +139,10 @@ moremoves=[
         ("Crabhammer",          100,90,10,0,1,2,0,"The target is hammered with a large pincer!\nIncreased crit' ratio.","highCrit"),
         ("Fusion Bolt",         100,100,5,0,0,4,0,"The user throws down a giant lightning bolt!\nMore powerful if used after Fusion Flare.","fusion-b"),
         ("Wildbolt Storm",      100,80,10,1,0,4,0,"The user summons a thunderous tempest and savagely attacks the target with lightning and wind!\n20% chance to paralyze, doesn't miss in rain.","para 20 noMissRain"),
+        ("Electro Drift",       100,100,5,1,1,4,0,"The user races forward at ultrafast speeds and pierces its target with futuristic electricity!\n-Damage boosted by 33.33% if its a supereffective hit.","collision"), #collision for the 'raidon signature moves
         ("Mountain Gale",       100,85,10,0,0,5,0,"The user hurls giant chunks of ice at the target!\n-30% chance to make the target flinch.","flinch 30"),
+        ("Collision Course",    100,100,5,0,1,6,0,"The user transforms and crashes into the ground with a massive prehistoric explosion!\n-Damage boosted by 33.33% if its a supereffective hit.","collision"), #collision for the 'raidon signature moves
+        ("Malignant Chain",     100,100,5,1,0,7,0,"The user wraps the target in a corrosive chain and pours toxins into them!\n-50% chance to badly poison.","badPois 50"),
         ("Earthquake",          100,100,10,0,0,8,0,"The user causes a powerful earthquake!\nPower is halved if used on Grassy Terrain.","nerfGrassy"), #one day we'll generalize moves having their power nerfed under certain conditions....not today tho
         ("Sandsear Storm",      100,80,10,1,0,8,0,"The user wraps the target in fierce winds and searlingly hot sand!\n20% chance burn, doesn't miss in rain.","burn 20 noMissRain"),
         ("Aeroblast",           100,95,5,1,0,9,0,"The user shoots a vortex of air at the target!\nIncreased crit. ratio.","highCrit"),
@@ -147,9 +150,11 @@ moremoves=[
         ("Psystrike",           100,100,10,1,0,10,0,"The user materializes an odd psychic wave to attack!\nDamage is calculated with the user's Sp.A and the target's Def.","psystrike"), #will use psystrike tag for psyshock and secret sword
         ("Stone Edge",          100,80,5,0,0,12,0,"The user stabs the target from below with sharpened stones!\nIncreased crit' ratio.","highCrit"),
         ("Diamond Storm",       100,95,5,0,0,12,0,"The user whips up a storm of diamonds to damage the target!\n50% chance to raise the user's Def. 2 stages.","stat self,de,2,50"),
+        ("Moongeist Beam",      100,100,5,1,0,13,0,"The user attacks the target by emitting a sinister ray!\n-Ignores the target's ability.","moldbreaker"), #'moldbreaker' moves ignore abilities
         ("Core Enforcer",       100,100,10,1,0,14,0,"The user unleashes a super sick laser and draws a 'Z'!","null"), #otherwise would suppress abilities, but we have none
         ("Spacial Rend",        100,95,5,1,0,14,0,"The user tears the fabric of space around the target!\nIncreased crit' ratio.","highCrit"),
         ("Hyperspace Fury",     100,100,5,0,0,15,0,"The user unleashes a barrage of attacks using its many arms!\n-Bypasses accuracy checks\n-Lowers the user's Def. 1 stage.","breaksProtect noMiss stat self,de,-1,100"),
+        ("Sunsteel Strike",     100,100,5,0,1,16,0,"The user slams into the target with the force of a meteor!\n-Ignores the target's ability.","moldbreaker"), #'moldbreaker' moves ignore abilities
         ("Iron Tail",           100,75,15,0,1,16,0,"The user slams the target with a steel-hard tail!\n30% chance to lower target's Def. 1 stage.","stat targ,de,-1,30"),
         ("Springtide Storm",    100,80,10,1,0,9,0,"The user wraps the target in fierce winds brimming with love and hate!\n30% chance to lower the target's Atk. 1 stage.","stat targ,at,-1,30"),
 
@@ -262,6 +267,7 @@ moremoves=[
         ("Cut",             50,95,30,0,1,0,0,"The user cuts the target with a scythe or claw!","null"),
         ("Flame Charge",    50,100,20,0,1,1,0,"The user cloaks itself in flames and builds momentum to attack!\n-Raises the user's Spe. 1 stage.","stat self,sp,1,100"),
         ("Chilling Water",  50,100,20,1,0,2,0,"The user attacks the target with water so cold it saps the target's power!\n-Lowers target's Atk. 1 stage.","stat targ,at,-1,100"),
+        ("Poison Fang",     50,100,15,0,1,7,0,"The user bites the target with toxic fangs!\n-50% chance to badly poison.","badPois 50"),
         ("Metal Claw",      50,95,35,0,1,16,0,"The user rakes the target with steel claws!\n-10% chance to raise the user's Atk. 1 stage.","stat self,at,1,10"),
         
         ("Fake Out",    40,100,10,0,1,0,+3,"The user hits first and makes the target flinch!\n-Priority +3\n-Only works on the first turn after the user enters battle.","flinch 100 fakeout"), #need priority AND first-turn tracking
@@ -398,6 +404,7 @@ moremoves=[
         ("Nasty Plot",      0,100,20,2,0,15,0,"The user stimulates the brain by thinking bad thoughts!\n-Raises the user's Sp.A 2 stages.","stat self,sa,2 noMiss noTarg"),
         ("Metal Sound",     0,85,40,2,0,16,0,"The user creates horrible metal-scraping sounds to unnerve the target!\n-Lowers the target's Sp.D 2 stages.","stat targ,sd,-2 sound"), #sound-based, soundproof ability is immune,
         ("Shelter",         0,100,10,2,0,16,0,"The user makes its skin as hard as an iron shield!\n-Raises the user's Def. 2 stages.","stat self,de,2,100 noMiss noTarg"),
+        ("Shift Gear",      0,100,10,2,0,16,0,"The user powers up by rotating its gears!\n-Raises the user's Atk. 1 stage, Spe. 2 stages.","noMiss noTarg stat self,at:sp,1:2,100"),
         ("Geomancy",        0,100,10,2,0,17,0,"The user absorbs energy from its surroundings and powers up on the next turn!\n-Raises the user's Sp.A Sp.D Spe. 2 stages each. Two-turn move.","stat self,sa:sd:sp,2:2:2 noMiss 2turn geomance noTarg"),
          #stat(us) conditions
         ("Will-O-Wisp",     0,85,15,2,0,1,0,"The user shoots a sinister flame to burn the target!","burn 100"),
