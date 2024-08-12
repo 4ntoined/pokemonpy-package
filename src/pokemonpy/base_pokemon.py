@@ -782,6 +782,8 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
             hitCheck=True
         elif ('noMissRain' in notas) and (self.field.weather=='rain'):
             hitCheck=True
+        elif ('noMissPoisons' in notas) and (7 in self.tipe):
+            hitCheck = True
         else:
             #check evasion and accuracy stats
             effAccu=self.acstage-opponent.evstage+6 #get difference in evasion/accuracy stats, offset by proper center, index 6
@@ -829,62 +831,62 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                 ## weathers ##
                 if "sun" in notas:
                     if self.field.weather=='sunny':
-                        print("The move fails! It's already sunny!")
+                        print("\nThe move fails! It's already sunny!")
                     else:
                         self.field.weather='sunny'
                         self.field.weatherCounter=5
-                        print("The sunlight turns harsh!")
+                        print("\nThe sunlight turns harsh!")
                 if "rain" in notas:
                     if self.field.weather=='rain':
-                        print("The move fails! It's already raining!")
+                        print("\nThe move fails! It's already raining!")
                     else:
                         self.field.weather='rain'
                         self.field.weatherCounter=5
-                        print("It starts raining!")
+                        print("\nIt starts raining!")
                 if 'sand' in notas:
                     if self.field.weather=='sandstorm':
-                        print("The move fails! There's already a sandstorm!")
+                        print("\nThe move fails! There's already a sandstorm!")
                     else:
                         self.field.weather='sandstorm'
                         self.field.weatherCounter=5
-                        print("A sandstorm kicks up!")                
+                        print("\nA sandstorm kicks up!")                
                 if 'hail' in notas:
                     if self.field.weather=='hail':
-                        print("The move fails! It's already hailing")
+                        print("\nThe move fails! It's already hailing")
                     else:
                         self.field.weather='hail'
                         self.field.weatherCounter=5
-                        print("It starts hailing!")
+                        print("\nIt starts hailing!")
                 ### end of the weathers ###
                 ## terrains ##
                 if "electric" in notas:
                     if self.field.terrain=="electric":
-                        print("The move fails! The battlefield is already electrified!")
+                        print("\nThe move fails! The battlefield is already electrified!")
                     else:
                         self.field.terrain="electric"
                         self.field.terrainCounter=5
-                        print("Electricity surges throughout the battlefield!")
+                        print("\nElectricity surges throughout the battlefield!")
                 if "grassy" in notas:
                     if self.field.terrain=="grassy":
-                        print("The move fails! The battlefield is already grassy!")
+                        print("\nThe move fails! The battlefield is already grassy!")
                     else:
                         self.field.terrain="grassy"
                         self.field.terrainCounter=5
-                        print("Grass grows all over the place!")
+                        print("\nGrass grows all over the place!")
                 if "misty" in notas:
                     if self.field.terrain=="misty":
-                        print("The move fails! The battlefield is already covered in mist!")
+                        print("\nThe move fails! The battlefield is already covered in mist!")
                     else:
                         self.field.terrain="misty"
                         self.field.terrainCounter=5
-                        print("A mist descends on the battlefield!")
+                        print("\nA mist descends on the battlefield!")
                 if "psychic" in notas:
                     if self.field.terrain=="psychic":
-                        print("The move fails! The battlefield is already weird!")
+                        print("\nThe move fails! The battlefield is already weird!")
                     else:
                         self.field.terrain="psychic"
                         self.field.terrainCounter=5
-                        print("The battlefield gets weird!")
+                        print("\nThe battlefield gets weird!")
                 ## statuses bro ##
                 statuses=[]
                 if "para" in notas: #yeah these if statements are literally all the same besides the strings, i can for loop this
@@ -1005,18 +1007,18 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                         return "failed"
                     else:
                         self.field.futuresB = 3
-                        print(f"{self.name} foresaw an attack!")
+                        print(f"\n{self.name} foresaw an attack!")
                         shortpause()
                         return
             # priority moves are PROHIBITED against grounded mons on psychic terrain
             if (self.field.terrain == 'psychic') and (moveI['priority'] >= 1) and opponent.grounded:
-                print(f"Psychic Terrain protects {opponent.name} from the priority move!")
+                print(f"\nPsychic Terrain protects {opponent.name} from the priority move!")
                 shortpause()
                 return
             ans,eff,comment=damage(self,opponent,moveI['pwr'],moveI['type'],moveI['special?'],notas)
             if len(comment)>0: 
                 if comment[0] == "failed": #bad mirror coat or counter
-                    print("The move fails!")
+                    print("\nThe move fails!")
                     shortpause()
                     return
             opponent.hit(self,ans,eff,notas,moveIndex,comment)
@@ -1118,6 +1120,10 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                 ### setting counter/mirror coat damage data info
                 if mov[move_index]['special?'] == 1:    self.counter_damage = (damagepoints, "spec")
                 else:                                   self.counter_damage = (damagepoints, "phys")
+                #thaw for hot moves
+                if self.frozen and (moveTipe==1 or "scald" in notes):
+                    self.frozen=False
+                    print(f"The heat thaws {self.name} out!")
                 #status conditions
                 #statuses bro
                 statuses=[]  #hey, hear me out, what if we made a numpy array out of these strings, "para" "burn" etc., and used numpy tricks to do all
@@ -1151,13 +1157,7 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                     if rng.random()<=flinChance/100.:
                         self.flinch()
                     #end of flinching
-                #thaw for fire moves
-                if self.frozen and moveTipe==1:
-                    self.frozen=False
-                    print(f"The Fire-type move thaws {self.name} out!")
-                if self.frozen and "scald" in notes:
-                    self.frozen=False
-                    print(f"The heat thaws {self.name} out!")
+                    pass
                 #anything else to do after not fainting?
             #check for recoil, apply recoil if present
             if "recoil" in notes:

@@ -377,13 +377,13 @@ moremoves=[
         ("Milk Drink",      0,100,5,2,0,0,0,"The user drinks some milk to restore half its max HP!","heals recover noMiss noTarg "),
         ("Soft-Boiled",     0,100,5,2,0,0,0,"The user eats a tasty egg and restores half its max HP!","heals recover noMiss noTarg "),
         ("Slack-Off",       0,100,5,2,0,0,0,"The user takes a well-deserved break and restores half its max HP!","heals recover noMiss noTarg "),
-        ("Morning Sun",     0,100,5,2,0,0,0,"The user basks in the morning sun to restore HP!\n-Restores 2/3 maxHP in harsh sunlight\n-1/2 maxHP in clear weather\n1/4 maxHP in rain, sandstorm, hail.","heals synthesis noMiss noTarg"),
+        ("Morning Sun",     0,100,5,2,0,0,0,"The user basks in the morning sun to restore HP!\n-Restores 2/3 maxHP in harsh sunlight\n-1/2 maxHP in clear weather\n-1/4 maxHP in rain, sandstorm, hail.","heals synthesis noMiss noTarg"),
         ("Aqua Ring",       0,100,20,2,0,2,0,"The user envelops itself with a veil of healing waters!","aquaring noMiss noTarg"),
         ("Take Heart",      0,100,10,2,0,2,0,"The user focuses on the positives to lift its spirits!\n-Raises the user's Sp.A Sp.D 1 stage each\n-Heals status conditions.","stat self,sa:sd,1:1,100 refresh noMiss noTarg"),
-        ("Synthesis",       0,100,5,2,0,3,0,"The user takes in sunlight to restore HP!\n-Restores 2/3 maxHP in harsh sunlight\n-1/2 maxHP in clear weather\n1/4 maxHP in rain, sandstorm, hail.","heals synthesis noMiss noTarg"),
+        ("Synthesis",       0,100,5,2,0,3,0,"The user takes in sunlight to restore HP!\n-Restores 2/3 maxHP in harsh sunlight\n-1/2 maxHP in clear weather\n-1/4 maxHP in rain, sandstorm, hail.","heals synthesis noMiss noTarg"),
         ("Shore Up",        0,100,5,2,0,8,0,"The user draws in sand to restore itself!\n-Restores 2/3 maxHP in a sandstorm\n-1/2 maxHP in all other conditions.","heals shoreup"),
         ("Lunar Blessing",  0,100,5,2,0,10,0,"The user receives a blessing from the crescent moon!\n-Restores 25% maxHP\n-Heals status conditions.","heals blessing refresh noMiss noTarg"),
-        ("Moonlight",       0,100,5,2,0,17,0,"The user basks in the moonlight to restore HP!\n-Restores 2/3 maxHP in harsh sunlight\n-1/2 maxHP in clear weather\n1/4 maxHP in rain, sandstorm, hail.","heals synthesis noMiss noTarg"),
+        ("Moonlight",       0,100,5,2,0,17,0,"The user basks in the moonlight to restore HP!\n-Restores 2/3 maxHP in harsh sunlight\n-1/2 maxHP in clear weather\n-1/4 maxHP in rain, sandstorm, hail.","heals synthesis noMiss noTarg"),
 
          #stat(istic) changes
         ("Focus Energy",    0,100,30,2,0,0,0,"The user takes a deep breath and heightens its focus!\n-Increases chances of landing crit' hits.","focusenergy noMiss noTarg"),
@@ -514,7 +514,7 @@ abilities = [
     #attackpower boosts
     ("Guts",""),
     ("Sharpness",""),
-    ("Strong Jaw","")
+    ("Strong Jaw",""),
     ("Tough Claws","Boosts by 30% the power of moves that make contact with the target."),
     ("Mega Launcher","Boosts by 50% the power of pulse moves."),
     ("Overgrow","Boosts by 50% the power of Grass-type moves when HP is less than 1/3 maximum HP."),
