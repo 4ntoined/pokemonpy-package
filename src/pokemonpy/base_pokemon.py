@@ -1008,6 +1008,11 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                         print(f"{self.name} foresaw an attack!")
                         shortpause()
                         return
+            # priority moves are PROHIBITED against grounded mons on psychic terrain
+            if (self.field.terrain == 'psychic') and (moveI['priority'] >= 1) and opponent.grounded:
+                print(f"Psychic Terrain protects {opponent.name} from the priority move!")
+                shortpause()
+                return
             ans,eff,comment=damage(self,opponent,moveI['pwr'],moveI['type'],moveI['special?'],notas)
             if len(comment)>0: 
                 if comment[0] == "failed": #bad mirror coat or counter
@@ -1150,6 +1155,9 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                 if self.frozen and moveTipe==1:
                     self.frozen=False
                     print(f"The Fire-type move thaws {self.name} out!")
+                if self.frozen and "scald" in notes:
+                    self.frozen=False
+                    print(f"The heat thaws {self.name} out!")
                 #anything else to do after not fainting?
             #check for recoil, apply recoil if present
             if "recoil" in notes:
@@ -3464,12 +3472,12 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
         #    moveTipe=12
         #if attacker.field.weather=="hail":
         #    moveTipe=5
-        damages.append("Weather Ball changes type!")
+        damages.append(f"Weather Ball becomes a {typeStrings[moveTipe]}-type move!")
     #### terrain pulse #### doubles power and changes type on active terrain
     if ('terrainpulse' in note) and (attacker.grounded) and (attacker.field.terrain!='none'):
         power *= 2.
         moveTipe = terrain_dict[attacker.field.terrain]
-        damages.append("Terrain Pulse changes type!")
+        damages.append(f"Terrain Pulse becomes a {typeStrings[moveTipe]}-type move!!")
     #solarbeam gets nerfed in inclement weather
     if ("solar" in note) and (attacker.field.weather=="rain" or attacker.field.weather=="sandstorm" or attacker.field.weather=="hail"):
         power*=0.5

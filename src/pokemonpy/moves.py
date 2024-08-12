@@ -108,7 +108,7 @@ moremoves=[
         ("Fire Blast",      110,85,5,1,0,1,0,"The user attacks with a blast of all-consuming flames!\n-10% chance to burn.","burn 10"),
         ("Origin Pulse",    110,85,10,1,0,2,0,"The user attacks the target with countless beams of glowing blue light!\n-Pulse move","pulse"), #pulse = powered by mega-launcher
         ("Hydro Pump",      110,80,5,1,0,2,0,"The user blasts the target with a huge volume of water under great pressure!","null"),
-        ("Steam Eruption",  110,95,5,1,0,2,0,"The user immerses the target in a superheated steam!\n-30% chance to burn\n-thaws a frozen user or target.","burn 30 thaws thawsTarg"),
+        ("Steam Eruption",  110,95,5,1,0,2,0,"The user immerses the target in a superheated steam!\n-30% chance to burn\n-thaws a frozen user or target.","burn 30 thaws thawsTarg scald"), #scald for non-fire hot moves (they thaw a frozen target)
         ("Thunder",         110,70,10,1,0,4,0,"The user drops a wicked lightningbolt on the target to inflict damage!\n-30% chance to paralyze.","para 30 noMissRain thunder"),
         ("Blizzard",        110,70,5,1,0,5,0,"The user summons a howling blizzard to strike the target!\n-10% chance to freeze\n-Bypasses accuracy check in hail.","frze 10 blizzard"), #doesn't miss in hail, need to program
         ("Hurricane",       110,70,10,1,0,9,0,"The user wraps its target in a fierce wind from a furious storm!\n30% chance to confuse, doesn't miss in rain.","conf 30 noMissRain thunder"),
@@ -146,7 +146,7 @@ moremoves=[
         ("Earthquake",          100,100,10,0,0,8,0,"The user causes a powerful earthquake!\nPower is halved if used on Grassy Terrain.","nerfGrassy"), #one day we'll generalize moves having their power nerfed under certain conditions....not today tho
         ("Sandsear Storm",      100,80,10,1,0,8,0,"The user wraps the target in fierce winds and searlingly hot sand!\n20% chance burn, doesn't miss in rain.","burn 20 noMissRain"),
         ("Aeroblast",           100,95,5,1,0,9,0,"The user shoots a vortex of air at the target!\nIncreased crit. ratio.","highCrit"),
-        ("Bleakwind Storm",     100,80,10,1,0,9,0,"The user attacks with savagely cold winds that cause both body and spirit to tremble!\n30% chance to lower the target's Spe. 1 stage, doesn't miss in rain.","stat targ,sp,-1,30 noMissRain"),
+        ("Bleakwind Storm",     100,80,10,1,0,9,0,"The user attacks with savagely cold winds that cause both body and spirit to tremble!\n-30% chance to lower the target's Spe. 1 stage\n-Doesn't miss in rain.","stat targ,sp,-1,30 noMissRain"),
         ("Psystrike",           100,100,10,1,0,10,0,"The user materializes an odd psychic wave to attack!\nDamage is calculated with the user's Sp.A and the target's Def.","psystrike"), #will use psystrike tag for psyshock and secret sword
         ("Stone Edge",          100,80,5,0,0,12,0,"The user stabs the target from below with sharpened stones!\nIncreased crit' ratio.","highCrit"),
         ("Diamond Storm",       100,95,5,0,0,12,0,"The user whips up a storm of diamonds to damage the target!\n50% chance to raise the user's Def. 2 stages.","stat self,de,2,50"),
@@ -199,7 +199,7 @@ moremoves=[
         ("Dive",            80,100,10,0,1,2,0,"The user dives on the first turn, then resurfaces to attack on the next turn!\n-Double damage from Surf, Whirlpool on the first turn.","2turn diving"),
         ("Waterfall",       80,100,15,0,1,2,0,"The user charges at the target with a wall of water!\n20% chance to make the target flinch.","flinch 20"),
         ("Aqua Step",       80,100,10,0,1,2,0,"The user attacks the target with light and fluid dance steps!\nRaises the user's Spe. 1 stage.","stat self,sp,+1,100"),
-        ("Scald",           80,100,15,1,0,2,0,"The user shoots boiling-hot water at the target!\n30% chance to burn, will thaw a frozen user or target.","burn 30 thaws thawsTarg"),
+        ("Scald",           80,100,15,1,0,2,0,"The user shoots boiling-hot water at the target!\n30% chance to burn, will thaw a frozen user or target.","burn 30 thaws thawsTarg scald"),
         ("Seed Bomb",       80,100,15,0,0,3,0,"The user attacks by pummeling the target with hard-shelled seeds!\nBomb/ball move.","bullet"),
         ("Zing Zap",        80,100,10,0,1,4,0,"The user crashes into the target, delivering a powerful electric shock!\n-30% chance to make the target flinch.","flinch 30"),
         ("Aura Sphere",     80,100,20,1,0,6,0,"The user looses a blast of aura from deep within its body!\nBypasses accuracy checks, bomb/ball move, pulse move.","noMiss bullet pulse"),
@@ -230,7 +230,7 @@ moremoves=[
         ("Headbutt",        70,100,15,0,1,0,0,"The user sticks out its head and attacks!\n-30% chance to make the target flinch.","flinch 30"),
         ("Aqua Cutter",     70,100,20,0,0,2,0,"The user expels pressurized water to cut the target like a blade!\n-Increased crit' ratio.","highCrit"),
         ("Trop Kick",       70,100,15,0,1,3,0,"The user lands an intense kick of tropical origins on the target!\n-Lowers the target's Atk. 1 stage.","stat targ,at,-1,100"),
-        ("Scorching Sands", 70,100,10,1,0,8,0,"The user buries the target in searing-hot sand!\n-30% chance to burn the target\n-Thaws the user if frozen.","burn 30 thaws thawsTarg"), #thawsTarg is brand new, i believe fire type moves thaw the target by default and this does that because its a hot/burning move but it is not Fire-type so I'll have to work that in gameside
+        ("Scorching Sands", 70,100,10,1,0,8,0,"The user buries the target in searing-hot sand!\n-30% chance to burn the target\n-Thaws the user if frozen.","burn 30 thaws thawsTarg scald"), #thawsTarg is brand new, i believe fire type moves thaw the target by default and this does that because its a hot/burning move but it is not Fire-type so I'll have to work that in gameside
         ("Shadow Claw",     70,100,15,0,1,13,0,"The user materializes a sharp claw from the shadows and slashes at the target!\n-Increased crit' ratio.","highCrit"),
         ("Night Slash",     70,100,15,0,1,15,0,"The user sneaks in and slashes the target the instant it gets the opportunity!\n-Increased crit' ratio.","highCrit"),
         
@@ -243,7 +243,7 @@ moremoves=[
         ("Ice Fang",        65,95,15,0,1,5,0,"The user bites with frozen fangs!\n-10% chance to make the target flinch\n-10% chance to freeze.","frze 10 flinch 10"),
         ("Glaciate",        65,95,10,1,0,5,0,"The user blows freezing cold air at the target!\n-Lowers the target's Spe. 1 stage.","stat targ,sp,-1,100"),
         ("Hex",             65,100,10,1,0,13,0,"The user attacks relentlessly, doing double damage to a target with status conditions!","hex"),
-        ("Ceaseless Edge",  65,90,15,0,1,15,0,"The user slashes its shell blade at the target!\n-Puts up Spikes on the target's side.","spikes"), #this might not work... i will have to see if we check for spikes tags in damaging moves
+        #("Ceaseless Edge",  65,90,15,0,1,15,0,"The user slashes its shell blade at the target!\n-Puts up Spikes on the target's side.","spikes"), #this might not work... i will have to see if we check for spikes tags in damaging moves
         
         ("Swift",           60,100,20,1,0,0,0,"The user shoots star-shaped rays at the target!\n-Bypasses accuracy checks.","noMiss"),
         ("Flame Wheel",     60,100,15,0,1,1,0,"The user covers itself in fire and rolls into the target!\n-10% chance to burn\n-thaws the user if frozen.","burn 10 thaws"),
@@ -419,6 +419,33 @@ moremoves=[
         #
         ("Struggle", 50,100,1,0,1,18,0,"The user is otherwise out of moves!","noMiss recoil 1/4maxhp")
         ]
+# notes about the notes
+# stat - raise or lower stats like so:// stat self,at,1,100 // <- raise user's atk. stat 1 stage 100% of the time // stat targ,de:sd:sp,1:-1:1,50 // <- raise target's def. and speed 1 stage each and lower sp.def 1 stage 50% of the time. attack = at, defense = de, special attack = sa, special defense = sd, speed = sp
+# burn, para, sleep, frze, pois, badPois, conf - inflict status conditions
+# flinch - chance to flinch
+# recoil - move damages the user, sometimes based on damage done, sometimes as a proportion of max HP
+# hex - move does double damage if the target has a status condition
+# solar - 2-turn move that becomes 1 move in sunlight, has power halved in hail, sandstorm, and rain
+# dance - moves the activate the dance ability
+# moldbreaker - move ignores ability
+# collision - move that does 4/3 damage if supereffective
+# bullet - move is blocked by bulletproof
+# highCrit - move has an increased critical hit ratio
+# mustRest - the user will be forced to rest on the next turn
+# 2turn - the user will attack on the next turn
+# arrows - ground type move that can hit and will ground flying types
+# gust - catches Fly-ing pokemon and does double damage
+# thunder - catching Fly-ing pokemon and less accurate in sun
+# thaws - thaws the user out of the frozen condition
+# scald - a non-fire-type "hot" move, thaws the user and target
+# pulse - move is boosted by mega launcher
+# noMiss - bypasses accuracy check to always hit/unless the target is semi-invulnerable
+# noMissRain - bypasses accuracy check in rain
+# noTarg - does not target the opponent / does target the self
+# revelation - move changes type to match the user's primary type
+
+
+
 #constructing dtypes and names to accompany data
 labels = np.dtype( [('name','U25'),('pwr','i4'),('accu','i4'),('pp','i4'),('special?','i4'),('contact?','i4'),('type','i4'),('priority','i4'),('desc','U400'),('notes','U140')] )
 mov = np.array(moremoves, dtype=labels)
@@ -498,6 +525,7 @@ abilities = [
     
     ("The Last Ability","null")
 ]
+
 if __name__ == "__main__":
     np.save("saved_movedex.npy",mov)
     #np.save("saved_natures.npy",natures)
