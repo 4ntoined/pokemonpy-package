@@ -23,7 +23,7 @@ def getMoveInfo(moveIndex):
 def movers():
     return
 # missing: absorb moves, protect moves, minimize mechanics, multi-hit moves, Flying Press, Transform, Forest's Curse/Soak/Burn Up/etc.,
-#          trapping moves, binding moves, nature's madness/ruination, endeavor, sucker punch,
+#          trapping moves, binding moves, endeavor, sucker punch, charge, glaive rush, defog,
 ## move name // power // accuracy // pp // phys/spec/status // contact? // type // priority // description // code-notes
 moremoves=[
         ("V-create",180,95,5,0,1,1,0,"The user ignites its forehead and hurls itself at the target!\n-Lowers user's Def. Sp.D and Spe. 1 stage each.","stat self,de:sd:sp,-1:-1:-1,100"),
@@ -52,8 +52,10 @@ moremoves=[
 
         ("Skull Bash",      130,100,10,0,1,0,0,"The user tucks its head in and charges at the target!\n-Two-turn move.\n-Raises the user's Def. 1 stage on the first turn.","2turn skullbash"), #needs to raise defense 1 stage on the prep
         ("Overheat",        130,90,5,1,0,1,0,"The user attacks with its full power!\n-Lowers the user's Sp.A 2 stages.","stat self,sa,-2,100"),
-        ("Blue Flare",      130,85,5,1,0,1,0,"The user engulfs the target in an beautiful, intense blue flame!\n-20% chance to leave a burn.","burn 20"),
+        ("Blue Flare",      130,85,5,1,0,1,0,"The user engulfs the target in an beautiful, intense blue flame!\n-20% chance to burn.","burn 20"),
         ("Leaf Storm",      130,90,5,1,0,3,0,"The user whips up a storm of leaves around the target!\n-Lowers the user's Sp.A 2 stages.",'stat self,sa,-2,100'),
+        ("Bolt Strike",     130,85,5,0,1,4,0,"The user surrounds itself with electricity and charges the target!\n-20% chance to paralyze.","para 20"),
+        ("Electro Shot",    130,100,10,1,0,4,0,"The user gathers electricity on the first turn and fires a high-voltage shot on the next!\n-Two-turn move.\n-Raises the user's Sp.A 1 stage on the first turn.\n-Skips the charging turn in rain.","electroshot 2turn"),
         ("Draco Meteor",    130,90,5,1,0,14,0,"The user calls upon its draconic powers and unleashes a storm of meteors!\n-Lowers the user's Sp.A 2 stages.","stat self,sa,-2,100"),
 
         ("Solar Blade", 125,100,10,0,1,3,0,"The user focuses sunlight into a blade to attack!\n-Two-turn move\n-Skips the charging turn in harsh sunlight.\n-Power is halved in rain, sandstorm, hail.","2turn solar"),
@@ -104,6 +106,7 @@ moremoves=[
         ("Megahorn",            120,85,10,0,1,11,0,"The user rams into the target with its tough and impressive horn!","null"),
         ("Shadow Force",        120,100,5,0,1,13,0,"The user disappears into the dark and strikes the target on the next turn!\n-Two turn move.","shadowforce 2turn semi-invul"),
         ("Dragon Fist",         120,100,5,0,1,14,0,"If the user doesn't do it, who will?\n-Raises the user's Spe. 1 stage.\n-Lowers the user's Def. 2 stages, Sp.D 1 stage.","stat self,de:sd:sp,-2:-1:1,100"),
+        ("Make It Rain",        120,100,5,1,0,16,0,"The user throws a mass of gold coins at the target!\n-Lowers the user's Sp.A 1 stage.","stat self,sa,-1,100"),
 
         ("Fire Blast",      110,85,5,1,0,1,0,"The user attacks with a blast of all-consuming flames!\n-10% chance to burn.","burn 10"),
         ("Origin Pulse",    110,85,10,1,0,2,0,"The user attacks the target with countless beams of glowing blue light!\n-Pulse move","pulse"), #pulse = powered by mega-launcher
@@ -134,6 +137,10 @@ moremoves=[
         ("Judgement [Dark]",        100,100,10,1,0,15,0,"The user pelts the battlefield with bolts of light from the sky!\nHolding the Dread Plate.","null"),
         ("Judgement [Steel]",       100,100,10,1,0,16,0,"The user pelts the battlefield with bolts of light from the sky!\nHolding the Iron Plate.","null"),
         ("Judgement [Fairy]",       100,100,10,1,0,17,0,"The user pelts the battlefield with bolts of light from the sky!\nHolding the Pixie Plate.","null"),
+        ("Ivy Cudgel [Fire]",       100,100,10,0,0,1,0,"The user strikes the target with a thorny ivy-wrapped cudgel!\n-Increased crit' ratio.\n-Holding the Hearthflame Mask.","highCrit"),
+        ("Ivy Cudgel [Water]",      100,100,10,0,0,2,0,"The user strikes the target with a thorny ivy-wrapped cudgel!\n-Increased crit' ratio.\n-Holding the Wellspring Mask.","highCrit"),
+        ("Ivy Cudgel [Grass]",      100,100,10,0,0,3,0,"The user strikes the target with a thorny ivy-wrapped cudgel!\n-Increased crit' ratio.\n-Holding the Teal Mask.","highCrit"),
+        ("Ivy Cudgel [Rock]",       100,100,10,0,0,12,0,"The user strikes the target with a thorny ivy-wrapped cudgel!\n-Increased crit' ratio.\n-Holding the Cornerstone Mask.","highCrit"),
         ("Fusion Flare",        100,100,5,1,0,1,0,"The user throws down a giant flame!\nMore powerful if used after Fusion Bolt, thaws the user if frozen.","fusion-f thaws"),
         ("Sacred Fire",         100,95,5,1,0,1,0,"The target is razed with a mystical fire of great intensity!\n50% chance to burn the target, thaws the user if frozen.","thaws burn 50"),
         ("Crabhammer",          100,90,10,0,1,2,0,"The target is hammered with a large pincer!\nIncreased crit' ratio.","highCrit"),
@@ -178,7 +185,7 @@ moremoves=[
         ("Sludge Bomb",     90,100,10,1,0,7,0,"The user hurls unsanitary sludge at the target!\n30% chance to poison, ball/bomb move.","pois 30 bullet"),
         ("Earth Power",     90,100,10,1,0,8,0,"The user makes the ground under the target erupt with power!\n10% chance to lower target's Sp.D 1 stage.","stat targ,sd,-1,10"),
         ("Thousand Arrows", 90,100,10,0,0,8,0,"The user creates arrows from the very ground and hurls them at the target!\nHits ungrounded targets and grounds them.","arrows"),
-        ("Fly",             90,95,15,0,1,9,0,"The user flies up into the sky, then attacks on the next turn!\nVulnerable to Gust, Smack Down, Sky Uppercut, Thunder, Twister, Hurricane on the first turn.","2turn flying"),
+        ("Fly",             90,95,15,0,1,9,0,"The user flies up into the sky, then attacks on the next turn!\nVulnerable to Smack Down, Sky Uppercut, Thunder, Hurricane and double damage from Gust, Twister on the first turn.","2turn flying"),
         ("Psychic",         90,100,10,1,0,10,0,"The user hits the target with a strong telekinetic force!\n10% chance to lower target's Sp.D 1 stage.","stat targ,sd,-1,10"),
         ("Mystical Power",  90,70,10,1,0,10,0,"The user attacks by emitting a mysterious power!\Raises the user's Sp.A 1 stage.","stat self,sa,+1,100"),
         ("Attack Order",    90,100,15,0,0,11,0,"The user attacks with a powerful flame! Increased crit' ratio.","highCrit"),
@@ -189,13 +196,14 @@ moremoves=[
         ("Blaze Kick",85,90,10,0,1,1,0,"The user attacks with a fiery kick!\n10% chance to burn, increased crit' ratio.","highCrit burn 10"),
         ("Kamehameha",85,100,10,1,0,2,0,"The user concentrates their ki and releases it in a beam!\n50% chance to lower the target's Def. 2 stages.","stat targ,de,-2,50"),
         ("Secret Sword",85,100,10,1,0,6,0,"The user uses odd power to cut with its long horn!\nDamage is calculated with the user's Sp.A and the target's Def.","psystrike"),
-        ("Bounce",85,85,5,0,1,9,0,"The user bounces up high on the first turn, then drops onto the target on the next turn!\nVulnerable to Gust, Smack Down, Sky Uppercut, Thunder, Twister, Hurricane on the first turn.","2turn flying para 30"),
+        ("Bounce",85,85,5,0,1,9,0,"The user bounces up high on the first turn, then drops onto the target on the next turn!\nVulnerable to Smack Down, Sky Uppercut, Thunder, Hurricane and double damage from Gust, Twister on the first turn.","2turn flying para 30"),
         ("Dragon Pulse",85,100,10,1,0,14,0,"The user summons a beastly beam from its mouth!\nPulse move.","pulse"),
         
         ("Extreme Speed",   80,100,5,0,1,0,+2,"The user charges at the target with blinding speed!\n-Priority +2.","null"),
         ("Lava Plume",      80,100,15,1,0,1,0,"The user torches its surroundings with an inferno of flames!\n-30% chance to burn.","burn 30"),
         ("Fiery Dance",     80,100,10,1,0,1,0,"The user cloaks itself in flames and attacks the target by dancing and flapping its wings!\n-50% chance to raise the user's Sp.A 1 stage.","stat self,sa,1,50"),
         ("Fire Lash",       80,100,15,0,1,1,0,"The user strikes with a burning lash!\n-Lowers the target's Def. 1 stage.","stat targ,de,-1,100"),
+        ("Hydro Steam",     80,100,15,1,0,2,0,"The user blasts the target with prehistoric, boiling-hot water!\n-50% boost in harsh sunlight, while also ignoring usual Water-type nerf.","hydrosteam"),
         ("Dive",            80,100,10,0,1,2,0,"The user dives on the first turn, then resurfaces to attack on the next turn!\n-Double damage from Surf, Whirlpool on the first turn.","2turn diving"),
         ("Waterfall",       80,100,15,0,1,2,0,"The user charges at the target with a wall of water!\n20% chance to make the target flinch.","flinch 20"),
         ("Aqua Step",       80,100,10,0,1,2,0,"The user attacks the target with light and fluid dance steps!\nRaises the user's Spe. 1 stage.","stat self,sp,+1,100"),
@@ -207,10 +215,12 @@ moremoves=[
         ("Zen Headbutt",    80,90,15,0,1,10,0,"The user focuses its willpower into its head and attacks the target!\n20% chance to make the target flinch.","flinch 20"),
         ("Esper Wing",      80,100,10,1,0,10,0,"The user slashes the target with aura-enriched wings!\nRaises the user's Spe. 1 stage, increased crit' ratio.","highCrit stat self,sp,1,100"),
         ("Psyshock",        80,100,10,1,0,10,0,"The user materializes an odd psychic wave to attack!\nDamage is calculated with the user's Sp.A and the target's Def.","psystrike"),
+        ("Psyblade",        80,100,15,0,1,10,0,"The user rends the target with a futuristic, ethereal blade!\n-50% boost on Electric Terrain.","psyblade slicing"), #slicing moves are boosted by sharpness
         ("Hyperspace Hole", 80,100,5,1,0,10,0,"The user employs a hyperspace hole to appear right next to the target... and then strikes!\n-Bypasses accuracy checks.","breaksProtect noMiss"),
         ("X-Scissor",       80,100,15,0,1,11,0,"The user slashes the target by crossing its claws!","null"),
         ("Shadow Ball",     80,100,15,1,0,13,0,"The user hurls a shadowy blob at the target!\n20% chance to lower the target's Sp.D 1 stage, ball/bomb move.","stat targ,sd,-1,20 bullet"),
         ("Dragon Claw",     80,100,15,0,1,14,0,"The user slashes the target with sharp claws!","null"),
+        ("Fickle Beam",     80,100,5,1,0,14,0,"The user corrals its many heads to shoot beams of light at the target!\n-30% chance to double in power.","fickle"), #fickle, has a 30% chance to double in base power
         ("Crunch",          80,100,15,0,1,15,0,"The user crunches on the target with sharp fangs!\n20% chance to lower the target's Def. 1 stage.","stat targ,de,-1,20"),
         ("Dark Pulse",      80,100,15,1,0,15,0,"The user releases a terrible aura imbued with dark thoughts!\n20% chance to make the target flinch, pulse move.","flinch 20 pulse"),
         ("Flash Cannon",    80,100,10,1,0,16,0,"The user gathers all its light energy and releases it all at once at the target!\n10% chance to lower target's Sp.D 1 stage.","stat targ,sd,-1,10"),
@@ -346,7 +356,10 @@ moremoves=[
         #("Max Guard",0,100,3,1,0,10,0," ","maxmove guard? protect? noMiss?noTarg?"),
 
 
-        
+        # half reminaing hp moves
+        ("Super Fang",          1,90,10,0,1,0,0,"The user chomps hard on the target with its sharp fangs!\n-Does damage equal to half of the target's remaining HP.","ruination"),
+        ("Ruination",           1,90,10,1,0,15,0,"The user summons a disaster that leaves the target in ruins!\n-Does damage equal to half of the target's remaining HP.","ruination"),
+        ("Nature's Madness",    1,90,10,1,0,17,0,"The user hits the target with the full wrath of nature!\n-Does damage equal to half of the target's remaining HP.","ruination"),
         #counter and mirror coat,
         ("Counter",     1,100,20,0,1,6,-5,"An attack for countering any physical move.\n-Inflicts on the target double the damage taken by the user.","counter"),
         ("Mirror Coat", 1,100,20,1,0,10,-5,"An attack for countering any special move.\n-Inflicts on the target double the damage taken by the user.","mirrorcoat"),#]
@@ -420,7 +433,7 @@ moremoves=[
         ("Struggle", 50,100,1,0,1,18,0,"The user is otherwise out of moves!","noMiss recoil 1/4maxhp")
         ]
 # notes about the notes
-# stat - raise or lower stats like so:// stat self,at,1,100 // <- raise user's atk. stat 1 stage 100% of the time // stat targ,de:sd:sp,1:-1:1,50 // <- raise target's def. and speed 1 stage each and lower sp.def 1 stage 50% of the time. attack = at, defense = de, special attack = sa, special defense = sd, speed = sp
+# stat - raise or lower stats like so:// stat self,at,1,100 // <- raise user's atk. stat 1 stage 100% of the time // stat targ,de:sd:sp,1:-1:1,50 // <- raise target's def. and speed 1 stage each and lower sp.def 1 stage 50% of the time. attack = at, defense = de, special attack = sa, special defense = sd, speed = sp, evasion = ev, accuracy = ac
 # burn, para, sleep, frze, pois, badPois, conf - inflict status conditions
 # flinch - chance to flinch
 # recoil - move damages the user, sometimes based on damage done, sometimes as a proportion of max HP
@@ -439,6 +452,7 @@ moremoves=[
 # thaws - thaws the user out of the frozen condition
 # scald - a non-fire-type "hot" move, thaws the user and target
 # pulse - move is boosted by mega launcher
+# slicing - move is boosted by sharpness
 # noMiss - bypasses accuracy check to always hit/unless the target is semi-invulnerable
 # noMissRain - bypasses accuracy check in rain
 # noTarg - does not target the opponent / does target the self

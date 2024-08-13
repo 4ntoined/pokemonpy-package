@@ -696,6 +696,7 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                     self.diving=False
                     self.shadowing=False
                     return
+        #aa:2turn
         #check if move needs to be charged
         if "2turn" in notas:
             if self.charged: #pokemon has charged the move already
@@ -716,6 +717,17 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                         self.charged=False
                     else: #otherwise end the move
                         return
+                if "electroshot" in notas:
+                    print(f"\n{self.name} is absorbing electricity!")
+                    shortpause()
+                    self.charged=True
+                    self.stageChange("sa",1)
+                    if self.field.weather=="rain": #if rain is out continue to use move
+                        self.charged=False
+                        pass
+                    else:
+                        return
+                    pass
                 elif "skullbash" in notas:
                     print(f"\n{self.name} tucks its head in...")
                     shortpause()
@@ -3425,9 +3437,17 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
         power *= 2. ** (float(attacker.rolling_out))
     #### getting caught ####
     #digging diving flying
-    if (('gust' in note) or ('thunder' in note) or ('arrows' in note)) and defender.flying:
-        caught_bonus = 1.
-        damages.append(f"{defender.name} is struck in the sky!")
+    if defender.flying:
+        #gust and twister catch fly-ing mons AND gets double damamge on them
+        if 'gust' in note:
+            caught_bonus = 2.
+            damages.append(f"{defender.name} is struck in the sky for double damage!")
+            pass
+        #thunder, hurricane, thousand arrows catch fly-ing but no damage boost (and whirlwind and smack down)
+        if ('thunder' in note) or ('arrows' in note):
+            caught_bonus = 1.
+            damages.append(f"{defender.name} is struck in the sky!")
+            pass
     if ('surf' in note) and defender.diving:
         caught_bonus = 2.
         damages.append(f"{defender.name} is struck underwater!")
@@ -3448,7 +3468,7 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
         damages.append("Power boosted from status condition!")
     if ('hex' in note) and (defender.burned or defender.poisoned or defender.badlypoisoned or defender.paralyzed or defender.sleep or defender.frozen):
         power*=2.
-        damages.append("Power boosted by target's status condition!")
+        damages.append(f"Power boosted by {defender.name}'s status condition!")
     #### fusion move fusion ####
     if ('fusion-b' in note) and attacker.field.fusionf:
         power*=2.
@@ -3456,6 +3476,12 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
     elif ('fusion-f' in note) and attacker.field.fusionb:
         power*=2.
         damages.append("The flames are strengthened by the lingering bolts!")
+    #### fickle beam ####
+    if 'fickle' in note:
+        if rng.random() <= 0.3:
+            power *= 2.
+            damages.append(f"All of {attacker.name}'s heads are attacking in unison!")
+            pass
     #### revelation dance #### changes type to match user's primary type
     if 'revelation' in note:
         moveTipe = plaintiffTipe[0]
@@ -3487,10 +3513,15 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
         damages.append("The grassy terrain softens the blow!")
     ####weather damage boost####
     weatherBonus=1.
+    hydrosteamBonus = 1.
     if attacker.field.weather=='sunny':
-        if moveTipe==1:
+        if 'hydrosteam' in note: #hydrosteam should activate independent of fire and water type checks and boosts
+            hydrosteamBonus = 1.5
+            damages.append("The sunlight is boosting the prehistoric move!")
+            pass
+        if moveTipe==1:         #apply bonus to fire-type moves, even if the hydrosteam bonus runs
             weatherBonus=4./3.
-            damages.append("The Sun boosts the attack power!")
+            damages.append("The Sun boosts the attack's power!")
         elif moveTipe==2:
             weatherBonus=2./3.
             damages.append("The attack is weakened by the sunlight...")
@@ -3501,23 +3532,33 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
         elif moveTipe==2:
             weatherBonus=4./3.
             damages.append("The rain boosts the attack power!")
-    #### terrain boosts and nerf ####
+    #### terrain boosts and nerf aa:terrainboosts aa:terraindamage aa:psybladedamage ####
+    #terrainBonus = 1.
+    psybladeBonus = 1.
     if attacker.field.terrain=='none':
         pass
     else: #only check for terrain boosts when there is a non-none terrain
         #when terrains come into play
-        grass=(attacker.field.terrain=="grassy") and (moveTipe==3) and (attacker.grounded)
-        psychic=(attacker.field.terrain=="psychic") and (moveTipe==10) and (attacker.grounded)
-        electric=(attacker.field.terrain=="electric") and (moveTipe==4) and (attacker.grounded)
-        fairy=(attacker.field.terrain=="misty") and (moveTipe==14) and (defender.grounded)
+        grass=(attacker.field.terrain=="grassy") and (moveTipe==3) and (attacker.grounded)      #there is GRASSY TERRAIN the user is GROUNDED the user is using a GRASS-TYPE move              
+        psychic=(attacker.field.terrain=="psychic") and (moveTipe==10) and (attacker.grounded)  #there is PSYCHIC TERRAIN the user is GROUNDED the user is using a PSYCHIC-TYPE move
+        fairy=(attacker.field.terrain=="misty") and (moveTipe==14) and (defender.grounded)      #there is MISTY TERRAIN the TARGET is GROUNDED the user is using a DRAGON-TYPE move
+        electric=(attacker.field.terrain=="electric") and (attacker.grounded)
+        electric_psyblade = electric and ('psyblade' in note)   #there is ELECTRIC TERRAIN the user is GROUNDED the user is using PSYBLADE              
+        electric_normal = electric and (moveTipe == 4)          #there is ELECTRIC TERRAIN the user is GROUNDED the user is using an ELECTRIC-TYPE move
         #realized the three of them would have the exact same effect
-        if grass or psychic or electric:
-            power*=1.3
-            damages.append("Boosted by the terrain!")
+        if electric_psyblade:
+            psybladeBonus = 1.5
+            damages.append(f"Electric Terrain boosts the futuristic move!")
+            pass
+        if grass or psychic or electric_normal:
+            power *= 1.3
+            damages.append(f"Boosted by the {attacker.field.terrain.capitalize()} Terrain!")
+            pass
         #grounded mon take half damage on fairy terrain
         elif fairy:
-            power*=0.5
-            damages.append("Weakened by the terrain...")
+            power *= 0.5
+            damages.append("Weakened by the Misty Terrain...")
+            pass
         #there is some terrain, but the other requirements werent met, no effect
         else:
             pass
@@ -3570,16 +3611,24 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
     if burn<1.0:
         damages.append("The burn reduces damage...")
     #circumvent normal damage calculation sometimes
+    #mirrorcoat, counter succeeding
     if (('mirrorcoat' in note) and (attacker.counter_damage[1] == 'spec')) \
             or (('counter' in note) and (attacker.counter_damage[1]=='phys')):
         ans = np.floor(2.*attacker.counter_damage[0])
         damages = []
+    #failing
     elif (('mirrorcoat' in note) or ('counter' in note)):
         ans = 0.0
         damages = ["failed"]
+    #ruination, natures madness, superfang
+    elif 'ruination' in note:
+        ans = np.floor(defender.currenthp / 2.)
+        if ans < 1.: ans = 1.
+        damages = []
     else:
         ####modifiers united####
-        damageModifier = weatherBonus * critical * rando * STAB * tyype * burn * screennerf * caught_bonus * collided
+        damageModifier = critical * rando * STAB * tyype * burn * screennerf * caught_bonus * collided \
+                    * weatherBonus * hydrosteamBonus * psybladeBonus
         ####damage calculation####
         ans= np.floor( ((((2.*level)/5. + 2.)*power*attack/defense)/50. + 2.)*damageModifier )
     return ans,tyype,damages

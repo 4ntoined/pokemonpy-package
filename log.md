@@ -6,6 +6,7 @@ Date: 2024 August XX
 Working on:
 - Some new moves.
 	- focusing on signature moves
+	- defog...
 
 * UPDATE: Big focus on moves.
 	* Lots of new moves with a focus on signature moves and status moves.
@@ -18,6 +19,10 @@ Working on:
 		* Revelation Dance - changes type based on user's primary type
 		* Collision Course/Electro Drift - damage boost for supereffective hits
 		* Scald - non-Fire-type moves that can thaw frozen Pokémon
+		* Fickle Beam - 30% chance to double in power
+		* Electro Shot - 2-turn move that boosts Special Attack on first turn AND charges immediately in rain
+		* Hydro Steam/Psyblade - move-specific damage boost in Sun and on Electric Terrain
+		* Ruination - damage equal to half of target's remaining HP
 	* Textwrap in move descriptions.
 	* [moves] main menu option prints descriptions of all moves.
 * FIXED: Psychic terrain now protects grounded Pokémon from priority moves.
