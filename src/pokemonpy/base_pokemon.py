@@ -3510,7 +3510,7 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
     #earthquake, bulldoze and magnitude nerfed on grassy terrain
     if ("nerfGrassy" in note) and (attacker.field.terrain=="grassy"):
         power*=0.5
-        damages.append("The grassy terrain softens the blow!")
+        damages.append("The Grassy Terrain softens the blow!")
     ####weather damage boost####
     weatherBonus=1.
     hydrosteamBonus = 1.
@@ -3520,21 +3520,21 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
             damages.append("The sunlight is boosting the prehistoric move!")
             pass
         if moveTipe==1:         #apply bonus to fire-type moves, even if the hydrosteam bonus runs
-            weatherBonus=4./3.
+            weatherBonus = 1.5
             damages.append("The Sun boosts the attack's power!")
         elif moveTipe==2:
-            weatherBonus=2./3.
+            weatherBonus = 0.5
             damages.append("The attack is weakened by the sunlight...")
     elif attacker.field.weather=='rain':
         if moveTipe==1:
-            weatherBonus=2./3.
+            weatherBonus = 0.5
             damages.append("The attack is weakened by the rain...")
         elif moveTipe==2:
-            weatherBonus=4./3.
-            damages.append("The rain boosts the attack power!")
+            weatherBonus = 1.5
+            damages.append("The rain boosts the attack's power!")
     #### terrain boosts and nerf aa:terrainboosts aa:terraindamage aa:psybladedamage ####
     #terrainBonus = 1.
-    psybladeBonus = 1.
+    #psybladeBonus = 1.
     if attacker.field.terrain=='none':
         pass
     else: #only check for terrain boosts when there is a non-none terrain
@@ -3547,11 +3547,11 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
         electric_normal = electric and (moveTipe == 4)          #there is ELECTRIC TERRAIN the user is GROUNDED the user is using an ELECTRIC-TYPE move
         #realized the three of them would have the exact same effect
         if electric_psyblade:
-            psybladeBonus = 1.5
+            power *= 1.5
             damages.append(f"Electric Terrain boosts the futuristic move!")
             pass
         if grass or psychic or electric_normal:
-            power *= 1.3
+            power *= 5325./4096.
             damages.append(f"Boosted by the {attacker.field.terrain.capitalize()} Terrain!")
             pass
         #grounded mon take half damage on fairy terrain
@@ -3628,7 +3628,7 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
     else:
         ####modifiers united####
         damageModifier = critical * rando * STAB * tyype * burn * screennerf * caught_bonus * collided \
-                    * weatherBonus * hydrosteamBonus * psybladeBonus
+                    * weatherBonus * hydrosteamBonus
         ####damage calculation####
         ans= np.floor( ((((2.*level)/5. + 2.)*power*attack/defense)/50. + 2.)*damageModifier )
     return ans,tyype,damages
