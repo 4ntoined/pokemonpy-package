@@ -13,7 +13,7 @@ Date: 2024 August 15
 		* Focus Energy - Pokémon can get pumped, increased chance of landing critical hits
 		* Revelation Dance - changes type based on user's primary type
 		* Collision Course/Electro Drift - damage boost for supereffective hits
-		* Scald/Scorching Sands/Steam Eruption- non-Fire-type moves that can thaw frozen Pokémon
+		* Scald/Scorching Sands/Steam Eruption - non-Fire-type moves that can thaw frozen Pokémon
 		* Fickle Beam - 30% chance to double in power
 		* Electro Shot - 2-turn move that boosts Special Attack on first turn AND charges immediately in rain
 		* Hydro Steam/Psyblade - move-specific damage boost in Sun/on Electric Terrain
