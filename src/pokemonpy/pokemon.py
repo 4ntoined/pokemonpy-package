@@ -1566,8 +1566,8 @@ class game:
             #aa:movecatalog
             if userChoice == "moves":
                 for i in range(len(mov)):
-                    print(magic_text(f"Index: {i}", cha="@", spacing="  ", long=self.game_width))
-                    moveInfo(i)                                                              
+                    #print(magic_text(f"Index: {i}", cha="@", spacing="  ", long=self.game_width))
+                    moveInfo(i,index=True)                                                              
                     #print("\n\n",end="")
                     pass
                 shortpause()

@@ -1215,7 +1215,7 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                     #end of flinching
                     pass
                 #anything else to do after not fainting?
-            #check for recoil, apply recoil if present
+            #check for recoil, apply recoil if present aa:recoilhit
             if "recoil" in notes:
                 amnt=notes[1+int(np.argwhere(np.array(notes)=="recoil"))]
                 if amnt =="1/2":
@@ -4169,14 +4169,15 @@ def print_dex():
               f"[{i['sa']}]  [{i['sd']}]  [{i['sp']}]")
     return
 #moves have pwr, phys/spec, type, accu, descipt
-def moveInfo(moveCode):
+def moveInfo(moveCode, index=False):
     global mov, typeStrings, move_dict, game_width
     contact_textyes = textwrap.fill("-The user makes contact with the target.", game_width)
     contact_textnot = textwrap.fill("-The user does not make contact with the target.", game_width)
     move=mov[moveCode]
     descr_parts = move['desc'].splitlines()
     #print(f"------------ {move['name']} ------------")
-    print('\n'+magic_text(txt=f"{move['name']}",spacing=' ',cha='-',long=game_width))
+    if index:   print('\n'+magic_text(txt=f"{move['name']} | index: {moveCode}",spacing=' ',cha='-',long=game_width))
+    else:       print('\n'+magic_text(txt=f"{move['name']}",spacing=' ',cha='-',long=game_width))
     print(f"Power: {move['pwr']} | Accuracy: {move['accu']}%")
     print(f"[{typeStrings[move['type']]}] | [{move_dict[move['special?']]}] | PP: {move['pp']}")
     print("-\n",end="")
