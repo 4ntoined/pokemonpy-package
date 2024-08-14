@@ -185,8 +185,7 @@ from pokemonpy.texter import magic_text
 bp.game_width = 64      # sets the length of banners and headers and textwrap
 
 for i in range(len(bp.mov)):
-    print(magic_text(f"Index: {i}", cha="@", spacing="  ", long=bp.game_width)) # displaying move index
-    bp.moveInfo(i)                                                              # displaying move info
+    bp.moveInfo(i, index=True) # displaying move info
     print("\n\n",end="")
 ```
 What else...?
