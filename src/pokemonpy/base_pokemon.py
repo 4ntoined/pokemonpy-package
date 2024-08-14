@@ -260,12 +260,56 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
         #sets should be a list of str with names of moves to learn
         global mov
         try:
-            self.knownMoves=[ int(np.argwhere( mov['name'] == sets[i])) for i in range(len(sets))]
+            mismatched_one = False
+            learned_all = False
+            learned_one = False
+            checkedit = False
+            learner = []
+            learnedmovesnames = []
+            ids_arr = [ np.squeeze( np.argwhere( mov['name'] == i) ) for i in sets ]
+            for i in range(len(ids_arr)): #for all the moves in the set
+                if ids_arr[i].size == 0:
+                    #there was no match, try to auto-capitalize
+                    id_secondtry = np.squeeze( np.argwhere( mov['name'] == sets[i].title()))
+                    if id_secondtry.size == 1:
+                        # we got a match, add the move
+                        mlid = int(id_secondtry)
+                        learner.append(mlid)
+                        #matched_one = True
+                        pass
+                    else:
+                        mismatched_one = True
+                    pass
+                elif ids_arr[i].size > 0:
+                    # add the move if it found a match
+                    mlid = int(ids_arr[i])
+                    learner.append( mlid )
+                    #matched_one = True
+                    pass
+                else:
+                    mismatched_one = True
+                pass
+            learner_set = list(set(learner))
+            for i in learner_set:
+                checkedit = True
+                if not (i in self.knownMoves):
+                    self.knownMoves += [i]
+                    learned_one = True
+                    learnedmovesnames.append(mov[i]['name'])
+                    pass
+                else:
+                    #the pokemon already knows a move in this set
+                    learned_all = False
+                    pass
+                pass
+            self.PP = [ mov['pp'][i] for i in self.knownMoves]
+            learned_all = learned_all and checkedit
+            ans = (mismatched_one, learned_all, learned_one, learnedmovesnames)
         except ValueError:
             print('Value error/No match for move?')
-        else:
-            self.PP = [ mov['pp'][i] for i in self.knownMoves]
-        return
+        except TypeError:
+            print('Type error/No match for move?')
+        return ans
     #add number *new* moves to mon's moveset
     def add_random_moves(self, number=2):
         global mov,mo,rng
@@ -3522,7 +3566,7 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
         if moveTipe==1:         #apply bonus to fire-type moves, even if the hydrosteam bonus runs
             weatherBonus = 1.5
             damages.append("The Sun boosts the attack's power!")
-        elif moveTipe==2:
+        elif moveTipe==2 and not ('hydrosteam' in note):
             weatherBonus = 0.5
             damages.append("The attack is weakened by the sunlight...")
     elif attacker.field.weather=='rain':

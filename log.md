@@ -1,31 +1,29 @@
 ## pokemonpy-package log
 
 ### v0.2.5
-Date: 2024 August XX
-
-Working on:
-- Some new moves.
-	- focusing on signature moves
-	- defog...
+Date: 2024 August 15
 
 * UPDATE: Big focus on moves.
-	* Lots of new moves with a focus on signature moves and status moves.
+	* 100+ new moves with a focus on signature moves and status moves.
 	* Updated/standardized move descriptions.
-	* Some _slight_ new move mechanics.
+	* Some new move mechanics.
 		* Terrain Pulse - changes type on terrain
-		* Crush Grip - does damage based on targets HP%
+		* Crush Grip - does damage based on target's remaining HP
 		* Chloroblast - user loses 1/2 max HP in recoil
-		* Focus Energy - Pokémon can get pumped, increased chance of landing crit's 
+		* Focus Energy - Pokémon can get pumped, increased chance of landing critical hits
 		* Revelation Dance - changes type based on user's primary type
 		* Collision Course/Electro Drift - damage boost for supereffective hits
-		* Scald - non-Fire-type moves that can thaw frozen Pokémon
+		* Scald/Scorching Sands/Steam Eruption- non-Fire-type moves that can thaw frozen Pokémon
 		* Fickle Beam - 30% chance to double in power
 		* Electro Shot - 2-turn move that boosts Special Attack on first turn AND charges immediately in rain
-		* Hydro Steam/Psyblade - move-specific damage boost in Sun and on Electric Terrain
-		* Ruination - damage equal to half of target's remaining HP
+		* Hydro Steam/Psyblade - move-specific damage boost in Sun/on Electric Terrain
+		* Ruination/Nature's Madness/Super Fang - damage equal to half of target's remaining HP
+		* Shore Up - The user recovers more HP in sandstorm.
 	* Textwrap in move descriptions.
 	* [moves] main menu option prints descriptions of all moves.
-* FIXED: Psychic terrain now protects grounded Pokémon from priority moves.
+	* Add moves by name with Move Tutor
+* FIXED: Psychic Terrain now protects grounded Pokémon from priority moves.
+* FIXED: Toxic used by Poison-types bypasses accuracy check to always hit.
 * TECHNICAL UPDATE: Readme is updated with more involved sample scripts.
 
 ### v0.2.4
