@@ -22,9 +22,9 @@ Date: 2024 August 15
 	* Textwrap in move descriptions.
 	* [moves] main menu option prints descriptions of all moves.
 	* Add moves by name with Move Tutor
-* UPDATE: The saved party featured in [game demo](https://youtu.be/0SFg-sSOZBY?t=438) is now included in the package: src/pokemonpy/saves/demoteam.sav
 * FIXED: Psychic Terrain now protects grounded Pokémon from priority moves.
 * FIXED: Toxic used by Poison-types bypasses accuracy check to always hit.
+* TECHNICAL UPDATE: The saved party featured in [game demo](https://youtu.be/0SFg-sSOZBY?t=438) is now included in the package: src/pokemonpy/saves/demoteam.sav
 * TECHNICAL UPDATE: Readme is updated with more involved sample scripts.
 
 ### v0.2.4
