@@ -38,23 +38,23 @@ You can give the script some optional arguments when you call it:
 ```
 python3 rungame.py -m -c config_file_path -n "your name" -o "rivals name" -w how_big_to_display_the_game -p number_of_starter_parties -s number_of_pokémon_per_party
 
--m to mute the game start-up
--c to tell the game to use a particular configuration file
--n to set your name, used to display in battles
--o to set the name of the rival trainer in the Battle! mode.
--w to set the length of banners and headers throughout the game, defaults to 64 I think
--p to set the number of parties you start with
--s to set the number of Pokémon in each of those parties
+-m to skip the game start-up text
+-c to have the game use a particular configuration file
+-n to set your name
+-o to set the name of your opponent in the Battle! mode
+-w to set the length of banners and headers
+-p to set the number of Pokémon parties you start with
+-s to set the number of Pokémon in each party
 -h to have all of this told to you again but by python
 ```
 
 Alternatively, you can:
 
-1. start a live session of Python
-2. import the package, initialize the game object, and start the game:
+1. start a live session of Python:
+```python3```
 
+2. import the package, initialize the game object, and start the game:
 ```
-python3
 import pokemonpy.pokemon as pk
 game1 = pk.game()
 game1.startgame()
@@ -67,9 +67,9 @@ pokemonpy.pokemon.game.startgame(
     configname='config.txt', mutegame=(True or False), username="Your Name", opponentname="Op Name", nparty=1, nstart=6, gw=64)
 
 configname - str, to have the game use a particular configuration file
-mutegame - bool, set to True to skip the pre-game text
+mutegame - bool, set to True to skip the game start-up text
 username - str, your name
-opponentname - str, the name of the rival trainer
+opponentname - str, the name of your opponent in the Battle! mode
 nparty - int, number of Pokémon parties you start with
 nstart - int, number of Pokémon in each party
 gw - int, sets the length of banners and headers
@@ -77,6 +77,7 @@ gw - int, sets the length of banners and headers
 
 ## Some fun things to try with the package
 
+Start a battle:
 ```
 from pokemonpy.base_pokemon import *
 parties, fields = maker(2,6,2)
@@ -84,7 +85,7 @@ bb = battle(parties[0],parties[1],fields[0],usr_name='Your Name',cpu_name='The O
 bb.startbattle()
 ```
 
-Try:
+Make a party and save the first Pokémon: 
 ```
 from pokemonpy.base_pokemon import *
 parties, fields = maker(2,6,2)
@@ -94,7 +95,7 @@ parties[0][0].appraisal()
 parties[0][0].save('poke.sav')
 ```
 
-Here's something, how to make (and save) an elite 4:
+Make and save an Elite 4:
 ```
 ## this script will create a new elite 4 (or elite n, where n is some positive integer) and save them to pokemonpy save files
 
@@ -131,7 +132,7 @@ for i in range(n):
     pass
 ```
 
-How to make and battle an elite 4!
+Make and battle an Elite 4!
 ```
 ## this script will create an elite n and a party for the user and set the user against the elite n in succession
 
