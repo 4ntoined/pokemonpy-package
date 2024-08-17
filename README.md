@@ -177,7 +177,7 @@ for i in range(n):
     pass
 ```
 
-Move Catalogue:
+Move Catalog:
 ```
 import pokemonpy
 import pokemonpy.base_pokemon as bp

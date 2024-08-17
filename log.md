@@ -1,7 +1,7 @@
 ## pokemonpy-package log
 
 ### v0.2.5
-Date: 2024 August 15
+Date: 2024 August 18
 
 * UPDATE: Big focus on moves.
 	* 100+ new moves with a focus on signature moves and status moves.
