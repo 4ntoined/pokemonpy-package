@@ -41,6 +41,7 @@ from . import dex
 from .victoryroad import make_teams, random_evs
 from .trainerai import cpu
 from . import configurations
+from . import saves
 #FreePalestine
 
 class game:
@@ -1221,7 +1222,7 @@ class game:
                     #    print("Finished loading Pokémon!\n")
                     #    shortpause()
                     else:
-                        if saveChoice=="": saveChoice='pypokemon.sav'
+                        if saveChoice=="": saveChoice= str(impr.files(saves) / 'pypokemon.sav')
                         try:
                             if saveChoice[-4:]=='.npy': newMons=loadMonNpy(saveChoice)
                             else: newMons=loadMon(saveChoice)
@@ -1230,11 +1231,12 @@ class game:
                         else:
                             if newMons[0]==0: #error in loading data
                                 continue
+                            print("")
                             for i in newMons:
                                 userParty.append(i)
                                 print(f"{i.name} has joined your party!")
-                            print("Finished loading Pokémon!\n")
-                            #shortpause()
+                            print("Finished loading Pokémon!")
+                            shortpause()
                             #loop back to load a save
                         #
                     #loop back to load a save

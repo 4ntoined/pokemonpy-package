@@ -1151,10 +1151,6 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
             self.currenthp-=damagepoints
             self.currenthpp=100.*self.currenthp/self.maxhp
             #show all the damage boosts
-            for i in comments:
-                micropause() #for drama
-                print(f"{i}")
-            micropause()
             #show effectiveness
             if effectiveness>2.:
                 print("It's MEGA-effective!!")
@@ -1165,6 +1161,9 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
             if effectiveness>=0.5 and effectiveness<1.:
                 print("It's not very effective.")
             micropause()
+            for i in comments:
+                print(f"{i}")
+                micropause()
             #result of hit
             print(f"{self.name} lost {format(100*damagepoints/self.maxhp,'.2f')}% HP!")
             shortpause()
@@ -2320,56 +2319,56 @@ class battle:
                         if self.field.weatherCounter==0:
                             self.field.weather='clear'
                             self.field.weatherCounter=np.inf
-                            print("The harsh sunlight is fading...")
+                            print("\nThe harsh sunlight is fading...")
                             shortpause()
                         else:
-                            print("The sunlight is harsh!")
+                            print("\nThe sunlight is harsh!")
                             shortpause()
                     if self.field.weather=='rain':
                         if self.field.weatherCounter==0:
                             self.field.weather='clear'
                             self.field.weatherCounter=np.inf
-                            print("The rain stops...")
+                            print("\nThe rain stops...")
                             shortpause()
                         else:
-                            print("It's raining!")
+                            print("\nIt's raining!")
                             shortpause()
                     if self.field.weather=='sandstorm':
                         if self.field.weatherCounter==0:
                             self.field.weather='clear'
                             self.field.weatherCounter=np.inf
-                            print("The sandstorm is subsiding...")
+                            print("\nThe sandstorm is subsiding...")
                             shortpause()
                         else:
-                            print("The sandstorm is raging!")
+                            print("\nThe sandstorm is raging!")
                             shortpause()
                     if self.field.weather=='hail':
                         if self.field.weatherCounter==0:
                             self.field.weather='clear'
                             self.field.weatherCounter=np.inf
-                            print("The hail stops")
+                            print("\nThe hail stops")
                             shortpause()
                         else:
-                            print("It's hailing!")
+                            print("\nIt's hailing!")
                             shortpause()
                     #is the terrain still on?
                     self.field.terrainCounter-=1
                     if self.field.terrainCounter==0:
                         self.field.terrain="none"
                         self.field.terrainCounter=np.inf
-                        print("The terrain faded away...")
+                        print("\nThe terrain faded away...")
                         shortpause()
                     elif self.field.terrain=="grassy":
-                        print("The battlefield is grassy!")
+                        print("\nThe battlefield is grassy!")
                         shortpause()
                     elif self.field.terrain=="electric":
-                        print("The battlefield is electrified!")
+                        print("\nThe battlefield is electrified!")
                         shortpause()
                     elif self.field.terrain=="psychic":
-                        print("The battlefield is weird!")
+                        print("\nThe battlefield is weird!")
                         shortpause()
                     elif self.field.terrain=="misty":
-                        print("The battlefield is misty!")
+                        print("\nThe battlefield is misty!")
                         shortpause()
                     #print("")
                     #if nothing was set, will go from 0 to -1, and keep going negative
@@ -2382,9 +2381,9 @@ class battle:
                     self.field.veilACounter-=1
                     self.field.veilBCounter-=1
                     #are these screens still up?
-                    say = ("Your team's Light Screen fades away...","Their Light Screen fades away...",\
-                           "Your team's Reflect fades away...","Their Reflect fades away...", \
-                           "Your team's Aurora Veil fades...","Thier Aurora Veil fades...")
+                    say = ("\nYour team's Light Screen fades away...","\nTheir Light Screen fades away...",\
+                           "\nYour team's Reflect fades away...","\nTheir Reflect fades away...", \
+                           "\nYour team's Aurora Veil fades away...","\nTheir Aurora Veil fades away...")
                     for ee in list(enumerate((self.field.lightscACounter,self.field.lightscBCounter, self.field.reflectACounter,self.field.reflectBCounter, self.field.veilACounter,self.field.veilBCounter))) :
                         #print([ee[1]])
                         if ee[1] == 0:
@@ -3003,56 +3002,56 @@ class battle:
                         if self.field.weatherCounter==0:
                             self.field.weather='clear'
                             self.field.weatherCounter=np.inf
-                            print("The harsh sunlight is fading...")
+                            print("\nThe harsh sunlight is fading...")
                             shortpause()
                         else:
-                            print("The sunlight is harsh!")
+                            print("\nThe sunlight is harsh!")
                             shortpause()
                     if self.field.weather=='rain':
                         if self.field.weatherCounter==0:
                             self.field.weather='clear'
                             self.field.weatherCounter=np.inf
-                            print("The rain stops...")
+                            print("\nThe rain stops...")
                             shortpause()
                         else:
-                            print("It's raining!")
+                            print("\nIt's raining!")
                             shortpause()
                     if self.field.weather=='sandstorm':
                         if self.field.weatherCounter==0:
                             self.field.weather='clear'
                             self.field.weatherCounter=np.inf
-                            print("The sandstorm is subsiding...")
+                            print("\nThe sandstorm is subsiding...")
                             shortpause()
                         else:
-                            print("The sandstorm is raging!")
+                            print("\nThe sandstorm is raging!")
                             shortpause()
                     if self.field.weather=='hail':
                         if self.field.weatherCounter==0:
                             self.field.weather='clear'
                             self.field.weatherCounter=np.inf
-                            print("The hail stops")
+                            print("\nThe hail stops...")
                             shortpause()
                         else:
-                            print("It's hailing!")
+                            print("\nIt's hailing!")
                             shortpause()
                     #is the terrain still on?
                     self.field.terrainCounter-=1
                     if self.field.terrainCounter==0:
                         self.field.terrain="none"
                         self.field.terrainCounter=np.inf
-                        print("The terrain faded away...")
+                        print("\nThe terrain fades away...")
                         shortpause()
                     elif self.field.terrain=="grassy":
-                        print("The battlefield is grassy!")
+                        print("\nThe battlefield is grassy!")
                         shortpause()
                     elif self.field.terrain=="electric":
-                        print("The battlefield is electrified!")
+                        print("\nThe battlefield is electrified!")
                         shortpause()
                     elif self.field.terrain=="psychic":
-                        print("The battlefield is weird!")
+                        print("\nThe battlefield is weird!")
                         shortpause()
                     elif self.field.terrain=="misty":
-                        print("The battlefield is misty!")
+                        print("\nThe battlefield is misty!")
                         shortpause()
                     #print("")
                     #if nothing was set, will go from 0 to -1, and keep going negative
@@ -3065,9 +3064,9 @@ class battle:
                     self.field.veilACounter-=1
                     self.field.veilBCounter-=1
                     #are these screens still up?
-                    say = ("Your team's Light Screen fades away...","Their Light Screen fades away...",\
-                           "Your team's Reflect fades away...","Their Reflect fades away...", \
-                           "Your team's Aurora Veil fades...","Thier Aurora Veil fades...")
+                    say = ("\nYour team's Light Screen fades away...","\nTheir Light Screen fades away...",\
+                           "\nYour team's Reflect fades away...","\nTheir Reflect fades away...", \
+                           "\nYour team's Aurora Veil fades away...","\nTheir Aurora Veil fades away...")
                     for ee in list(enumerate((self.field.lightscACounter,self.field.lightscBCounter, self.field.reflectACounter,self.field.reflectBCounter, self.field.veilACounter,self.field.veilBCounter))) :
                         #print([ee[1]])
                         if ee[1] == 0:
@@ -3082,7 +3081,9 @@ class battle:
                 print("\nThe battle ended!")
                 shortpause()
                 if self.user_won:
-                    print(f"\n{self.cpu_name} is out of usable Pokémon!\nYou win!")
+                    print(f"\n{self.cpu_name} is out of usable Pokémon!")
+                    shortpause()
+                    print("You win!")
                     dramaticpause()
                 elif running:
                     print(f"\n{self.usr_name} and {self.usr_mon.name} forfeited to {self.cpu_name}!")
@@ -3650,7 +3651,7 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
     collided = 1.
     if ('collision' in note) and (tyype >= 2.):
         collided = 5461./4096.
-        damages.append("The supereffective hit is more powerful than normal!")
+        damages.append("The super-effective hit is more powerful than normal!")
     #check if the burn nerf survives (non-crit and non-facade)
     if burn<1.0:
         damages.append("The burn reduces damage...")
@@ -4019,20 +4020,22 @@ def loadMon(savefile, configload=False):
             newP.PP=[getMoveInfo(j)['pp'] for j in newP.knownMoves]
             newP.reStat()
             loadPokes.append(newP)
-            #print(f"Loaded {newP.name}!")
-            micropause()
         return loadPokes
     except FileNotFoundError:
-        print("! The file name wasn't found... !")
+        print("\n! The file name wasn't found... !")
+        micropause()
         return [0]
     except OSError:
-        print("! The file name wasn't found... !")
+        print("\n! The file name wasn't found... !")
+        micropause()
         return [0]
     except IndexError:
-        print("!! The save file is corrupted !!")
+        print("\n!! The save file is corrupted !!")
+        micropause()
         return [0]
     except ValueError:
-        print("!! This file is all over the place !!")
+        print("\n!! This file is all over the place !!")
+        micropause()
         return [0]
 #check party for non fainted pokemon
 def checkBlackout(party):
@@ -4180,7 +4183,7 @@ def moveInfo(moveCode, index=False):
     else:       print('\n'+magic_text(txt=f"{move['name']}",spacing=' ',cha='-',long=game_width))
     print(f"Power: {move['pwr']} | Accuracy: {move['accu']}%")
     print(f"[{typeStrings[move['type']]}] | [{move_dict[move['special?']]}] | PP: {move['pp']}")
-    print("-\n",end="")
+    print("\n",end="")
     for i in descr_parts: print(textwrap.fill(i, game_width))
     if move['contact?']:    print(contact_textyes)
     else:                   print(contact_textnot)
