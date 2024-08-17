@@ -29,7 +29,7 @@ The game is also available as a package through the [Anaconda distribution](http
 `conda install antoi::pokemonpy`
 
 ## Starting the game
-With the package installed, you can start the game using the `rungame.py` script in the `scripts` folder:
+With the package installed, you can start the game using the `rungame.py` script [found here.](https://github.com/4ntoined/pokemonpy-package/blob/d02cc526a1b903d4ffbf25067d265481353a8274/src/pokemonpy/scripts/rungame.py):
 
 `python3 rungame.py`
 
@@ -51,9 +51,11 @@ python3 rungame.py -m -c config_file_path -n "your name" -o "rivals name" -w how
 Alternatively, you can:
 
 1. start a live session of Python:
+
 ```python3```
 
 2. import the package, initialize the game object, and start the game:
+
 ```
 import pokemonpy.pokemon as pk
 game1 = pk.game()
