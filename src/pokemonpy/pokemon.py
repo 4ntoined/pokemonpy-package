@@ -41,14 +41,16 @@ from . import dex
 from .victoryroad import make_teams, random_evs
 from .trainerai import cpu
 from . import configurations
+from . import saves
 #FreePalestine
 
 class game:
     def __init__(self):
         #defining bedrock game variables
-        self.gameversion = '0.2.4'
+        self.gameversion = '0.2.5'
         self.devs_list = ('Adarius',)
         self.cut_the_line=1.
+        self.full_restore=1.
                 
         #setting variables 
         self.mute_set = False
@@ -119,7 +121,7 @@ class game:
         #FreePalestine
         self.game_width = base_pokemon.game_width
         self.oddw = self.game_width % 2 == 1
-        self.mainmenu = "\n[about]\n[cheats]\n[quit]\n"+genborder(cha='-',num=self.game_width)+\
+        self.mainmenu = "\n[about]\n[cheats]\n[moves]\n[quit]\n"+genborder(cha='-',num=self.game_width)+\
             "\n[P] Party\n[B] Battle!\n[4] Elite 4\n[N] Nursery" + \
             "\n[T] Training\n[X] Boxes\n[L] Load Game\n[C] Pokémon Center\n[S] Battle Setting"+ \
             "\n\nWhat to do: "
@@ -300,7 +302,6 @@ class game:
                         print(f"{self.opponentname}! Yes, of course!")
                         shortpause() #kills
                     else:
-                        #print("*like I'm hearing a ghost*: What was that?")
                         pass
                     # should be the end of the classic setting block
                 #zz:classicsettings
@@ -865,8 +866,6 @@ class game:
                             elif hypermoves == '2':
                                 while 1:
                                     ful = genborder(num=self.game_width,cha='+')
-                                    tutorline=magic_text(long=self.game_width,cha='+',txt='Move Tutor',spacing=' ')
-                                    #print(f"\n{ful}\n{tutorline}\n{ful}\nYou can teach your Pokémon new moves!")
                                     #print all the moves
                                     movesline = magic_text(txt='Moves',spacing=' ',cha='-',long=self.game_width)
                                     print("\n"+movesline)
@@ -876,18 +875,67 @@ class game:
                                     print(genborder(num=self.game_width,cha='-'))
                                     #micropause()
                                     #ask user what moves to learn
-                                    learnChoice=input(f"\nWhat moves should {pokeTrain.name} learn?\n" + \
-                                        "(Lead with 'i' to see move info.)\n(Use 'random n' to teach n random moves.)"+\
+                                    learnChoice=input(f"\nWhat moves should {pokeTrain.name} learn?" + \
+                                        "\n(You use move indeces separated by spaces or move names separated by commas.)"+\
+                                        "\n(Use 'i' before a move index to see move info.)"+\
+                                        "\n(Use 'random n' to set n random moves.)"+\
+                                        "\n(Use 'add n' to add n random moves.)"+\
                                         "\n[#]'s or [b]ack: ")
                                     #go back
                                     if learnChoice=='b' or learnChoice=='B':
                                         print("\nLeaving Move Tutor...")
                                         micropause()
                                         break #back to training-main
-                                    moveslearning = learnChoice.split()
-                                    mlcount = len(moveslearning)
-                                    # for non-blank entries
-                                    if mlcount > 0:
+                                    moveslearning0 = learnChoice.split(',')
+                                    mlen = len(moveslearning0)
+                                    if mlen > 1:
+                                        #we have a comma-separated entry, we will only accept a list of move names
+                                        mlsplit = [ i.strip() for i in moveslearning0 ]
+                                        moverSuccess = pokeTrain.learn_sets(mlsplit)
+                                        if not moverSuccess[0]:
+                                            #no mismatches
+                                            if moverSuccess[1]:
+                                                #no mismatches and no preknown moves
+                                                print("")
+                                                for i in moverSuccess[3]:
+                                                    #print learned moves
+                                                    print(f"{pokeTrain.name} learned {i}!")
+                                                    pass
+                                            elif not moverSuccess[2]:
+                                                #no mismatch, but no moves were learned
+                                                print(f"\n{pokeTrain.name} already knows those moves!")
+                                            elif not moverSuccess[1]:
+                                                #no mismatch, at least move was learned, but some werent
+                                                print(f"\n{pokeTrain.name} already knows some of those moves, but...")
+                                                for i in moverSuccess[3]:
+                                                    print(f"{pokeTrain.name} learned {i}!")
+                                                    pass
+                                                pass
+                                            else:
+                                                print("\nI should not be printed.")
+                                                pass
+                                            pass
+                                        else:
+                                            #a mismatch has occurred
+                                            if moverSuccess[1]:
+                                                #all matched moves were learned
+                                                print(f"\nSome moves weren't found, but {pokeTrain.name} learned all the other moves!")
+                                            elif not moverSuccess[2]:
+                                                #no moves were learned at all
+                                                print(f"\n{pokeTrain.name} didn't learn any new moves!")
+                                                pass
+                                            else:
+                                                #at least one move was learned, but not all moves were learned
+                                                print(f"\nSome moves weren't found and {pokeTrain.name} already knows some of those moves, but they learned the rest!")
+                                            pass
+                                        shortpause()
+                                        pass
+                                    elif moveslearning0[0] == '':
+                                        #blank entry
+                                        continue
+                                    else:
+                                        #we have no commas, assume it's a list of space-separated move indeces
+                                        moveslearning = moveslearning0[0].split()
                                         #user wants to learn about the moves
                                         if moveslearning[0]=='i' or moveslearning[0]=='I':
                                         #while 1:
@@ -920,11 +968,34 @@ class game:
                                             else:
                                                 pokeTrain.randomizeMoveset(n_moves)
                                                 break #randomized moves, go back to training menu
+                                        elif moveslearning[0]=='add':
+                                            try:
+                                                n_moves = int(moveslearning[1])
+                                            except ValueError:
+                                                print('\n** Bad Value **')
+                                            except IndexError: #what happens if user wants more 
+                                                print('\n** Bad Index **')
+                                            else:
+                                                pokeTrain.add_random_moves(n_moves)
+                                                break #added moves, go back to training menu
+                                        elif not moveslearning[0].isnumeric():
+                                            #a
+                                            moveTutorSuccess = pokeTrain.learn_sets(moveslearning0)
+                                            if not moveTutorSuccess[0] and moveTutorSuccess[1]:
+                                                #no moves mismatched and all moves learned
+                                                print(f"\n{pokeTrain.name} learned {moveTutorSuccess[3][0]}!")
+                                            elif not moveTutorSuccess[0] and not moveTutorSuccess[1]:
+                                                #no moves mismatched but we at least one was not learned
+                                                print(f"\n{pokeTrain.name} already knows this move!")
+                                            elif moveTutorSuccess[0]:
+                                                #move mismatched
+                                                print(f"\nEntry didn't match any moves...")
+                                            shortpause()
                                         else:
                                             try:
                                                 #chooseMoves=chooseMove.split() #separate move indices into own strings
                                                 moveInts=[int(i) for i in moveslearning] #(try to) convert strings to ints
-                                                incomplete=False
+                                                #incomplete=False
                                                 if max(moveInts)<len(mov): #make sure all indices have an entry in the movedex
                                                     if min(moveInts)>=0: #ward off negative numbers
                                                         print("")
@@ -1151,7 +1222,7 @@ class game:
                     #    print("Finished loading Pokémon!\n")
                     #    shortpause()
                     else:
-                        if saveChoice=="": saveChoice='pypokemon.sav'
+                        if saveChoice=="": saveChoice= str(impr.files(saves) / 'pypokemon.sav')
                         try:
                             if saveChoice[-4:]=='.npy': newMons=loadMonNpy(saveChoice)
                             else: newMons=loadMon(saveChoice)
@@ -1160,11 +1231,12 @@ class game:
                         else:
                             if newMons[0]==0: #error in loading data
                                 continue
+                            print("")
                             for i in newMons:
                                 userParty.append(i)
                                 print(f"{i.name} has joined your party!")
-                            print("Finished loading Pokémon!\n")
-                            #shortpause()
+                            print("Finished loading Pokémon!")
+                            shortpause()
                             #loop back to load a save
                         #
                     #loop back to load a save
@@ -1493,20 +1565,27 @@ class game:
                     else: #?
                         pass
                 #after parties menu while loop
+            #aa:movecatalog
+            if userChoice == "moves":
+                for i in range(len(mov)):
+                    #print(magic_text(f"Index: {i}", cha="@", spacing="  ", long=self.game_width))
+                    moveInfo(i,index=True)                                                              
+                    #print("\n\n",end="")
+                    pass
+                shortpause()
             ####what's the next spot?####
             if userChoice == "cheats":
                 yoo = input("\nYo, what's up?...")
                 if yoo == "eliter":
                     #print(cut_the_line)
                     self.cut_the_line *= -1.
-                    print('\nReceived.')
-                    micropause()
+                    cheat_receipt()
                 elif yoo == "champed":
                     hallfame_count = 2024
-                    print('\nReceived.')
-                    micropause()
-                elif yoo == '14':
-                    print('4 million?')
+                    cheat_receipt()
+                elif yoo == 'chansey':
+                    self.full_restore *= -1.
+                    #cheat_receipt()
                 pass
             #end of game, loops back to main screen
         return
@@ -1639,6 +1718,11 @@ class game:
     pass
 
 cutline_dict = dict([( 1., False ), ( -1., True )])
+
+def cheat_receipt():
+    print('\nReceived.')
+    micropause()
+    return
 
 if __name__ == "__main__":
     pass

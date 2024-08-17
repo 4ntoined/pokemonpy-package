@@ -76,7 +76,7 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
         self.maxhp=HP(self.level,self.hpb,self.hpiv,self.hpev)
         self.currenthp=self.maxhp
         self.currenthpp=100.
-        ##final stats, with evs, ivs, and one day natures==============##
+        ##final stats, with evs, ivs, and natures==============##
         self.attack=stats(self.level,self.atb,self.ativ,self.atev,self.nature_multipliers[0])
         self.defense=stats(self.level,self.deb,self.deiv,self.deev,self.nature_multipliers[1])
         self.spatk=stats(self.level,self.sab,self.saiv,self.saev,self.nature_multipliers[2])
@@ -85,7 +85,7 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
         ##=============================================================##
         self.name=named
         self.tipe=tipe
-        self.levitate = False
+        self.ability = ''
         #pokemon has 2 types
         if len(tipe)>1: self.dualType=True
         #pokemon is singly-typed
@@ -127,6 +127,7 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
         self.poisonCounter=0
         self.confusionCounter=0
         #
+        self.pumped=False #for critical hit tiers
         self.counter_damage = (0.0, "none") #damage points taken, "phys" or "spec"
         self.flinched=False #might not necessarily need this? idk
         self.resting=False #for moves where pokemon need to recharge
@@ -259,12 +260,56 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
         #sets should be a list of str with names of moves to learn
         global mov
         try:
-            self.knownMoves=[ int(np.argwhere( mov['name'] == sets[i])) for i in range(len(sets))]
+            mismatched_one = False
+            learned_all = False
+            learned_one = False
+            checkedit = False
+            learner = []
+            learnedmovesnames = []
+            ids_arr = [ np.squeeze( np.argwhere( mov['name'] == i) ) for i in sets ]
+            for i in range(len(ids_arr)): #for all the moves in the set
+                if ids_arr[i].size == 0:
+                    #there was no match, try to auto-capitalize
+                    id_secondtry = np.squeeze( np.argwhere( mov['name'] == sets[i].title()))
+                    if id_secondtry.size == 1:
+                        # we got a match, add the move
+                        mlid = int(id_secondtry)
+                        learner.append(mlid)
+                        #matched_one = True
+                        pass
+                    else:
+                        mismatched_one = True
+                    pass
+                elif ids_arr[i].size > 0:
+                    # add the move if it found a match
+                    mlid = int(ids_arr[i])
+                    learner.append( mlid )
+                    #matched_one = True
+                    pass
+                else:
+                    mismatched_one = True
+                pass
+            learner_set = list(set(learner))
+            for i in learner_set:
+                checkedit = True
+                if not (i in self.knownMoves):
+                    self.knownMoves += [i]
+                    learned_one = True
+                    learnedmovesnames.append(mov[i]['name'])
+                    pass
+                else:
+                    #the pokemon already knows a move in this set
+                    learned_all = False
+                    pass
+                pass
+            self.PP = [ mov['pp'][i] for i in self.knownMoves]
+            learned_all = learned_all and checkedit
+            ans = (mismatched_one, learned_all, learned_one, learnedmovesnames)
         except ValueError:
             print('Value error/No match for move?')
-        else:
-            self.PP = [ mov['pp'][i] for i in self.knownMoves]
-        return
+        except TypeError:
+            print('Type error/No match for move?')
+        return ans
     #add number *new* moves to mon's moveset
     def add_random_moves(self, number=2):
         global mov,mo,rng
@@ -330,6 +375,7 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
         #reset bad poison counter
         if self.poisonCounter>0:
             self.poisonCounter=1
+        self.pumped=False
         self.resting=False
         self.flinched=False
         self.charged=False
@@ -681,7 +727,7 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
             #if counter is at 0, undo confusion
             if self.confusionCounter==0:
                 self.confused=False
-                print(f"{self.name} snaps out of confusion!")
+                print(f"\n{self.name} snaps out of confusion!")
             #if still confused, chance to hurt self, end move()
             else:
                 print(f"\n{self.name} is confused!")
@@ -694,6 +740,7 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                     self.diving=False
                     self.shadowing=False
                     return
+        #aa:2turn
         #check if move needs to be charged
         if "2turn" in notas:
             if self.charged: #pokemon has charged the move already
@@ -714,6 +761,17 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                         self.charged=False
                     else: #otherwise end the move
                         return
+                if "electroshot" in notas:
+                    print(f"\n{self.name} is absorbing electricity!")
+                    shortpause()
+                    self.charged=True
+                    self.stageChange("sa",1)
+                    if self.field.weather=="rain": #if rain is out continue to use move
+                        self.charged=False
+                        pass
+                    else:
+                        return
+                    pass
                 elif "skullbash" in notas:
                     print(f"\n{self.name} tucks its head in...")
                     shortpause()
@@ -778,8 +836,10 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
         ## moves bypass accuracy under certain conditions
         elif ('blizzard' in notas) and (self.field.weather=='hail'):
             hitCheck=True
-        elif ('thunder' in notas) and (self.field.weather=='rain'):
+        elif ('noMissRain' in notas) and (self.field.weather=='rain'):
             hitCheck=True
+        elif ('noMissPoisons' in notas) and (7 in self.tipe):
+            hitCheck = True
         else:
             #check evasion and accuracy stats
             effAccu=self.acstage-opponent.evstage+6 #get difference in evasion/accuracy stats, offset by proper center, index 6
@@ -827,62 +887,62 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                 ## weathers ##
                 if "sun" in notas:
                     if self.field.weather=='sunny':
-                        print("The move fails! It's already sunny!")
+                        print("\nThe move fails! It's already sunny!")
                     else:
                         self.field.weather='sunny'
                         self.field.weatherCounter=5
-                        print("The sunlight turns harsh!")
+                        print("\nThe sunlight turns harsh!")
                 if "rain" in notas:
                     if self.field.weather=='rain':
-                        print("The move fails! It's already raining!")
+                        print("\nThe move fails! It's already raining!")
                     else:
                         self.field.weather='rain'
                         self.field.weatherCounter=5
-                        print("It starts raining!")
+                        print("\nIt starts raining!")
                 if 'sand' in notas:
                     if self.field.weather=='sandstorm':
-                        print("The move fails! There's already a sandstorm!")
+                        print("\nThe move fails! There's already a sandstorm!")
                     else:
                         self.field.weather='sandstorm'
                         self.field.weatherCounter=5
-                        print("A sandstorm kicks up!")                
+                        print("\nA sandstorm kicks up!")                
                 if 'hail' in notas:
                     if self.field.weather=='hail':
-                        print("The move fails! It's already hailing")
+                        print("\nThe move fails! It's already hailing")
                     else:
                         self.field.weather='hail'
                         self.field.weatherCounter=5
-                        print("It starts hailing!")
+                        print("\nIt starts hailing!")
                 ### end of the weathers ###
                 ## terrains ##
                 if "electric" in notas:
                     if self.field.terrain=="electric":
-                        print("The move fails! The battlefield is already electrified!")
+                        print("\nThe move fails! The battlefield is already electrified!")
                     else:
                         self.field.terrain="electric"
                         self.field.terrainCounter=5
-                        print("Electricity surges throughout the battlefield!")
+                        print("\nElectricity surges throughout the battlefield!")
                 if "grassy" in notas:
                     if self.field.terrain=="grassy":
-                        print("The move fails! The battlefield is already grassy!")
+                        print("\nThe move fails! The battlefield is already grassy!")
                     else:
                         self.field.terrain="grassy"
                         self.field.terrainCounter=5
-                        print("Grass grows all over the place!")
+                        print("\nGrass grows all over the place!")
                 if "misty" in notas:
                     if self.field.terrain=="misty":
-                        print("The move fails! The battlefield is already covered in mist!")
+                        print("\nThe move fails! The battlefield is already covered in mist!")
                     else:
                         self.field.terrain="misty"
                         self.field.terrainCounter=5
-                        print("A mist descends on the battlefield!")
+                        print("\nA mist descends on the battlefield!")
                 if "psychic" in notas:
                     if self.field.terrain=="psychic":
-                        print("The move fails! The battlefield is already weird!")
+                        print("\nThe move fails! The battlefield is already weird!")
                     else:
                         self.field.terrain="psychic"
                         self.field.terrainCounter=5
-                        print("The battlefield gets weird!")
+                        print("\nThe battlefield gets weird!")
                 ## statuses bro ##
                 statuses=[]
                 if "para" in notas: #yeah these if statements are literally all the same besides the strings, i can for loop this
@@ -925,6 +985,11 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                 if 'heals' in notas:
                     if 'recover' in notas:
                         healamount = self.maxhp/2.
+                    if 'shoreup' in notas:
+                        if self.field.weather == 'sandstorm':
+                            healamount = 2.*self.maxhp/3.
+                        else:
+                            healamount = self.maxhp/2.
                     if 'synthesis' in notas:
                         if (self.field.weather == 'rain') or (self.field.weather == 'sandstorm') or (self.field.weather == 'hail'):
                             healamount = self.maxhp/4.
@@ -932,8 +997,14 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                             healamount = 2.*self.maxhp/3.
                         else:
                             healamount = self.maxhp/2.
+                    if 'blessing' in notas:
+                        healamount = self.maxhp/4.
                     self.healing(healamount)
                 ### end of healing ###
+                ### healing conditions ###
+                if 'refresh' in notas:
+                    self.refreshing()
+                ### end of healing conditions
                 if ('veil' in notas) and (self.field.weather != 'hail'):
                     print("The move fails! There isn't enough hail...")
                     micropause()
@@ -957,6 +1028,11 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                         self.aquaring=True
                         print(f"{self.name} is covered by a veil of water!")
                 ### end of a ring ###
+                ## focus energy ##
+                if 'focusenergy' in notas:
+                    self.getPumped()
+                    print(f"{self.name} is getting pumped!")
+                    micropause()
                 #what's next
                 return
             ##==========================    end of status moves    =======================================##
@@ -987,13 +1063,18 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                         return "failed"
                     else:
                         self.field.futuresB = 3
-                        print(f"{self.name} foresaw an attack!")
+                        print(f"\n{self.name} foresaw an attack!")
                         shortpause()
                         return
+            # priority moves are PROHIBITED against grounded mons on psychic terrain
+            if (self.field.terrain == 'psychic') and (moveI['priority'] >= 1) and opponent.grounded:
+                print(f"\nPsychic Terrain protects {opponent.name} from the priority move!")
+                shortpause()
+                return
             ans,eff,comment=damage(self,opponent,moveI['pwr'],moveI['type'],moveI['special?'],notas)
             if len(comment)>0: 
                 if comment[0] == "failed": #bad mirror coat or counter
-                    print("The move fails!")
+                    print("\nThe move fails!")
                     shortpause()
                     return
             opponent.hit(self,ans,eff,notas,moveIndex,comment)
@@ -1070,10 +1151,6 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
             self.currenthp-=damagepoints
             self.currenthpp=100.*self.currenthp/self.maxhp
             #show all the damage boosts
-            for i in comments:
-                micropause() #for drama
-                print(f"{i}")
-            micropause()
             #show effectiveness
             if effectiveness>2.:
                 print("It's MEGA-effective!!")
@@ -1084,6 +1161,9 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
             if effectiveness>=0.5 and effectiveness<1.:
                 print("It's not very effective.")
             micropause()
+            for i in comments:
+                print(f"{i}")
+                micropause()
             #result of hit
             print(f"{self.name} lost {format(100*damagepoints/self.maxhp,'.2f')}% HP!")
             shortpause()
@@ -1095,6 +1175,10 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                 ### setting counter/mirror coat damage data info
                 if mov[move_index]['special?'] == 1:    self.counter_damage = (damagepoints, "spec")
                 else:                                   self.counter_damage = (damagepoints, "phys")
+                #thaw for hot moves
+                if self.frozen and (moveTipe==1 or "scald" in notes):
+                    self.frozen=False
+                    print(f"The heat thaws {self.name} out!")
                 #status conditions
                 #statuses bro
                 statuses=[]  #hey, hear me out, what if we made a numpy array out of these strings, "para" "burn" etc., and used numpy tricks to do all
@@ -1128,12 +1212,9 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                     if rng.random()<=flinChance/100.:
                         self.flinch()
                     #end of flinching
-                #thaw for fire moves
-                if self.frozen and moveTipe==1:
-                    self.frozen=False
-                    print(f"The Fire-type move thaws {self.name} out!")
+                    pass
                 #anything else to do after not fainting?
-            #check for recoil, apply recoil if present
+            #check for recoil, apply recoil if present aa:recoilhit
             if "recoil" in notes:
                 amnt=notes[1+int(np.argwhere(np.array(notes)=="recoil"))]
                 if amnt =="1/2":
@@ -1159,10 +1240,22 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
         if self.currenthp > self.maxhp:
             self.currenthp = self.maxhp
         self.currenthpp = 100. * self.currenthp/self.maxhp
-        print(f"{self.name} restores some health! ({format(self.currenthpp,'.2f')}% HP)")
+        print(f"\n{self.name} restores some health! ({format(self.currenthpp,'.2f')}% HP)")
         #print(f"{self.name} heals {format(100.*amount/self.maxhp,'.2f')}% HP!")
         micropause()
         pass
+    def refreshing(self):
+        self.sleep=False        
+        self.frozen=False
+        self.burned=False
+        self.paralyzed=False
+        self.poisoned=False
+        self.badlypoisoned=False
+        self.confused=False
+        self.sleepCounter=0
+        self.poisonCounter=0
+        self.confusionCounter=0
+        print(f"{self.name} is cured of all status conditions!")
     def aquaheal(self):
         amnt = np.floor(self.maxhp/16.)
         print(f"{self.name} is healed by its Aqua Ring!")
@@ -1171,6 +1264,9 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
     #flinching
     def flinch(self):
         self.flinched=True
+    # getting pumped # focus energy # critical hits
+    def getPumped(self):
+        self.pumped = True
     #recoil, gonna experiment with spacing here I guess whatever
     def recoil(self, damagedone, recoilAmount):
         self.currenthp -= damagedone * recoilAmount
@@ -2223,56 +2319,56 @@ class battle:
                         if self.field.weatherCounter==0:
                             self.field.weather='clear'
                             self.field.weatherCounter=np.inf
-                            print("The harsh sunlight is fading...")
+                            print("\nThe harsh sunlight is fading...")
                             shortpause()
                         else:
-                            print("The sunlight is harsh!")
+                            print("\nThe sunlight is harsh!")
                             shortpause()
                     if self.field.weather=='rain':
                         if self.field.weatherCounter==0:
                             self.field.weather='clear'
                             self.field.weatherCounter=np.inf
-                            print("The rain stops...")
+                            print("\nThe rain stops...")
                             shortpause()
                         else:
-                            print("It's raining!")
+                            print("\nIt's raining!")
                             shortpause()
                     if self.field.weather=='sandstorm':
                         if self.field.weatherCounter==0:
                             self.field.weather='clear'
                             self.field.weatherCounter=np.inf
-                            print("The sandstorm is subsiding...")
+                            print("\nThe sandstorm is subsiding...")
                             shortpause()
                         else:
-                            print("The sandstorm is raging!")
+                            print("\nThe sandstorm is raging!")
                             shortpause()
                     if self.field.weather=='hail':
                         if self.field.weatherCounter==0:
                             self.field.weather='clear'
                             self.field.weatherCounter=np.inf
-                            print("The hail stops")
+                            print("\nThe hail stops")
                             shortpause()
                         else:
-                            print("It's hailing!")
+                            print("\nIt's hailing!")
                             shortpause()
                     #is the terrain still on?
                     self.field.terrainCounter-=1
                     if self.field.terrainCounter==0:
                         self.field.terrain="none"
                         self.field.terrainCounter=np.inf
-                        print("The terrain faded away...")
+                        print("\nThe terrain faded away...")
                         shortpause()
                     elif self.field.terrain=="grassy":
-                        print("The battlefield is grassy!")
+                        print("\nThe battlefield is grassy!")
                         shortpause()
                     elif self.field.terrain=="electric":
-                        print("The battlefield is electrified!")
+                        print("\nThe battlefield is electrified!")
                         shortpause()
                     elif self.field.terrain=="psychic":
-                        print("The battlefield is weird!")
+                        print("\nThe battlefield is weird!")
                         shortpause()
                     elif self.field.terrain=="misty":
-                        print("The battlefield is misty!")
+                        print("\nThe battlefield is misty!")
                         shortpause()
                     #print("")
                     #if nothing was set, will go from 0 to -1, and keep going negative
@@ -2285,9 +2381,9 @@ class battle:
                     self.field.veilACounter-=1
                     self.field.veilBCounter-=1
                     #are these screens still up?
-                    say = ("Your team's Light Screen fades away...","Their Light Screen fades away...",\
-                           "Your team's Reflect fades away...","Their Reflect fades away...", \
-                           "Your team's Aurora Veil fades...","Thier Aurora Veil fades...")
+                    say = ("\nYour team's Light Screen fades away...","\nTheir Light Screen fades away...",\
+                           "\nYour team's Reflect fades away...","\nTheir Reflect fades away...", \
+                           "\nYour team's Aurora Veil fades away...","\nTheir Aurora Veil fades away...")
                     for ee in list(enumerate((self.field.lightscACounter,self.field.lightscBCounter, self.field.reflectACounter,self.field.reflectBCounter, self.field.veilACounter,self.field.veilBCounter))) :
                         #print([ee[1]])
                         if ee[1] == 0:
@@ -2906,56 +3002,56 @@ class battle:
                         if self.field.weatherCounter==0:
                             self.field.weather='clear'
                             self.field.weatherCounter=np.inf
-                            print("The harsh sunlight is fading...")
+                            print("\nThe harsh sunlight is fading...")
                             shortpause()
                         else:
-                            print("The sunlight is harsh!")
+                            print("\nThe sunlight is harsh!")
                             shortpause()
                     if self.field.weather=='rain':
                         if self.field.weatherCounter==0:
                             self.field.weather='clear'
                             self.field.weatherCounter=np.inf
-                            print("The rain stops...")
+                            print("\nThe rain stops...")
                             shortpause()
                         else:
-                            print("It's raining!")
+                            print("\nIt's raining!")
                             shortpause()
                     if self.field.weather=='sandstorm':
                         if self.field.weatherCounter==0:
                             self.field.weather='clear'
                             self.field.weatherCounter=np.inf
-                            print("The sandstorm is subsiding...")
+                            print("\nThe sandstorm is subsiding...")
                             shortpause()
                         else:
-                            print("The sandstorm is raging!")
+                            print("\nThe sandstorm is raging!")
                             shortpause()
                     if self.field.weather=='hail':
                         if self.field.weatherCounter==0:
                             self.field.weather='clear'
                             self.field.weatherCounter=np.inf
-                            print("The hail stops")
+                            print("\nThe hail stops...")
                             shortpause()
                         else:
-                            print("It's hailing!")
+                            print("\nIt's hailing!")
                             shortpause()
                     #is the terrain still on?
                     self.field.terrainCounter-=1
                     if self.field.terrainCounter==0:
                         self.field.terrain="none"
                         self.field.terrainCounter=np.inf
-                        print("The terrain faded away...")
+                        print("\nThe terrain fades away...")
                         shortpause()
                     elif self.field.terrain=="grassy":
-                        print("The battlefield is grassy!")
+                        print("\nThe battlefield is grassy!")
                         shortpause()
                     elif self.field.terrain=="electric":
-                        print("The battlefield is electrified!")
+                        print("\nThe battlefield is electrified!")
                         shortpause()
                     elif self.field.terrain=="psychic":
-                        print("The battlefield is weird!")
+                        print("\nThe battlefield is weird!")
                         shortpause()
                     elif self.field.terrain=="misty":
-                        print("The battlefield is misty!")
+                        print("\nThe battlefield is misty!")
                         shortpause()
                     #print("")
                     #if nothing was set, will go from 0 to -1, and keep going negative
@@ -2968,9 +3064,9 @@ class battle:
                     self.field.veilACounter-=1
                     self.field.veilBCounter-=1
                     #are these screens still up?
-                    say = ("Your team's Light Screen fades away...","Their Light Screen fades away...",\
-                           "Your team's Reflect fades away...","Their Reflect fades away...", \
-                           "Your team's Aurora Veil fades...","Thier Aurora Veil fades...")
+                    say = ("\nYour team's Light Screen fades away...","\nTheir Light Screen fades away...",\
+                           "\nYour team's Reflect fades away...","\nTheir Reflect fades away...", \
+                           "\nYour team's Aurora Veil fades away...","\nTheir Aurora Veil fades away...")
                     for ee in list(enumerate((self.field.lightscACounter,self.field.lightscBCounter, self.field.reflectACounter,self.field.reflectBCounter, self.field.veilACounter,self.field.veilBCounter))) :
                         #print([ee[1]])
                         if ee[1] == 0:
@@ -2985,7 +3081,9 @@ class battle:
                 print("\nThe battle ended!")
                 shortpause()
                 if self.user_won:
-                    print(f"\n{self.cpu_name} is out of usable Pokémon!\nYou win!")
+                    print(f"\n{self.cpu_name} is out of usable Pokémon!")
+                    shortpause()
+                    print("You win!")
                     dramaticpause()
                 elif running:
                     print(f"\n{self.usr_name} and {self.usr_mon.name} forfeited to {self.cpu_name}!")
@@ -3327,7 +3425,7 @@ class field:
 ##zz:fieldclass
 #aa:damagefunction #aa:functions
 def damage(attacker,defender,power,moveTipe,isSpecial,note):
-    global statStages, crit_tiers
+    global statStages, crit_tiers, weather_dict, terrain_dict, pumped_dict
     ####damage read-out strings####
     damages=[]
     ####set some variable straight
@@ -3371,6 +3469,12 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
         if power<1.:
             power = 1.
         pass
+    #### crush grip ####
+    if 'crushgrip' in note:
+        power = np.floor( 120.*defender.currenthp/defender.maxhp )
+        if power<1.:
+            power = 1.
+        pass
     #### rollout #### 
     if 'rollout' in note: 
         if attacker.curled: #another boost if poke has used defense curl
@@ -3378,9 +3482,17 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
         power *= 2. ** (float(attacker.rolling_out))
     #### getting caught ####
     #digging diving flying
-    if ('gust' in note) and defender.flying:
-        caught_bonus = 2.
-        damages.append(f"{defender.name} is struck in the sky!")
+    if defender.flying:
+        #gust and twister catch fly-ing mons AND gets double damamge on them
+        if 'gust' in note:
+            caught_bonus = 2.
+            damages.append(f"{defender.name} is struck in the sky for double damage!")
+            pass
+        #thunder, hurricane, thousand arrows catch fly-ing but no damage boost (and whirlwind and smack down)
+        if ('thunder' in note) or ('arrows' in note):
+            caught_bonus = 1.
+            damages.append(f"{defender.name} is struck in the sky!")
+            pass
     if ('surf' in note) and defender.diving:
         caught_bonus = 2.
         damages.append(f"{defender.name} is struck underwater!")
@@ -3401,7 +3513,7 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
         damages.append("Power boosted from status condition!")
     if ('hex' in note) and (defender.burned or defender.poisoned or defender.badlypoisoned or defender.paralyzed or defender.sleep or defender.frozen):
         power*=2.
-        damages.append("Power boosted by target's status condition!")
+        damages.append(f"Power boosted by {defender.name}'s status condition!")
     #### fusion move fusion ####
     if ('fusion-b' in note) and attacker.field.fusionf:
         power*=2.
@@ -3409,68 +3521,99 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
     elif ('fusion-f' in note) and attacker.field.fusionb:
         power*=2.
         damages.append("The flames are strengthened by the lingering bolts!")
-    ####weather ball#### doubles power and changes type
+    #### fickle beam ####
+    if 'fickle' in note:
+        if rng.random() <= 0.3:
+            power *= 2.
+            damages.append(f"All of {attacker.name}'s heads are attacking in unison!")
+            pass
+    #### revelation dance #### changes type to match user's primary type
+    if 'revelation' in note:
+        moveTipe = plaintiffTipe[0]
+        damages.append(f"Revelation Dance becomes a {typeStrings[moveTipe]}-type move!")
+    ####weather ball#### doubles power and changes type in non-clear weather
     if ('weatherball' in note) and (attacker.field.weather!='clear'):
-        power*=2.
-        if attacker.field.weather=="sunny":
-            moveTipe=1
-        if attacker.field.weather=="rain":
-            moveTipe=2
-        if attacker.field.weather=="sandstorm":
-            moveTipe=12
-        if attacker.field.weather=="hail":
-            moveTipe=5
-        damages.append("Weather Ball changes type!")
+        power *= 2.
+        moveTipe = weather_dict[attacker.field.weather]
+        #if attacker.field.weather=="sunny":
+        #    moveTipe=1
+        #if attacker.field.weather=="rain":
+        #    moveTipe=2
+        #if attacker.field.weather=="sandstorm":
+        #    moveTipe=12
+        #if attacker.field.weather=="hail":
+        #    moveTipe=5
+        damages.append(f"Weather Ball becomes a {typeStrings[moveTipe]}-type move!")
+    #### terrain pulse #### doubles power and changes type on active terrain
+    if ('terrainpulse' in note) and (attacker.grounded) and (attacker.field.terrain!='none'):
+        power *= 2.
+        moveTipe = terrain_dict[attacker.field.terrain]
+        damages.append(f"Terrain Pulse becomes a {typeStrings[moveTipe]}-type move!!")
     #solarbeam gets nerfed in inclement weather
     if ("solar" in note) and (attacker.field.weather=="rain" or attacker.field.weather=="sandstorm" or attacker.field.weather=="hail"):
         power*=0.5
     #earthquake, bulldoze and magnitude nerfed on grassy terrain
     if ("nerfGrassy" in note) and (attacker.field.terrain=="grassy"):
         power*=0.5
-        damages.append("The grassy terrain softens the blow!")
+        damages.append("The Grassy Terrain softens the blow!")
     ####weather damage boost####
     weatherBonus=1.
+    hydrosteamBonus = 1.
     if attacker.field.weather=='sunny':
-        if moveTipe==1:
-            weatherBonus=4./3.
-            damages.append("The Sun boosts the attack power!")
-        elif moveTipe==2:
-            weatherBonus=2./3.
+        if 'hydrosteam' in note: #hydrosteam should activate independent of fire and water type checks and boosts
+            hydrosteamBonus = 1.5
+            damages.append("The sunlight is boosting the prehistoric move!")
+            pass
+        if moveTipe==1:         #apply bonus to fire-type moves, even if the hydrosteam bonus runs
+            weatherBonus = 1.5
+            damages.append("The Sun boosts the attack's power!")
+        elif moveTipe==2 and not ('hydrosteam' in note):
+            weatherBonus = 0.5
             damages.append("The attack is weakened by the sunlight...")
     elif attacker.field.weather=='rain':
         if moveTipe==1:
-            weatherBonus=2./3.
+            weatherBonus = 0.5
             damages.append("The attack is weakened by the rain...")
         elif moveTipe==2:
-            weatherBonus=4./3.
-            damages.append("The rain boosts the attack power!")
-    #### terrain boosts and nerf ####
+            weatherBonus = 1.5
+            damages.append("The rain boosts the attack's power!")
+    #### terrain boosts and nerf aa:terrainboosts aa:terraindamage aa:psybladedamage ####
+    #terrainBonus = 1.
+    #psybladeBonus = 1.
     if attacker.field.terrain=='none':
         pass
     else: #only check for terrain boosts when there is a non-none terrain
         #when terrains come into play
-        grass=(attacker.field.terrain=="grassy") and (moveTipe==3) and (attacker.grounded)
-        psychic=(attacker.field.terrain=="psychic") and (moveTipe==10) and (attacker.grounded)
-        electric=(attacker.field.terrain=="electric") and (moveTipe==4) and (attacker.grounded)
-        fairy=(attacker.field.terrain=="misty") and (moveTipe==14) and (defender.grounded)
+        grass=(attacker.field.terrain=="grassy") and (moveTipe==3) and (attacker.grounded)      #there is GRASSY TERRAIN the user is GROUNDED the user is using a GRASS-TYPE move              
+        psychic=(attacker.field.terrain=="psychic") and (moveTipe==10) and (attacker.grounded)  #there is PSYCHIC TERRAIN the user is GROUNDED the user is using a PSYCHIC-TYPE move
+        fairy=(attacker.field.terrain=="misty") and (moveTipe==14) and (defender.grounded)      #there is MISTY TERRAIN the TARGET is GROUNDED the user is using a DRAGON-TYPE move
+        electric=(attacker.field.terrain=="electric") and (attacker.grounded)
+        electric_psyblade = electric and ('psyblade' in note)   #there is ELECTRIC TERRAIN the user is GROUNDED the user is using PSYBLADE              
+        electric_normal = electric and (moveTipe == 4)          #there is ELECTRIC TERRAIN the user is GROUNDED the user is using an ELECTRIC-TYPE move
         #realized the three of them would have the exact same effect
-        if grass or psychic or electric:
-            power*=1.3
-            damages.append("Boosted by the terrain!")
+        if electric_psyblade:
+            power *= 1.5
+            damages.append(f"Electric Terrain boosts the futuristic move!")
+            pass
+        if grass or psychic or electric_normal:
+            power *= 5325./4096.
+            damages.append(f"Boosted by the {attacker.field.terrain.capitalize()} Terrain!")
+            pass
         #grounded mon take half damage on fairy terrain
         elif fairy:
-            power*=0.5
-            damages.append("Weakened by the terrain...")
+            power *= 0.5
+            damages.append("Weakened by the Misty Terrain...")
+            pass
         #there is some terrain, but the other requirements werent met, no effect
         else:
             pass
     ####critical hit chance####
     critical=1.
-    crit = 0
+    crit = pumped_dict[attacker.pumped] #0 if not pumped, 2 if pumped
     if 'frostbreath' in note:     critical = 1.5  #guaranteed crit
     else:
-        if "highCrit" in note:                  crit+=1         #better chances
-        elif "fetch_holding_leek" in note:      crit+=1         #better chances
+        if "highCrit" in note:                  crit+=1         #better chances for certain moves
+        elif "fetch_holding_leek" in note:      crit+=1         #better chances if you're 'fetch holding a leek 
         if crit > 3:                            crit=3          #catch overflow
         if rng.integers(1,crit_tiers[crit])==1: critical=1.5    #hitting a crit
     if critical == 1.5:         #it's a critical hit
@@ -3478,9 +3621,9 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
             attack/=statNerf    #undo it
         if statBoost>1:         #if change is productive to defender
             defense/=statBoost  #undo it
-        damages.append("It's a critical hit!")
         screennerf=1.0 #critical hits bypass screens
         burn=1.0 #critical hits bypass burn-attack-nerf
+        damages.append("It's a critical hit!")
     if screennerf < 1.0:    damages.append(f"Protected by {screen_tag[screen_i]}")
     ####random fluctuation 85%-100%
     rando=rng.integers(85,101)*0.01
@@ -3492,8 +3635,6 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
     ####type effectiveness####
     tyype=checkTypeEffectiveness(moveTipe,defendantTipe)
     ## flying pokemon being targeted with ground move is grounded, should lose flying type
-    #print(moveTipe,defendantTipe,defender.grounded)
-    ## 
     if (moveTipe==8) and (9 in defendantTipe): #be wary of grounds attacking flyings
         if defender.grounded: #easy
             if defender.dualType:
@@ -3504,21 +3645,35 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
                 tyype = 1.0
         elif ('arrows' in note): #pokemon not grounded yet, but arrows hits flying regardless
             tyype = 1.0
-    #elif ('arrows' in note) and defender.:
+            pass
+        pass
+    #### collision course and electro drift damage boost
+    collided = 1.
+    if ('collision' in note) and (tyype >= 2.):
+        collided = 5461./4096.
+        damages.append("The super-effective hit is more powerful than normal!")
     #check if the burn nerf survives (non-crit and non-facade)
     if burn<1.0:
         damages.append("The burn reduces damage...")
     #circumvent normal damage calculation sometimes
+    #mirrorcoat, counter succeeding
     if (('mirrorcoat' in note) and (attacker.counter_damage[1] == 'spec')) \
             or (('counter' in note) and (attacker.counter_damage[1]=='phys')):
         ans = np.floor(2.*attacker.counter_damage[0])
         damages = []
+    #failing
     elif (('mirrorcoat' in note) or ('counter' in note)):
         ans = 0.0
         damages = ["failed"]
+    #ruination, natures madness, superfang
+    elif 'ruination' in note:
+        ans = np.floor(defender.currenthp / 2.)
+        if ans < 1.: ans = 1.
+        damages = []
     else:
         ####modifiers united####
-        damageModifier = weatherBonus * critical * rando * STAB * tyype * burn * screennerf * caught_bonus
+        damageModifier = critical * rando * STAB * tyype * burn * screennerf * caught_bonus * collided \
+                    * weatherBonus * hydrosteamBonus
         ####damage calculation####
         ans= np.floor( ((((2.*level)/5. + 2.)*power*attack/defense)/50. + 2.)*damageModifier )
     return ans,tyype,damages
@@ -3865,20 +4020,22 @@ def loadMon(savefile, configload=False):
             newP.PP=[getMoveInfo(j)['pp'] for j in newP.knownMoves]
             newP.reStat()
             loadPokes.append(newP)
-            #print(f"Loaded {newP.name}!")
-            micropause()
         return loadPokes
     except FileNotFoundError:
-        print("! The file name wasn't found... !")
+        print("\n! The file name wasn't found... !")
+        micropause()
         return [0]
     except OSError:
-        print("! The file name wasn't found... !")
+        print("\n! The file name wasn't found... !")
+        micropause()
         return [0]
     except IndexError:
-        print("!! The save file is corrupted !!")
+        print("\n!! The save file is corrupted !!")
+        micropause()
         return [0]
     except ValueError:
-        print("!! This file is all over the place !!")
+        print("\n!! This file is all over the place !!")
+        micropause()
         return [0]
 #check party for non fainted pokemon
 def checkBlackout(party):
@@ -4015,20 +4172,21 @@ def print_dex():
               f"[{i['sa']}]  [{i['sd']}]  [{i['sp']}]")
     return
 #moves have pwr, phys/spec, type, accu, descipt
-def moveInfo(moveCode):
-    global mov, typeStrings, move_dict
+def moveInfo(moveCode, index=False):
+    global mov, typeStrings, move_dict, game_width
+    contact_textyes = textwrap.fill("-The user makes contact with the target.", game_width)
+    contact_textnot = textwrap.fill("-The user does not make contact with the target.", game_width)
     move=mov[moveCode]
     descr_parts = move['desc'].splitlines()
     #print(f"------------ {move['name']} ------------")
-    #stats_dict = dict([('HP',0),('Atk',1),('Def',2),('SpA',3),('SpD',4),('Spe',5)])
-    print('\n'+magic_text(txt=f"{move['name']}",spacing=' ',cha='-',long=game_width))
+    if index:   print('\n'+magic_text(txt=f"{move['name']} | index: {moveCode}",spacing=' ',cha='-',long=game_width))
+    else:       print('\n'+magic_text(txt=f"{move['name']}",spacing=' ',cha='-',long=game_width))
     print(f"Power: {move['pwr']} | Accuracy: {move['accu']}%")
     print(f"[{typeStrings[move['type']]}] | [{move_dict[move['special?']]}] | PP: {move['pp']}")
-    print("-\n",end="")
+    print("\n",end="")
     for i in descr_parts: print(textwrap.fill(i, game_width))
-    #textwrap.fill(move['desc'], game_width))
-    if move['contact?']:    print("-The user makes contact with the target.")
-    else:                   print("-The user does not make contact with the target.")
+    if move['contact?']:    print(contact_textyes)
+    else:                   print(contact_textnot)
     return
 ##zz:textprint
 def readEvIv(dato):
@@ -4130,8 +4288,12 @@ stageStrings=["fell severely","fell harshly","fell","[BLANK]","rose","rose sharp
 nature_stat_str = ["Atk","Def","SpA","SpD","Spe"]
 stats_dict = dict([('HP',0),('Atk',1),('Def',2),('SpA',3),('SpD',4),('Spe',5)]) #used for showdown save loading
 move_dict = dict([(2,'Status'),(1,'Special'),(0,'Physical')])                  #used for move info displaying
+weather_dict = dict([('clear',0),('sunny',1),('rain',2),('hail',5),('sandstorm',12)])  #used for turning weather into weatherball typing
+terrain_dict = dict([('none',0),('grassy',3),('electric',4),('psychic',10),('misty',17)]) #used for turning terrain into Terrain Pulse typing
+pumped_dict = dict([(False,0),(True,2)])
 Weathers=['clear','sunny','rain','sandstorm','hail']
 Terrains=['none','electric','grassy','misty','psychic']
+
 struggle_i=struggle #move index of struggle
 futuresight_i = futuresigh
 tackle_i = tackl
