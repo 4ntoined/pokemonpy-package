@@ -1,5 +1,18 @@
 ## pokemonpy-package log
 
+### v0.3.0
+Date: 2024 August change the pokemon.py gameverision
+
+Thinking about:
+- abilities
+- move unification - get spikes working on ceaseless edge
+- snow
+- save file versioning = compatibility with older versions of the game (movedex)
+- grounding/ungrounding pokemon
+- status screen completion
+- losing a battle has weird text
+- defog...
+
 ### v0.2.5
 Date: 2024 August 18
 
