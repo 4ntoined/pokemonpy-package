@@ -1,7 +1,7 @@
 ## pokemonpy-package log
 
 ### v0.3.0
-Date: 2024 August change the pokemon.py gameverision
+Date: 2024 change the pokemon.py gameversion
 
 Thinking about:
 - abilities
@@ -12,6 +12,18 @@ Thinking about:
 - status screen completion
 - losing a battle has weird text
 - defog...
+
+#### Major
+- abilities
+- double battles
+- triple+ battles
+- rotation battles
+- defog + grounding/ungrounding + hazards + status screen completion
+
+#### Minor
+- move unification
+- snow
+- battle texts
 
 ### v0.2.5
 Date: 2024 August 18
