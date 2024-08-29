@@ -1,7 +1,28 @@
 ## pokemonpy-package log
 
-### v0.3.0
+### vdoubles
 Date: 2024 change the pokemon.py gameversion
+
+here's what im thinking for double battles stuff
+
+- implement semifield (big step, im already upset about it)
+- invent PPS (Pokémon Positioning System), orient 4 Pokémon in a battle *
+- rework moves.py to target one or two or all mons
+- rework move info to report range
+- rework game to have player select a target(s)
+- spread damage in the damage calculation
+- have the player manage 2 active Pokémon at once
+- update the battle UI, status screen to account for 4 Pokémon
+
+*
+i am thinking that this "orientation" idea is technically moot for doubles.
+Moves either target (1) one of the two opponents, (2) both opponents at once [rock slide],
+(3) the user's ally [helping hand], (4) both the user and its ally [Life Dew],
+(5) all Pokemon on the field [Perish Song]
+In doubles, targeting has nothing to do with positioning, just allegiance.
+But this is an important thing to do anyway for Triple+ Battles,
+where some Pokémon are out of range of other Pokémon's moves because of where they are in
+"physical" space.
 
 Thinking about:
 - abilities
