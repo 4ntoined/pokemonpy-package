@@ -1006,8 +1006,8 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                     self.refreshing()
                 ### end of healing conditions
                 if ('veil' in notas) and (self.field.weather != 'hail'):
-                    print("The move fails! There isn't enough hail...")
-                    micropause()
+                    print("\nThe move fails! There isn't enough hail...")
+                    shortpause()
                     return
                 ## screens ##
                 screenz = ("reflect","lightscreen","veil")
@@ -1024,9 +1024,11 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                 if 'aquaring' in notas:
                     if self.aquaring:
                         print(f"The move fails! {self.name} already has an Aqua Ring...")
+                        shortpause()
                     else:
                         self.aquaring=True
                         print(f"{self.name} is covered by a veil of water!")
+                        shortpause()
                 ### end of a ring ###
                 ## focus energy ##
                 if 'focusenergy' in notas:
@@ -1038,7 +1040,8 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
             ##==========================    end of status moves    =======================================##
             #fake out fails if its the not pokemons first turn out
             if ('fakeout' in notas) and (not self.firstturnout):
-                print('The move fails!')
+                print('\nThe move fails!')
+                shortpause()
                 return
             # catching use and set up of future sight
             if ('futuresight' in notas):
@@ -3146,7 +3149,7 @@ class semifield:
     def echo(self):
         return
 
-##aa:fieldclass## possible in the code, but I like the clarity of battlefield while working all this out
+##aa:fieldclass
 class field:
     def __init__(self, weath = 'clear', terra = 'none', rando = False):
         global Weathers
