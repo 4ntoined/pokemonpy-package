@@ -47,10 +47,11 @@ from . import saves
 class game:
     def __init__(self):
         #defining bedrock game variables
-        self.gameversion = '0.2.5'
-        self.devs_list = ('Adarius',)
-        self.cut_the_line=1.
-        self.full_restore=1.
+        self.gameversion = '0.2.6'
+        self.devs_list = ( 'Adarius', )
+        self.cut_the_line = 1.
+        self.full_restore = 1.
+        self.classicbattlelogic = 'basic'
                 
         #setting variables 
         self.mute_set = False
@@ -61,7 +62,7 @@ class game:
         self.gw_set = False
         self.mutepregame = False
         self.username = 'You'
-        self.opponentname = 'Rival'
+        self.opponentname = 'Youngster Joey'
         self.nparty = 6
         self.nstart = 6
         self.preload_parties = []
@@ -434,7 +435,7 @@ class game:
                     shortpause()
                     continue #go back to main without starting the battle
                 classicbattle = battle(userParty, trainerParty, scarlet, usr_name=self.username, cpu_name=self.opponentname)
-                classicbattle.start_withai()
+                classicbattle.start_withai( cpu_logic = self.classicbattlelogic )
                 #then it should loop back to the main menu?
             ###end of battle block### zz:battlemode
             #### check party pokemon? aa:party ####
@@ -1574,6 +1575,7 @@ class game:
                     pass
                 shortpause()
             ####what's the next spot?####
+            #aa:cheats
             if userChoice == "cheats":
                 yoo = input("\nYo, what's up?...")
                 if yoo == "eliter":
@@ -1586,7 +1588,14 @@ class game:
                 elif yoo == 'chansey':
                     self.full_restore *= -1.
                     #cheat_receipt()
+                elif yoo == 'cpu random':
+                    self.classicbattlelogic = 'random'
+                    cheat_receipt()
+                elif yoo == 'cpu basic':
+                    self.classicbattlelogic = 'basic'
+                    cheat_receipt()
                 pass
+                #zz:cheats
             #end of game, loops back to main screen
         return
     ##aa:configfunction

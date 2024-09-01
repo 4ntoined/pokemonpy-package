@@ -3,6 +3,15 @@
 ### vdoubles
 Date: 2024 change the pokemon.py gameversion
 
+* TECHNICAL UPDATE: Updated the CPU with a logic switch and the ability to make random decisions
+
+general battle updates:
+- pokémon switching should be made a function
+- trainer call outs ("come back"/"finish them off"/etc.) should be randomized (functionalized)
+- give cpu class an option to make random choices, get rid of startbattle() [check!]
+- status screen stuff still of course
+- full restore cheat
+
 here's what im thinking for double battles stuff
 
 - implement semifield (big step, im already upset about it)
@@ -18,21 +27,13 @@ here's what im thinking for double battles stuff
 i am thinking that this "orientation" idea is technically moot for doubles.
 Moves either target (1) one of the two opponents, (2) both opponents at once [rock slide],
 (3) the user's ally [helping hand], (4) both the user and its ally [Life Dew],
-(5) all Pokemon on the field [Perish Song]
+(5) all Pokémon on the field [Perish Song]
 In doubles, targeting has nothing to do with positioning, just allegiance.
 But this is an important thing to do anyway for Triple+ Battles,
 where some Pokémon are out of range of other Pokémon's moves because of where they are in
 "physical" space.
 
 Thinking about:
-- abilities
-- move unification - get spikes working on ceaseless edge
-- snow
-- save file versioning = compatibility with older versions of the game (movedex)
-- grounding/ungrounding pokemon
-- status screen completion
-- losing a battle has weird text
-- defog...
 
 #### Major
 - abilities
@@ -45,6 +46,8 @@ Thinking about:
 - move unification
 - snow
 - battle texts
+- savefile versioning
+
 
 ### v0.2.5
 Date: 2024 August 18

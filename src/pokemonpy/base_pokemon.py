@@ -884,65 +884,82 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                 if 'curled' in notas:
                     self.curled=True
                     print(f"{self.name} curled up!")
+                    shortpause()
                 ## weathers ##
                 if "sun" in notas:
                     if self.field.weather=='sunny':
                         print("\nThe move fails! It's already sunny!")
+                        shortpause()
                     else:
                         self.field.weather='sunny'
                         self.field.weatherCounter=5
                         print("\nThe sunlight turns harsh!")
+                        shortpause()
                 if "rain" in notas:
                     if self.field.weather=='rain':
                         print("\nThe move fails! It's already raining!")
+                        shortpause()
                     else:
                         self.field.weather='rain'
                         self.field.weatherCounter=5
                         print("\nIt starts raining!")
+                        shortpause()
                 if 'sand' in notas:
                     if self.field.weather=='sandstorm':
                         print("\nThe move fails! There's already a sandstorm!")
+                        shortpause()
                     else:
                         self.field.weather='sandstorm'
                         self.field.weatherCounter=5
                         print("\nA sandstorm kicks up!")                
+                        shortpause()
                 if 'hail' in notas:
                     if self.field.weather=='hail':
                         print("\nThe move fails! It's already hailing")
+                        shortpause()
                     else:
                         self.field.weather='hail'
                         self.field.weatherCounter=5
                         print("\nIt starts hailing!")
+                        shortpause()
                 ### end of the weathers ###
                 ## terrains ##
                 if "electric" in notas:
                     if self.field.terrain=="electric":
                         print("\nThe move fails! The battlefield is already electrified!")
+                        shortpause()
                     else:
                         self.field.terrain="electric"
                         self.field.terrainCounter=5
                         print("\nElectricity surges throughout the battlefield!")
+                        shortpause()
                 if "grassy" in notas:
                     if self.field.terrain=="grassy":
                         print("\nThe move fails! The battlefield is already grassy!")
+                        shortpause()
                     else:
                         self.field.terrain="grassy"
                         self.field.terrainCounter=5
                         print("\nGrass grows all over the place!")
+                        shortpause()
                 if "misty" in notas:
                     if self.field.terrain=="misty":
                         print("\nThe move fails! The battlefield is already covered in mist!")
+                        shortpause()
                     else:
                         self.field.terrain="misty"
                         self.field.terrainCounter=5
                         print("\nA mist descends on the battlefield!")
+                        shortpause()
                 if "psychic" in notas:
                     if self.field.terrain=="psychic":
                         print("\nThe move fails! The battlefield is already weird!")
+                        shortpause()
                     else:
                         self.field.terrain="psychic"
                         self.field.terrainCounter=5
                         print("\nThe battlefield gets weird!")
+                        shortpause()
                 ## statuses bro ##
                 statuses=[]
                 if "para" in notas: #yeah these if statements are literally all the same besides the strings, i can for loop this
@@ -1168,7 +1185,7 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                 print(f"{i}")
                 micropause()
             #result of hit
-            print(f"{self.name} lost {format(100*damagepoints/self.maxhp,'.2f')}% HP!")
+            print(f"{self.name} loses {format(100*damagepoints/self.maxhp,'.2f')}% HP!")
             shortpause()
             #check for faint
             if self.currenthp<=0.:  self.faint()
@@ -1751,7 +1768,8 @@ class battle:
         print(f"{dotsdots}{youi_2}")
         print(f"{dotsdots}{youi_3}")
         return
-  
+    
+    '''
     def startbattle(self, e4=False):
         ####Battle starts####
         if e4: print(f"\nYou challenge {self.cpu_name} to a Pokémon Battle!")
@@ -2427,9 +2445,13 @@ class battle:
         for i in self.usrs: i.withdraw()
         shortpause()
         return self.user_won
+    '''
     ###end of battle block###
     ##aa:aibattle
-    def start_withai(self, e4=False):
+    def start_withai(self, e4 = False, cpu_logic = 'basic'):
+        # e4: changes the x challenges Y text to Y challenges X
+        # cpu_logic: 'basic' for the agressive, damage-seeking logic,
+        #            'random' for the original random selection of moves
         ####Battle starts####
         userInd=0
         trainerInd=0
@@ -2665,7 +2687,9 @@ class battle:
                         pass
                     trainerShift=False
                     nfp,nfpList=checkBlackout(self.cpus)
-                    rivalgo = rivalbrain.go(nfp,self.cpu_mon,self.usr_mon)
+                    if cpu_logic == 'basic':    rivalgo = rivalbrain.go(nfp,self.cpu_mon,self.usr_mon)
+                    elif cpu_logic == 'random': rivalgo = rivalbrain.go_randomchoices(nfp,self.cpu_mon,self.usr_mon)
+                    else:                       rivalgo = rivalbrain.go(nfp,self.cpu_mon,self.usr_mon)
                     if nfp>1 and rivalgo == 'switch' and (not self.cpu_mon.resting) and (not self.cpu_mon.charged): #if trainer has more than 1 non fainted pokemon, 10% of the time, but not if their pokemon has to recharge
                         del nfpList[int(np.argwhere(np.array(nfpList)==trainerInd))] #removing the current pokemon from the list of nonfainted pokemon in the party
                         self.cpu_mon.withdraw()
