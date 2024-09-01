@@ -2,15 +2,15 @@
 
 ### vdoubles
 Date: 2024 change the pokemon.py gameversion
-
-* TECHNICAL UPDATE: Updated the CPU with a logic switch and the ability to make random decisions
+* UPDATE: New cheat code introduced.
+* TECHNICAL UPDATE: Updated the CPU with a logic switch and the ability to make random decisions.
 
 general battle updates:
 - pokémon switching should be made a function
-- trainer call outs ("come back"/"finish them off"/etc.) should be randomized (functionalized)
+- trainer call outs ("come back"/"finish them off"/etc.) should be randomized (functionalized) [check!]
 - give cpu class an option to make random choices, get rid of startbattle() [check!]
 - status screen stuff still of course
-- full restore cheat
+- full restore cheat [check!]
 
 here's what im thinking for double battles stuff
 

@@ -209,7 +209,7 @@ class game:
                 while 1: #user input loop
                     print("\n"+magic_text(txt='"Battle!" Settings', cha="x",long=self.game_width))
                     print("\n[1] Set the conditions of battle\n[2] Set your opponent's party\n[3] Set your opponent's name\n"+\
-                            "[4] Set your name")
+                            "[4] Set your opponent's logic\n[5] Set your name")
                     sat_choice = input("What [#] to do or [b]ack: ")
                     if sat_choice == 'b' or sat_choice == 'B':
                         break
@@ -291,7 +291,7 @@ class game:
                             print("Leaving Opponent Reset...")
                             shortpause() #kills
                         #end of opponent set, back to main screen
-                    elif sat_choice == '4': #name setting
+                    elif sat_choice == '5': #name setting
                         playername = input("\nWhat's your name?\n: ")
                         self.username=playername
                         self.username_set=True
@@ -302,6 +302,25 @@ class game:
                         self.opponentname=opponame
                         print(f"{self.opponentname}! Yes, of course!")
                         shortpause() #kills
+                    elif sat_choice == '4':
+                        while 1:
+                            logicchoice = input("\nLogic options:\n\n[0] basic = competitive opponent\n[1] random = makes decisions randomly\n\n[#] or [b]ack: ")
+                            if logicchoice == 'b' or logicchoice == 'B':
+                                break
+                            if logicchoice == '0' or logicchoice == 'basic':
+                                self.classicbattlelogic = 'basic'
+                                print("\nOpponent logic set to 'basic'!")
+                                shortpause()
+                                break
+                            elif logicchoice == '1' or logicchoice == 'random':
+                                self.classicbattlelogic = 'basic'
+                                print("\nOpponent logic set to 'random'!")
+                                shortpause()
+                                break
+                            else:
+                                continue
+                            pass
+                        pass
                     else:
                         pass
                     # should be the end of the classic setting block
@@ -434,7 +453,7 @@ class game:
                     print("\nYou can't battle without a healthy Pokémon!")
                     shortpause()
                     continue #go back to main without starting the battle
-                classicbattle = battle(userParty, trainerParty, scarlet, usr_name=self.username, cpu_name=self.opponentname)
+                classicbattle = battle(userParty, trainerParty, scarlet, usr_name=self.username, cpu_name=self.opponentname, full_restore_on = cutline_dict[ self.full_restore ])
                 classicbattle.start_withai( cpu_logic = self.classicbattlelogic )
                 #then it should loop back to the main menu?
             ###end of battle block### zz:battlemode
@@ -1587,7 +1606,7 @@ class game:
                     cheat_receipt()
                 elif yoo == 'chansey':
                     self.full_restore *= -1.
-                    #cheat_receipt()
+                    cheat_receipt()
                 elif yoo == 'cpu random':
                     self.classicbattlelogic = 'random'
                     cheat_receipt()
