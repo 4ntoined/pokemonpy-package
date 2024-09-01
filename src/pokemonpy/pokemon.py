@@ -313,7 +313,7 @@ class game:
                                 shortpause()
                                 break
                             elif logicchoice == '1' or logicchoice == 'random':
-                                self.classicbattlelogic = 'basic'
+                                self.classicbattlelogic = 'random'
                                 print("\nOpponent logic set to 'random'!")
                                 shortpause()
                                 break
