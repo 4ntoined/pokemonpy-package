@@ -279,29 +279,31 @@ class game:
                                         except ValueError:
                                             print("*\n** Not a valid entry **\n*")
                         #more options to change battle conditions
-                    elif sat_choice == '2': ## another setting somewhere
+                    elif sat_choice == '2': ## set opponent's team # we can update this to choose any one of the user's parties... prob wouldn't be hard either....
                         print("\n"+magic_text(txt='Set Rival Team',cha='x',spacing=' ',long=self.game_width))
-                        #shortpause()
                         aceChoice=input("\nSet your current team as the battle opponent?\n[y] or [b]ack: ")
                         if aceChoice=='y' or aceChoice=="Y":
                             trainerParty=copy.deepcopy(userParty)
                             print("The Battle! Opponent has a new Party! Good Luck!")
-                            shortpause() #kills
+                            shortpause()
+                            continue
                         else:
                             print("Leaving Opponent Reset...")
-                            shortpause() #kills
+                            micropause()
+                            continue
                         #end of opponent set, back to main screen
                     elif sat_choice == '5': #name setting
                         playername = input("\nWhat's your name?\n: ")
                         self.username=playername
                         self.username_set=True
                         print(f"Thank you {self.username}!")
-                        shortpause() #kills
+                        shortpause()
+                        continue
                     elif sat_choice == '3': #opponents name setting
                         opponame = input("\nWhat's your Rival's name?\n: ")
                         self.opponentname=opponame
                         print(f"{self.opponentname}! Yes, of course!")
-                        shortpause() #kills
+                        shortpause()
                     elif sat_choice == '4':
                         while 1:
                             logicchoice = input("\nLogic options:\n\n[0] basic = competitive opponent\n[1] random = makes decisions randomly\n\n[#] or [b]ack: ")

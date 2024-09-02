@@ -82,15 +82,15 @@ gw - int, sets the length of banners and headers
 Start a battle:
 ```
 from pokemonpy.base_pokemon import *
-parties, fields = maker(2,6,2)
-bb = battle(parties[0],parties[1],fields[0],usr_name='Your Name',cpu_name='The Ops')
-bb.startbattle()
+parties, fields = maker(2, 6, 2)
+bb = battle(parties[0], parties[1], fields[0], usr_name = 'Your Name', cpu_name = 'The Ops')
+bb.start_withai( cpu_logic = 'random' )
 ```
 
 Make a party and save the first Pokémon: 
 ```
 from pokemonpy.base_pokemon import *
-parties, fields = maker(2,6,2)
+parties, fields = maker( 2, 6, 2)
 print_party(parties[0])
 parties[0][0].summary()
 parties[0][0].appraisal()

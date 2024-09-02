@@ -1,57 +1,16 @@
 ## pokemonpy-package log
 
-### vdoubles
-Date: 2024 change the pokemon.py gameversion
+### v0.2.6
+Date: 2024 September change the pokemon.py gameversion
+#### Pre-Doubles
+* UPDATE: Trainer call-outs updated and randomized.
 * UPDATE: New cheat code introduced.
-* TECHNICAL UPDATE: Updated the CPU with a logic switch and the ability to make random decisions.
-
-general battle updates:
-- pokémon switching should be made a function
-- trainer call outs ("come back"/"finish them off"/etc.) should be randomized (functionalized) [check!]
-- give cpu class an option to make random choices, get rid of startbattle() [check!]
-- status screen stuff still of course
-- full restore cheat [check!]
-
-here's what im thinking for double battles stuff
-
-- implement semifield (big step, im already upset about it)
-- invent PPS (Pokémon Positioning System), orient 4 Pokémon in a battle *
-- rework moves.py to target one or two or all mons
-- rework move info to report range
-- rework game to have player select a target(s)
-- spread damage in the damage calculation
-- have the player manage 2 active Pokémon at once
-- update the battle UI, status screen to account for 4 Pokémon
-
-*
-i am thinking that this "orientation" idea is technically moot for doubles.
-Moves either target (1) one of the two opponents, (2) both opponents at once [rock slide],
-(3) the user's ally [helping hand], (4) both the user and its ally [Life Dew],
-(5) all Pokémon on the field [Perish Song]
-In doubles, targeting has nothing to do with positioning, just allegiance.
-But this is an important thing to do anyway for Triple+ Battles,
-where some Pokémon are out of range of other Pokémon's moves because of where they are in
-"physical" space.
-
-Thinking about:
-
-#### Major
-- abilities
-- double battles
-- triple+ battles
-- rotation battles
-- defog + grounding/ungrounding + hazards + status screen completion
-
-#### Minor
-- move unification
-- snow
-- battle texts
-- savefile versioning
-
+* UPDATE: Added a switch the change the CPU trainer's logic + a new logic option: random.
+* TECHNICAL UPDATE: Switching Pokémon in-battle is a function now.
 
 ### v0.2.5
 Date: 2024 August 18
-
+#### Moves ((Part 1))
 * UPDATE: Big focus on moves.
 	* 100+ new moves with a focus on signature moves and status moves.
 	* Updated/standardized move descriptions.
