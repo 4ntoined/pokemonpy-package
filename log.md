@@ -1,16 +1,16 @@
 ## pokemonpy-package log
 
 ### v0.2.6
-Date: 2024 September change the pokemon.py gameversion
 #### Pre-Doubles
+Date: 2024 September 3
 * UPDATE: Trainer call-outs updated and randomized.
 * UPDATE: New cheat code introduced.
 * UPDATE: Added a switch the change the CPU trainer's logic + a new logic option: random.
 * TECHNICAL UPDATE: Switching Pokémon in-battle is a function now.
 
 ### v0.2.5
-Date: 2024 August 18
 #### Moves ((Part 1))
+Date: 2024 August 18
 * UPDATE: Big focus on moves.
 	* 100+ new moves with a focus on signature moves and status moves.
 	* Updated/standardized move descriptions.
