@@ -6,6 +6,9 @@ Date: 2024 September 3
 * UPDATE: Trainer call-outs updated and randomized.
 * UPDATE: New cheat code introduced.
 * UPDATE: Added a switch the change the CPU trainer's logic + a new logic option: random.
+* UPDATE: Parties preloaded via the config file are loaded into the player's party list before their game-generated starters.
+The first pre-loaded party will be equipped when the game starts.
+* UPDATE: The player can now rename their parties.
 * TECHNICAL UPDATE: Switching Pokémon in-battle is a function now.
 
 ### v0.2.5

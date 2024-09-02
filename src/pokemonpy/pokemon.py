@@ -129,16 +129,18 @@ class game:
         ############   give the player a starter  ###############
         self.players_parties = []
         lvl0 = 156
-        #players random starters
-        pnames = self.rng.choice(easter_strings, self.nparty, replace = True)
-        for i in range(self.nparty):
-            newparty = makeParty(numb=self.nstart, level=int(self.rng.normal(loc=100,scale=40)),how_created='starter')
-            partyname = pnames[i]
-            self.players_parties.append((newparty, partyname, i))
         #players' preloaded monsters
         for i in self.preload_parties:
             ppindex = len(self.players_parties)
-            self.players_parties.append((i[0],i[1],ppindex))
+            self.players_parties.append([i[0],i[1],ppindex])
+        #players random starters
+        pnames = self.rng.choice(easter_strings, self.nparty, replace = True)
+        for i in range(self.nparty):
+            partylevel = max( int(self.rng.normal(loc=111, scale=60)), 1)
+            newparty = makeParty(numb = self.nstart, level = partylevel, how_created = 'starter')
+            partyname = pnames[i]
+            ppindex = len(self.players_parties)
+            self.players_parties.append([newparty, partyname, ppindex])
         #this list will hold tuples of pokemon parties (lists of pokemon objs) and names and indeces
         userParty=self.players_parties[0][0]
         equiped = 0
@@ -1341,7 +1343,7 @@ class game:
                                  print("\nYou started a new party!")
                                  shortpause()
                                  break #leave the input loop for num of pokes
-                        self.players_parties.append((new_party,partname,party_count))
+                        self.players_parties.append([new_party,partname,party_count])
                         party_count += 1
                         if len(new_party)>=1: equi = input("Would you like to equip this party?\n[y] or [n]: ")
                         if equi=='y' or equi=="Y":
@@ -1354,7 +1356,6 @@ class game:
                         party_count += 1
                         try: #parties choice is maybe a number
                             part_n = int(float(partiesChoice)-1)
-                            party_i, party_name, party_dex = self.players_parties[part_n]
                             # we have the party in question and its name loaded up
                             #index and value are good, we move to print the pokemon and ask options
                             #sigh... need to make pokemon party display a function
@@ -1367,17 +1368,21 @@ class game:
                             pass
                         else:
                             while 1:
+                                party_i, party_name, party_dex = self.players_parties[part_n]
                                 #show the party
                                 equipp = equiped==party_dex #boolean carrying when selected party is equipped
                                 sizep = len(party_i)
                                 if sizep == 0:
-                                    print(f"\n--- {party_name} ---")
-                                    print("====================\nThis party is empty.\n====================")
+                                    print( "\n" + magic_head( txt = f"{party_name}", cha='/', long = self.game_width))
+                                    #print(f"\n--- {party_name} ---")
+                                    print("This party is empty...")
+                                    #print("====================\nThis party is empty.\n====================")
                                 else: print_party(party_i, party_name, True)
                                 if equipp: print("~This is your equipped party.~") #this is the equipped party
                                 #ask for options, 
-                                megaChoice = input("[e]quip, [c]opy, [a]dd/[r]emove Pokémon, [d]elete, e[m]pty, [s]ave, [#], [b]ack\n: ")
+                                megaChoice = input("[e]quip, re[n]ame, [c]opy, [a]dd/[r]emove Pokémon, [d]elete, e[m]pty, [s]ave, [#], [b]ack\n: ")
                                 if megaChoice=='b' or megaChoice=='B': break
+                                #aa:equipparty aa:partyequip
                                 if megaChoice=='e' or megaChoice=='E': #equipping the party
                                     if equipp: #if this party is already equipped
                                         print(f"\n!! {party_name} is already equipped !!")
@@ -1392,6 +1397,7 @@ class game:
                                     print(f"\nYou equipped {party_name}.")
                                     shortpause()
                                     #loops back to party options
+                                ##aa:saveparty aa:partysaving
                                 elif megaChoice=='s' or megaChoice=='S':
                                     while 1: #savefile name input loop
                                     #ask for file save name or default
@@ -1418,6 +1424,16 @@ class game:
                                         micropause()
                                         break
                                     #back to party options
+                                elif megaChoice == 'n' or megaChoice =='N':
+                                    while 1:
+                                        npname = input("\nWhat to call this party?\n: ")
+                                        if npname.strip() == '':
+                                            continue
+                                        self.players_parties[part_n][1] = npname
+                                        print(f"\nThis party will be known as {npname}!")
+                                        micropause()
+                                        break
+                                #aa:addtoparty
                                 elif megaChoice=='a' or megaChoice=='A':
                                     #list pokemon from userParty and copy them into
                                     #this party, party_i
@@ -1451,17 +1467,19 @@ class game:
                                                 break
                                     #take the selection, make a copy of each and add to selected party
                                     pass
+                                #aa:partycopy aa:partycopying aa:copyparty
                                 elif megaChoice=='c' or megaChoice=='C':
                                     #ask for a name for the copied party
                                     #copy the party with the new name
                                     coppy = input("Name the copy: ")
                                     part_copy = copy.deepcopy(party_i)
                                     for poke in part_copy: poke.set_born(how_created='copied')
-                                    self.players_parties.append((part_copy,coppy,party_count))
+                                    self.players_parties.append([part_copy,coppy,party_count])
                                     party_count += 1
                                     print("\nCopied!")
                                     micropause()
                                     #loop back mans
+                                #aa:deleteparty aa:partydelete
                                 elif megaChoice=='d' or megaChoice=='D': #deleting this party
                                     #make sure this isnt the equipped party    
                                     #ask if user is sure
@@ -1478,6 +1496,7 @@ class game:
                                         print("\nDeleted!")
                                         micropause()
                                         break #leave poke party options screen go back to listing all parties
+                                #aa:removepokemon aa:partyremove
                                 elif megaChoice=='r' or megaChoice=='R': #removing a pokemon
                                     #make sure at least 1,
                                     #ask whom to remove
@@ -1535,6 +1554,7 @@ class game:
                                             print("\n!! Entry must correspond to Party Pokémon !!")
                                             micropause()
                                     pass
+                                #aa:emptyparty
                                 elif megaChoice=='m' or megaChoice=='M': #empty, reset, clear, dump, all first letters already used here...
                                     #make sure this isnt the equipped party
                                     #ask if the user is sure
