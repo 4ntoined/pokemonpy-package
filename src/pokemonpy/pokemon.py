@@ -1337,11 +1337,12 @@ class game:
                                     continue #don't run the else block, reloop to input
                             except ValueError:
                                 print("\n** Bad Value **")
+                                micropause()
                                 pass
                             else:
                                  new_party = makeParty(num,level=lv) #making the party
                                  print("\nYou started a new party!")
-                                 shortpause()
+                                 micropause()
                                  break #leave the input loop for num of pokes
                         self.players_parties.append([new_party,partname,party_count])
                         party_count += 1
@@ -1350,12 +1351,12 @@ class game:
                             userParty=new_party
                             equiped=self.players_parties[-1][2]
                         pass
-                    elif 1: #some condition? for looking at a party, should just be an integer
+                    else:
                         #see the pokemon in the party, give and take options for that party
-                        #equipping, copying, adding a pokemon
                         party_count += 1
                         try: #parties choice is maybe a number
                             part_n = int(float(partiesChoice)-1)
+                            party_i, party_name, party_dex = self.players_parties[part_n]
                             # we have the party in question and its name loaded up
                             #index and value are good, we move to print the pokemon and ask options
                             #sigh... need to make pokemon party display a function
@@ -1368,7 +1369,8 @@ class game:
                             pass
                         else:
                             while 1:
-                                party_i, party_name, party_dex = self.players_parties[part_n]
+                                #setting the party name just in case the player has changed it since it was assigned
+                                party_name = self.players_parties[part_n][1]
                                 #show the party
                                 equipp = equiped==party_dex #boolean carrying when selected party is equipped
                                 sizep = len(party_i)
@@ -1380,7 +1382,7 @@ class game:
                                 else: print_party(party_i, party_name, True)
                                 if equipp: print("~This is your equipped party.~") #this is the equipped party
                                 #ask for options, 
-                                megaChoice = input("[e]quip, re[n]ame, [c]opy, [a]dd/[r]emove Pokémon, [d]elete, e[m]pty, [s]ave, [#], [b]ack\n: ")
+                                megaChoice = input("\n[e]quip, re[n]ame, [c]opy, [a]dd/[r]emove Pokémon, [d]elete, e[m]pty, [s]ave, [#], [b]ack\n: ")
                                 if megaChoice=='b' or megaChoice=='B': break
                                 #aa:equipparty aa:partyequip
                                 if megaChoice=='e' or megaChoice=='E': #equipping the party
@@ -1569,12 +1571,10 @@ class game:
                                         continue
                                     print("\nThese Pokémon will be released.")
                                     shortpause()
-                                    resetConfirm=input(f"Are you sure you want to empty Party {party_name}?\n[y]es or [n]o: ")
+                                    resetConfirm=input(f"Are you sure you want to empty party {party_name}?\n[y]es or [n]o: ")
                                     if resetConfirm=="y" or resetConfirm=='Y':
                                         #do it
                                         party_i.clear()
-                                        #starter=makeMon(0)
-                                        #userParty.append(starter)
                                         print(f"\n{party_name} has been emptied!")
                                         if equipp: #if this party is equipped, populate it automatically
                                             bayleef = makeMon(0,nacher=(int(self.rng.choice((0,1,2,3,4))),int(self.rng.choice((0,1,2,3,4)))),how_created='starter')
@@ -1603,8 +1603,6 @@ class game:
                                         pass
                                     pass
                             pass
-                        pass
-                    else: #?
                         pass
                 #after parties menu while loop
             #aa:movecatalog
@@ -1761,10 +1759,6 @@ class game:
             pass
         return
     #zz:readconfigfunction
-    
-    
-    def abc(self):
-        return
     pass
 
 cutline_dict = dict([( 1., False ), ( -1., True )])
@@ -1778,5 +1772,4 @@ if __name__ == "__main__":
     pass
 else:
     pass
-    
-#runs after intial while loop
+

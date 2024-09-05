@@ -36,7 +36,7 @@ With the package installed, you can start the game using the `rungame.py` script
 You can give the script some optional arguments when you call it:
 
 ```
-python3 rungame.py -m -c config_file_path -n "your name" -o "rivals name" -w how_big_to_display_the_game -p number_of_starter_parties -s number_of_pokémon_per_party
+python3 rungame.py -m -c config_file_path -n "your name" -o "rival's name" -w how_big_to_display_the_game -p number_of_starter_parties -s number_of_pokémon_per_party
 
 -m to skip the game start-up text
 -c to have the game use a particular configuration file
