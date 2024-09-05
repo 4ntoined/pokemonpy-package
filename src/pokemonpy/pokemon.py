@@ -132,7 +132,7 @@ class game:
         #players' preloaded monsters
         for i in self.preload_parties:
             ppindex = len(self.players_parties)
-            self.players_parties.append([i[0],i[1],ppindex])
+            self.players_parties.append([ i[0], i[1], ppindex ])
         #players random starters
         pnames = self.rng.choice(easter_strings, self.nparty, replace = True)
         for i in range(self.nparty):
@@ -144,7 +144,7 @@ class game:
         #this list will hold tuples of pokemon parties (lists of pokemon objs) and names and indeces
         userParty=self.players_parties[0][0]
         equiped = 0
-        party_count = self.nparty #keeping track of parties as they are created for indexing purposes
+        party_count = len(self.players_parties) #keeping track of parties as they are created for indexing purposes
         hallfame_count = 0
         #####################
         ##### creating the trainer for classic mode #####
@@ -1353,7 +1353,6 @@ class game:
                         pass
                     else:
                         #see the pokemon in the party, give and take options for that party
-                        party_count += 1
                         try: #parties choice is maybe a number
                             part_n = int(float(partiesChoice)-1)
                             party_i, party_name, party_dex = self.players_parties[part_n]

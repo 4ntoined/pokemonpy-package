@@ -36,9 +36,9 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
         ): #
         global mo
         #birth details
-        self.timebornLOCAL = t.localtime(t.time())
-        self.bornplace = self.timebornLOCAL.tm_zone
-        self.timeborn = t.gmtime(t.mktime(self.timebornLOCAL))
+        self.timebornLOCAL = t.localtime(t.time())              #get local time, with timezone
+        self.bornplace = self.timebornLOCAL.tm_zone             #store timezone
+        self.timeborn = t.gmtime(t.mktime(self.timebornLOCAL))  #convert localtime -> seconds since the epoch -> UTC time, which is stored
         self.bornpath = how_created
         #memories?
         self.hallfamecount = 0
@@ -126,19 +126,19 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
         self.sleepCounter=0
         self.poisonCounter=0
         self.confusionCounter=0
-        #
+        #battle conditions
         self.pumped=False #for critical hit tiers
         self.counter_damage = (0.0, "none") #damage points taken, "phys" or "spec"
-        self.flinched=False #might not necessarily need this? idk
-        self.resting=False #for moves where pokemon need to recharge
-        self.charged=False #when true, pokemon has a 2turn move ready to use
+        self.flinched=False     #might not necessarily need this? idk
+        self.resting=False      #for moves where pokemon need to recharge
+        self.charged=False      #when true, pokemon has a 2turn move ready to use
         self.firstturnout=False
         self.curled=False
         self.aquaring=False
         self.flying=False       #used fly or bounce dont know about sky drop rn
         self.diving=False       #used dive
         self.digging=False      #used dig
-        self.shadowing=False    #used shadow force, or phantom force
+        self.shadowing=False    #used shadow force or phantom force
         self.rolling_out=0
     #tweaking birthcircumstances, mostly for when we copy mons
     def set_born(self,how_created=''):
@@ -2456,7 +2456,7 @@ class battle:
                     print("You win!")
                     dramaticpause()
                 elif running:
-                    print(f"\n{self.usr_name} and {self.usr_mon.name} forfeited to {self.cpu_name}!")
+                    print(f"\nYou and {self.usr_mon.name} forfeited to {self.cpu_name}!")
                     shortpause()
                 else:
                     print("\nYou're out of usable Pokémon!")
