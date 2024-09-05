@@ -47,10 +47,11 @@ from . import saves
 class game:
     def __init__(self):
         #defining bedrock game variables
-        self.gameversion = '0.2.5'
-        self.devs_list = ('Adarius',)
-        self.cut_the_line=1.
-        self.full_restore=1.
+        self.gameversion = '0.2.6'
+        self.devs_list = ( 'Adarius', )
+        self.cut_the_line = 1.
+        self.full_restore = 1.
+        self.classicbattlelogic = 'basic'
                 
         #setting variables 
         self.mute_set = False
@@ -61,7 +62,7 @@ class game:
         self.gw_set = False
         self.mutepregame = False
         self.username = 'You'
-        self.opponentname = 'Rival'
+        self.opponentname = 'Youngster Joey'
         self.nparty = 6
         self.nstart = 6
         self.preload_parties = []
@@ -128,20 +129,22 @@ class game:
         ############   give the player a starter  ###############
         self.players_parties = []
         lvl0 = 156
-        #players random starters
-        pnames = self.rng.choice(easter_strings, self.nparty, replace = True)
-        for i in range(self.nparty):
-            newparty = makeParty(numb=self.nstart, level=int(self.rng.normal(loc=100,scale=40)),how_created='starter')
-            partyname = pnames[i]
-            self.players_parties.append((newparty, partyname, i))
         #players' preloaded monsters
         for i in self.preload_parties:
             ppindex = len(self.players_parties)
-            self.players_parties.append((i[0],i[1],ppindex))
+            self.players_parties.append([ i[0], i[1], ppindex ])
+        #players random starters
+        pnames = self.rng.choice(easter_strings, self.nparty, replace = True)
+        for i in range(self.nparty):
+            partylevel = max( int(self.rng.normal(loc=111, scale=60)), 1)
+            newparty = makeParty(numb = self.nstart, level = partylevel, how_created = 'starter')
+            partyname = pnames[i]
+            ppindex = len(self.players_parties)
+            self.players_parties.append([newparty, partyname, ppindex])
         #this list will hold tuples of pokemon parties (lists of pokemon objs) and names and indeces
         userParty=self.players_parties[0][0]
         equiped = 0
-        party_count = self.nparty #keeping track of parties as they are created for indexing purposes
+        party_count = len(self.players_parties) #keeping track of parties as they are created for indexing purposes
         hallfame_count = 0
         #####################
         ##### creating the trainer for classic mode #####
@@ -208,7 +211,7 @@ class game:
                 while 1: #user input loop
                     print("\n"+magic_text(txt='"Battle!" Settings', cha="x",long=self.game_width))
                     print("\n[1] Set the conditions of battle\n[2] Set your opponent's party\n[3] Set your opponent's name\n"+\
-                            "[4] Set your name")
+                            "[4] Set your opponent's logic\n[5] Set your name")
                     sat_choice = input("What [#] to do or [b]ack: ")
                     if sat_choice == 'b' or sat_choice == 'B':
                         break
@@ -278,29 +281,50 @@ class game:
                                         except ValueError:
                                             print("*\n** Not a valid entry **\n*")
                         #more options to change battle conditions
-                    elif sat_choice == '2': ## another setting somewhere
+                    elif sat_choice == '2': ## set opponent's team # we can update this to choose any one of the user's parties... prob wouldn't be hard either....
                         print("\n"+magic_text(txt='Set Rival Team',cha='x',spacing=' ',long=self.game_width))
-                        #shortpause()
                         aceChoice=input("\nSet your current team as the battle opponent?\n[y] or [b]ack: ")
                         if aceChoice=='y' or aceChoice=="Y":
                             trainerParty=copy.deepcopy(userParty)
                             print("The Battle! Opponent has a new Party! Good Luck!")
-                            shortpause() #kills
+                            shortpause()
+                            continue
                         else:
                             print("Leaving Opponent Reset...")
-                            shortpause() #kills
+                            micropause()
+                            continue
                         #end of opponent set, back to main screen
-                    elif sat_choice == '4': #name setting
+                    elif sat_choice == '5': #name setting
                         playername = input("\nWhat's your name?\n: ")
                         self.username=playername
                         self.username_set=True
                         print(f"Thank you {self.username}!")
-                        shortpause() #kills
+                        shortpause()
+                        continue
                     elif sat_choice == '3': #opponents name setting
                         opponame = input("\nWhat's your Rival's name?\n: ")
                         self.opponentname=opponame
                         print(f"{self.opponentname}! Yes, of course!")
-                        shortpause() #kills
+                        shortpause()
+                    elif sat_choice == '4':
+                        while 1:
+                            logicchoice = input("\nLogic options:\n\n[0] basic = competitive opponent\n[1] random = makes decisions randomly\n\n[#] or [b]ack: ")
+                            if logicchoice == 'b' or logicchoice == 'B':
+                                break
+                            if logicchoice == '0' or logicchoice == 'basic':
+                                self.classicbattlelogic = 'basic'
+                                print("\nOpponent logic set to 'basic'!")
+                                shortpause()
+                                break
+                            elif logicchoice == '1' or logicchoice == 'random':
+                                self.classicbattlelogic = 'random'
+                                print("\nOpponent logic set to 'random'!")
+                                shortpause()
+                                break
+                            else:
+                                continue
+                            pass
+                        pass
                     else:
                         pass
                     # should be the end of the classic setting block
@@ -433,8 +457,8 @@ class game:
                     print("\nYou can't battle without a healthy Pokémon!")
                     shortpause()
                     continue #go back to main without starting the battle
-                classicbattle = battle(userParty, trainerParty, scarlet, usr_name=self.username, cpu_name=self.opponentname)
-                classicbattle.start_withai()
+                classicbattle = battle(userParty, trainerParty, scarlet, usr_name=self.username, cpu_name=self.opponentname, full_restore_on = cutline_dict[ self.full_restore ])
+                classicbattle.start_withai( cpu_logic = self.classicbattlelogic )
                 #then it should loop back to the main menu?
             ###end of battle block### zz:battlemode
             #### check party pokemon? aa:party ####
@@ -1313,23 +1337,22 @@ class game:
                                     continue #don't run the else block, reloop to input
                             except ValueError:
                                 print("\n** Bad Value **")
+                                micropause()
                                 pass
                             else:
                                  new_party = makeParty(num,level=lv) #making the party
                                  print("\nYou started a new party!")
-                                 shortpause()
+                                 micropause()
                                  break #leave the input loop for num of pokes
-                        self.players_parties.append((new_party,partname,party_count))
+                        self.players_parties.append([new_party,partname,party_count])
                         party_count += 1
                         if len(new_party)>=1: equi = input("Would you like to equip this party?\n[y] or [n]: ")
                         if equi=='y' or equi=="Y":
                             userParty=new_party
                             equiped=self.players_parties[-1][2]
                         pass
-                    elif 1: #some condition? for looking at a party, should just be an integer
+                    else:
                         #see the pokemon in the party, give and take options for that party
-                        #equipping, copying, adding a pokemon
-                        party_count += 1
                         try: #parties choice is maybe a number
                             part_n = int(float(partiesChoice)-1)
                             party_i, party_name, party_dex = self.players_parties[part_n]
@@ -1345,17 +1368,22 @@ class game:
                             pass
                         else:
                             while 1:
+                                #setting the party name just in case the player has changed it since it was assigned
+                                party_name = self.players_parties[part_n][1]
                                 #show the party
                                 equipp = equiped==party_dex #boolean carrying when selected party is equipped
                                 sizep = len(party_i)
                                 if sizep == 0:
-                                    print(f"\n--- {party_name} ---")
-                                    print("====================\nThis party is empty.\n====================")
+                                    print( "\n" + magic_head( txt = f"{party_name}", cha='/', long = self.game_width))
+                                    #print(f"\n--- {party_name} ---")
+                                    print("This party is empty...")
+                                    #print("====================\nThis party is empty.\n====================")
                                 else: print_party(party_i, party_name, True)
                                 if equipp: print("~This is your equipped party.~") #this is the equipped party
                                 #ask for options, 
-                                megaChoice = input("[e]quip, [c]opy, [a]dd/[r]emove Pokémon, [d]elete, e[m]pty, [s]ave, [#], [b]ack\n: ")
+                                megaChoice = input("\n[e]quip, re[n]ame, [c]opy, [a]dd/[r]emove Pokémon, [d]elete, e[m]pty, [s]ave, [#], [b]ack\n: ")
                                 if megaChoice=='b' or megaChoice=='B': break
+                                #aa:equipparty aa:partyequip
                                 if megaChoice=='e' or megaChoice=='E': #equipping the party
                                     if equipp: #if this party is already equipped
                                         print(f"\n!! {party_name} is already equipped !!")
@@ -1370,6 +1398,7 @@ class game:
                                     print(f"\nYou equipped {party_name}.")
                                     shortpause()
                                     #loops back to party options
+                                ##aa:saveparty aa:partysaving
                                 elif megaChoice=='s' or megaChoice=='S':
                                     while 1: #savefile name input loop
                                     #ask for file save name or default
@@ -1396,6 +1425,16 @@ class game:
                                         micropause()
                                         break
                                     #back to party options
+                                elif megaChoice == 'n' or megaChoice =='N':
+                                    while 1:
+                                        npname = input("\nWhat to call this party?\n: ")
+                                        if npname.strip() == '':
+                                            continue
+                                        self.players_parties[part_n][1] = npname
+                                        print(f"\nThis party will be known as {npname}!")
+                                        micropause()
+                                        break
+                                #aa:addtoparty
                                 elif megaChoice=='a' or megaChoice=='A':
                                     #list pokemon from userParty and copy them into
                                     #this party, party_i
@@ -1429,17 +1468,19 @@ class game:
                                                 break
                                     #take the selection, make a copy of each and add to selected party
                                     pass
+                                #aa:partycopy aa:partycopying aa:copyparty
                                 elif megaChoice=='c' or megaChoice=='C':
                                     #ask for a name for the copied party
                                     #copy the party with the new name
                                     coppy = input("Name the copy: ")
                                     part_copy = copy.deepcopy(party_i)
                                     for poke in part_copy: poke.set_born(how_created='copied')
-                                    self.players_parties.append((part_copy,coppy,party_count))
+                                    self.players_parties.append([part_copy,coppy,party_count])
                                     party_count += 1
                                     print("\nCopied!")
                                     micropause()
                                     #loop back mans
+                                #aa:deleteparty aa:partydelete
                                 elif megaChoice=='d' or megaChoice=='D': #deleting this party
                                     #make sure this isnt the equipped party    
                                     #ask if user is sure
@@ -1456,6 +1497,7 @@ class game:
                                         print("\nDeleted!")
                                         micropause()
                                         break #leave poke party options screen go back to listing all parties
+                                #aa:removepokemon aa:partyremove
                                 elif megaChoice=='r' or megaChoice=='R': #removing a pokemon
                                     #make sure at least 1,
                                     #ask whom to remove
@@ -1513,6 +1555,7 @@ class game:
                                             print("\n!! Entry must correspond to Party Pokémon !!")
                                             micropause()
                                     pass
+                                #aa:emptyparty
                                 elif megaChoice=='m' or megaChoice=='M': #empty, reset, clear, dump, all first letters already used here...
                                     #make sure this isnt the equipped party
                                     #ask if the user is sure
@@ -1527,12 +1570,10 @@ class game:
                                         continue
                                     print("\nThese Pokémon will be released.")
                                     shortpause()
-                                    resetConfirm=input(f"Are you sure you want to empty Party {party_name}?\n[y]es or [n]o: ")
+                                    resetConfirm=input(f"Are you sure you want to empty party {party_name}?\n[y]es or [n]o: ")
                                     if resetConfirm=="y" or resetConfirm=='Y':
                                         #do it
                                         party_i.clear()
-                                        #starter=makeMon(0)
-                                        #userParty.append(starter)
                                         print(f"\n{party_name} has been emptied!")
                                         if equipp: #if this party is equipped, populate it automatically
                                             bayleef = makeMon(0,nacher=(int(self.rng.choice((0,1,2,3,4))),int(self.rng.choice((0,1,2,3,4)))),how_created='starter')
@@ -1562,8 +1603,6 @@ class game:
                                     pass
                             pass
                         pass
-                    else: #?
-                        pass
                 #after parties menu while loop
             #aa:movecatalog
             if userChoice == "moves":
@@ -1574,6 +1613,7 @@ class game:
                     pass
                 shortpause()
             ####what's the next spot?####
+            #aa:cheats
             if userChoice == "cheats":
                 yoo = input("\nYo, what's up?...")
                 if yoo == "eliter":
@@ -1585,8 +1625,15 @@ class game:
                     cheat_receipt()
                 elif yoo == 'chansey':
                     self.full_restore *= -1.
-                    #cheat_receipt()
+                    cheat_receipt()
+                elif yoo == 'cpu random':
+                    self.classicbattlelogic = 'random'
+                    cheat_receipt()
+                elif yoo == 'cpu basic':
+                    self.classicbattlelogic = 'basic'
+                    cheat_receipt()
                 pass
+                #zz:cheats
             #end of game, loops back to main screen
         return
     ##aa:configfunction
@@ -1711,10 +1758,6 @@ class game:
             pass
         return
     #zz:readconfigfunction
-    
-    
-    def abc(self):
-        return
     pass
 
 cutline_dict = dict([( 1., False ), ( -1., True )])
@@ -1728,5 +1771,4 @@ if __name__ == "__main__":
     pass
 else:
     pass
-    
-#runs after intial while loop
+

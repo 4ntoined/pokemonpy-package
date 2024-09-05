@@ -36,7 +36,7 @@ With the package installed, you can start the game using the `rungame.py` script
 You can give the script some optional arguments when you call it:
 
 ```
-python3 rungame.py -m -c config_file_path -n "your name" -o "rivals name" -w how_big_to_display_the_game -p number_of_starter_parties -s number_of_pokémon_per_party
+python3 rungame.py -m -c config_file_path -n "your name" -o "rival's name" -w how_big_to_display_the_game -p number_of_starter_parties -s number_of_pokémon_per_party
 
 -m to skip the game start-up text
 -c to have the game use a particular configuration file
@@ -82,15 +82,15 @@ gw - int, sets the length of banners and headers
 Start a battle:
 ```
 from pokemonpy.base_pokemon import *
-parties, fields = maker(2,6,2)
-bb = battle(parties[0],parties[1],fields[0],usr_name='Your Name',cpu_name='The Ops')
-bb.startbattle()
+parties, fields = maker(2, 6, 2)
+bb = battle(parties[0], parties[1], fields[0], usr_name = 'Your Name', cpu_name = 'The Ops')
+bb.start_withai( cpu_logic = 'random' )
 ```
 
 Make a party and save the first Pokémon: 
 ```
 from pokemonpy.base_pokemon import *
-parties, fields = maker(2,6,2)
+parties, fields = maker( 2, 6, 2)
 print_party(parties[0])
 parties[0][0].summary()
 parties[0][0].appraisal()

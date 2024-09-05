@@ -1,8 +1,23 @@
 ## pokemonpy-package log
 
-### v0.2.5
-Date: 2024 August 18
+### v0.2.6
+Title: **Pre-Doubles**
 
+Date: 2024 September 6
+* UPDATE: Added a switch to change the CPU trainer's logic + a new logic option: random.
+* UPDATE: Parties preloaded via the config file are loaded into the player's party list
+before the game-generated starter parties.
+The first pre-loaded party will be equipped when the game starts.
+* UPDATE: The player can now rename their parties.
+* UPDATE: Trainer call-outs updated and randomized.
+* UPDATE: New cheat code introduced.
+* FIXED: The way the game kept track of how many parties the player has was broken. Fixed it.
+* TECHNICAL UPDATE: Switching Pokémon in battle is a function now.
+
+### v0.2.5
+Title: **Moves ((Part 1))**
+
+Date: 2024 August 18
 * UPDATE: Big focus on moves.
 	* 100+ new moves with a focus on signature moves and status moves.
 	* Updated/standardized move descriptions.
@@ -44,7 +59,8 @@ Date: 2024 June 25
 
 ### v0.1.2
 Date: 2024 April 20
-* UPDATE: Pokemon.py now has a variable to hold the current game version. Prints current version when 'about' is entered on the main menu.
+* UPDATE: Pokemon.py now has a variable to hold the current game version.
+Prints current version when 'about' is entered on the main menu.
 * UPDATE: Hall of Fame banner has been updated.
 * UPDATE: New cheat code introduced.
 * UPDATE: You can now close the game. Enter 'quit' on the main menu to close the game.
