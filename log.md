@@ -16,11 +16,18 @@ here's what im thinking for double battles stuff
 - have the player manage 2 active Pokémon at once
 - update the battle UI, status screen to account for 4 Pokémon
 
+keeping in mind for doubles:
+- fusion bolt and flare do NOT get their boost if a move was used in between the 2 of them.
+need to mark when a fusion move is used and then unmark if the next move is not the other fusion
+
+
+
 *
 i am thinking that this "orientation" idea is technically moot for doubles.
 Moves either target (1) one of the two opponents, (2) both opponents at once [rock slide],
 (3) the user's ally [helping hand], (4) both the user and its ally [Life Dew],
-(5) all Pokémon on the field [Perish Song]
+(5) all Pokémon on the field [Perish Song], (6) everyone but the user [Earthquake],
+(7) the user [Swords Dance]
 In doubles, targeting has nothing to do with positioning, just allegiance.
 But this is an important thing to do anyway for Triple+ Battles,
 where some Pokémon are out of range of other Pokémon's moves because of where they are in
