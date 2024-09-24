@@ -14,7 +14,7 @@ Installing and playing the game requires (1) access to the command line and (2) 
    - On Windows, you'll probably want to use PowerShell and NOT the Command Prompt (cmd.exe).
    - Alternatively, there is [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/install), which gives you a Linux-like command line environment, if you're will to jump through a few hoops. This is my preferred way to play in Windows as I have no idea how to use PowerShell or CMD.
 #### Python:
-   - Python 3.7(ish) or later
+   - Python 3.9(ish) or later
    - https://www.python.org
    - For Windows players check out: https://learn.microsoft.com/en-us/windows/python/beginners
 
