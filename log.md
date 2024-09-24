@@ -1,5 +1,13 @@
 ## pokemonpy-package log
 
+### v0.2.7
+Title: **package configuration file hotfix**
+
+Date: 2024 September 23
+* FIXED: The package configuration file `pyproject.toml` previously required at least Python 3.7,
+even though the package needs features introduced in Python 3.9 to run.
+Fixed this, consequently dropping support for Python 3.7 and 3.8.
+
 ### v0.2.6
 Title: **Pre-Doubles**
 
