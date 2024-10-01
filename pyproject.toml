@@ -8,7 +8,7 @@ version = "0.0.0"
 authors = [
   { name="Adarius" },
 ]
-description = "pokemon.py - A package that contains a Pokémon simulation game. Pokemon."
+description = "This package contains a text-based game that simulates Pokémon and Pokémon battles and runs right in the terminal. Pokemon. pokemonpy. pokemon.py."
 readme = "README.md"
 requires-python = ">=3.9.0"
 classifiers = [

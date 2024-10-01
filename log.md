@@ -1,5 +1,12 @@
 ## pokemonpy-package log
 
+###v0.2.8
+Title: **version number hotfix**
+
+Date: 2024 October 2
+* FIXED: Forgot to update the in-game version number variable for the last update, 
+so the game incorrectly reported version 0.2.6 when asked. Fixed this.
+
 ### v0.2.7
 Title: **package configuration file hotfix**
 
