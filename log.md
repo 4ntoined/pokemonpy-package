@@ -1,6 +1,6 @@
 ## pokemonpy-package log
 
-###v0.2.8
+### v0.2.8
 Title: **version number hotfix**
 
 Date: 2024 October 2
