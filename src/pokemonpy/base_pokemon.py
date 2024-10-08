@@ -2521,6 +2521,8 @@ class field:
     def __init__(self, weath = 'clear', terra = 'none', rando = False):
         global Weathers
         global Terrains
+        #### field-wide variables
+        # weather, terrain, fusion trackers, trick room (eventually)
         if rando:
             self.weather=rng.choice(Weathers)
             self.terrain=rng.choice(Terrains)
@@ -2537,73 +2539,65 @@ class field:
         self.fusionf=False
         self.a_field = semifield('red')
         self.b_field = semifield('blue')
+        ### semi-field variables
+        # tailwind, future sight, fainted, rocks, steelspikes, sticky webs
+        # spikes, toxicspikes, screens [3], 
         #A for Red
-        self.tailwindACounter = 0
-        self.futuresA = 0 #set to 3, execute an attack at 0
-        self.faintedA = False
+        #self.tailwindACounter = 0
+        #self.futuresA = 0 #set to 3, execute an attack at 0
+        #self.faintedA = False
+        # self.a_field.tailwind self.a_field.futures self.a_field.fainted
         #entry hazards
-        self.rocksA=False
-        self.steelA=False
-        self.stickyA=False
-        self.spikesA=0 #up to 3
-        self.toxicA=0 #up to 2
+        # self.a_field.rocks self.a_field.steel self.a_field.sticky self.a_field.spikes self.a_field.toxic
+        #self.rocksA=False
+        #self.steelA=False
+        #self.stickyA=False
+        #self.spikesA=0 #up to 3
+        #self.toxicA=0 #up to 2
         #screens
-        self.reflectACounter = 0
-        self.lightscACounter = 0
-        self.veilACounter = 0
+        #self.reflectACounter = 0
+        #self.lightscACounter = 0
+        #self.veilACounter = 0
         #others        
         #B for Blue?
-        self.tailwindBCounter = 0
-        self.futuresB = 0   #realized I dont need to specify its a counter
-        self.faintedB = False
-        self.rocksB=False
-        self.stickyB=False
-        self.steelB=False
-        self.spikesB=0
-        self.toxicB=0
-        self.reflectBCounter = 0
-        self.lightscBCounter = 0
-        self.veilBCounter = 0
+        #self.tailwindBCounter = 0
+        #self.futuresB = 0   #realized I dont need to specify its a counter
+        #self.faintedB = False
+        #self.rocksB=False
+        #self.stickyB=False
+        #self.steelB=False
+        #self.spikesB=0
+        #self.toxicB=0
+        #self.reflectBCounter = 0
+        #self.lightscBCounter = 0
+        #self.veilBCounter = 0
         #trick room
-        #the same way weather and terrain are set globally, i think trick room could be as well
-        #also weather and terrain could be an attribute of battle() rn not much difference
-        #it would allow us to set up several battlefields w different conditions but thats a little extra
-        #so maybe I'll make trick room global for now
-        #like a week after I wrote this ^ out I decided the time is now to modularize battle so I can set up several battlefield
-        #with different conditions so really just don't believe anything I say
     def bugging(self):
         print('activated')
     def clearfield(self):
-        self.weather='clear'
-        self.terrain='none'
-        self.weatherCounter=np.inf
-        self.terrainCounter=5
-        self.fusionf=False
-        self.fusionb=False
-        self.rocksA=False
-        self.rocksB=False
-        self.steelA=False
-        self.steelB=False
-        self.stickyA=False
-        self.stickyB=False
-        self.faintedA=False
-        self.faintedB=False
-        #feel like we dont need these flags and we can do what
-        #we did for toxic and spikes
-        self.spikesA=0 #up to 3
-        self.spikesB=0
-        self.toxicA=0 #up to 2 
-        self.toxicB=0
-        self.reflectACounter = 0
-        self.reflectBCounter = 0
-        self.lightscACounter = 0
-        self.lightscBCounter = 0
-        self.veilACounter = 0
-        self.tailwindACounter = 0
-        self.futuresA = 0
-        self.veilBCounter = 0
-        self.tailwindBCounter = 0
-        self.futuresB = 0
+        self.weather = 'clear'
+        self.terrain = 'none'
+        self.weatherCounter = np.inf
+        self.terrainCounter = 5
+        self.fusionf = False
+        self.fusionb = False
+        for i in (self.a_field, self.b_field):
+            #hazards
+            i.spikes = False
+            i.toxic = False
+            i.rocks = False
+            i.steel = False
+            i.sticky = False
+            #screens
+            i.reflectCounter = 0
+            i.lightscCounter = 0
+            i.veilCounter = 0
+            #battle conditions
+            i.fainted = False
+            i.tailwindCounter = 0
+            i.futures = 0
+        return
+        
         #etc, etc
     def shuffleweather(self,wea=True,ter=True):
         global Weathers
@@ -2631,34 +2625,34 @@ class field:
     ### call when a pokemon is grounded
     def grounding(self,poke):
         stickyOn = ( poke.battlespot == "red" and self.stickyA ) or ( poke.battlespot == "blue" and self.stickyB )
-        spikesOn = ( poke.battlespot == "red" and self.spikesA > 0 ) or ( poke.battlespot == "blue" and self.spikesB > 0)
-        toxicOn = ( poke.battlespot == "red" and self.toxicA > 0 ) or ( poke.battlespot == "blue" and self.toxicB > 0)
+        spikesOn = ( poke.battlespot == "red" and self.a_field.spikes > 0 ) or ( poke.battlespot == "blue" and self.b_field.spikes > 0)
+        toxicOn = ( poke.battlespot == "red" and self.a_field.toxic > 0 ) or ( poke.battlespot == "blue" and self.b_field.toxic > 0)
         if stickyOn:
             poke.stickyNerf()
         if spikesOn:
-            if poke.battlespot == "red":    poke.spikesDamage(self.spikesA)
-            elif poke.battlespot == "blue": poke.spikesDamage(self.spikesB)
+            if poke.battlespot == "red":    poke.spikesDamage(self.a_field.spikes)
+            elif poke.battlespot == "blue": poke.spikesDamage(self.b_field.spikes)
         if toxicOn:
             if poke.battlespot == "red":
                 #check for poison type
                 if 7 in poke.tipe:
-                    self.toxicA = 0
+                    self.a_field.toxic = 0
                     print(f"{poke.name} absorbs the toxic spikes!")
                     micropause()
-                else:   poke.toxicAffliction(self.toxicA)
+                else:   poke.toxicAffliction(self.a_field.toxic)
             elif poke.battlespot == "blue":
                 if 7 in poke.tipe:
-                    self.toxicB = 0
+                    self.b_field.toxic = 0
                     print(f"{poke.name} absorbs the toxic spikes!")
                     micropause()
-                else:   poke.toxicAffliction(self.toxicB)
+                else:   poke.toxicAffliction(self.b_field.toxic)
     ### call when a pokemon comes out
     def landing(self,poke):
         #this function will simulate pokemon being damaged by entry hazards
         #need to make functions for mon() of the entry hazard damages being done
         #need to check for rocks, spikes, toxix spikes (except for poisons) and sticky web
         #only for grounded pokemon tho...
-        rocksOn = ( poke.battlespot == "red" and self.rocksA ) or ( poke.battlespot == "blue" and self.rocksB )
+        rocksOn = ( poke.battlespot == "red" and self.a_field.rocks ) or ( poke.battlespot == "blue" and self.b_field.rocks )
         ##some hazards
         if rocksOn:         poke.rocksDamage()
         if poke.grounded:   self.grounding(poke)
@@ -2670,25 +2664,25 @@ class field:
         #hazards on player side
         if side == "red":
             if elem == "rocks":
-                if self.rocksA == True:
+                if self.a_field.rocks == True:
                     print( "Rocks are already set up!" )
                     return "failed"
                 else:
-                    self.rocksA = True
+                    self.a_field.rocks = True
                     return "x"
             elif elem == "spikes":
-                if self.spikesA >= 3:
+                if self.a_field.spikes >= 3:
                     print("No more spikes will fit!")
                     return "failed"
                 else:
-                    self.spikesA += 1
+                    self.a_field.spikes += 1
                     return "x"
             elif elem == "toxspk":
-                if self.toxicA >= 2:
+                if self.a_field.toxic >= 2:
                     print("No more toxic spikes will fit!")
                     return "failed"
                 else:
-                    self.toxicA += 1
+                    self.a_field.toxic += 1
                     return "x"
             elif elem == "sticky":
                 if self.stickyA == True:
@@ -2708,18 +2702,18 @@ class field:
                     self.rocksB = True
                     return "x"
             elif elem == "spikes":
-                if self.spikesB >= 3:
+                if self.b_field.spikes >= 3:
                     print("No more spikes will fit!")
                     return "failed"
                 else:
-                    self.spikesB += 1
+                    self.b_field.spikes += 1
                     return "x"
             elif elem == "toxspk":
-                if self.toxicB >= 2:
+                if self.b_field.toxic >= 2:
                     print("No more toxic spikes will fit!")
                     return "failed"
                 else:
-                    self.toxicB += 1
+                    self.b_field.toxic += 1
                     return "x"
             elif elem == "sticky":
                 if self.stickyB == True:
