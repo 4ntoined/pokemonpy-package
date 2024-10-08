@@ -269,11 +269,11 @@ class cpu:
         burn = 1.
         if not move_phys:
             boost = statStages[pokeme.sastage] / statStages[pokeyou.sdstage]
-            if self.bfield.field.lightscACounter > 0:   screen = 0.5
+            if self.bfield.field.a_field.lightscCounter > 0:   screen = 0.5
         else:
             boost = statStages[pokeme.atstage] / statStages[pokeyou.destage]
             if pokeme.burned:                             burn = 0.5
-            if self.bfield.field.reflectACounter > 0:   screen = 0.5
+            if self.bfield.field.a_field.reflectCounter > 0:   screen = 0.5
         #                                               #
         #   consider weather synergy    #
         # the terrain boosts here should be contingent on being grounded
