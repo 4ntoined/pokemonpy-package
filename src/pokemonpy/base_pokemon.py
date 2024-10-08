@@ -23,7 +23,7 @@ import calendar as cal
 import hashlib
 import textwrap
 import numpy as np
-from .texter import genborder,magic_text,magic_head,copyrigh
+from .texter import genborder,magic_text,magic_head
 from . import dex
 from .moves import mov,natures,struggle,futuresigh,tackl,getMoveInfo
 from .trainerai import cpu
@@ -3671,8 +3671,8 @@ terrain_dict = dict([('none',0),('grassy',3),('electric',4),('psychic',10),('mis
 pumped_dict = dict([(False,0),(True,2)])
 Weathers=['clear','sunny','rain','sandstorm','hail']
 Terrains=['none','electric','grassy','misty','psychic']
-sayings_out = ("x! I choose you!","x! Go!","x, it's your turn!","x! I'm counting on you!","You can do it x!")
-sayings_back = ("x, come back!","Take a break x!","Thanks x! Rest up for now!")
+sayings_out = ("x! I choose you!","x! Go!","x, it's your turn!","x! I'm counting on you!","You can do it x!","Let's go x!","x! I believe in you!")
+sayings_back = ("x, come back!","Take a break x!","Thanks x! Rest up for now!","x, that's enough!","Great job, x! Take a rest!")
 
 struggle_i=struggle #move index of struggle
 futuresight_i = futuresigh

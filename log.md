@@ -1,5 +1,13 @@
 ## pokemonpy-package log
 
+### v0.2.9
+Title: **hopefully the double battle update is done before i ever feel compelled to push these minor updates ahead of it**
+
+Date: 2024 you know whatever
+Thinking about:
+[ ] more trainer call outs
+[ ] text wrap in about text, elsewhere as I think of it
+
 ### v0.2.8
 Title: **version number hotfix**
 
