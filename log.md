@@ -7,20 +7,22 @@ Date: 2024 change the pokemon.py gameversion
 
 here's what im thinking for double battles stuff
 
-[x] implement semifield (big step, im already upset about it); heck yeah
-[ ] invent PPS (Pokémon Positioning System), orient 4 Pokémon in a battle *
-[ ] rework moves.py to target one or two or all mons
-[ ] rework move info to report range
-[ ] rework game to have player select a target(s)
-[ ] spread damage in the damage calculation
-[ ] have the player manage 2 active Pokémon at once
-[ ] update the battle UI, status screen to account for 4 Pokémon
+- [x] implement semifield (big step, im already upset about it); heck yeah
+- [ ] invent PPS (Pokémon Positioning System), orient 4 Pokémon in a battle *
+- [ ] rework moves.py to target one or two or all mons
+- [ ] rework move info to report range
+- [ ] rework game to have player select a target(s)
+- [x] spread damage in the damage calculation, started this need to figure out
+the markers for the damage calc, depends on the moves.py doubles updates
+- [ ] spread damage part 2
+- [ ] have the player manage 2 active Pokémon at once
+- [ ] update the battle UI, status screen to account for 4 Pokémon
+- [ ] update the cpu trainer brain to account for its new active mon
+
 
 keeping in mind for doubles:
 - fusion bolt and flare do NOT get their boost if a move was used in between the 2 of them.
 need to mark when a fusion move is used and then unmark if the next move is not the other fusion
-
-
 
 *
 i am thinking that this "orientation" idea is technically moot for doubles.

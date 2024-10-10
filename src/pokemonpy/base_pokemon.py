@@ -2917,7 +2917,7 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
     if ("nerfGrassy" in note) and (attacker.field.terrain=="grassy"):
         power*=0.5
         damages.append("The Grassy Terrain softens the blow!")
-    ####weather damage boost####
+    ####weather damage boost aa:weatherboosts aa:weatherdamage aa:hydrosteamdamage####
     weatherBonus=1.
     hydrosteamBonus = 1.
     if attacker.field.weather=='sunny':
@@ -3013,8 +3013,10 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
     if ('collision' in note) and (tyype >= 2.):
         collided = 5461./4096.
         damages.append("The super-effective hit is more powerful than normal!")
+    #### spread damage nerf, more than one target
+    spread = 1.
     #check if the burn nerf survives (non-crit and non-facade)
-    if burn<1.0:
+    if burn < 1.0:
         damages.append("The burn reduces damage...")
     #circumvent normal damage calculation sometimes
     #mirrorcoat, counter succeeding
@@ -3031,10 +3033,11 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
         ans = np.floor(defender.currenthp / 2.)
         if ans < 1.: ans = 1.
         damages = []
+    # normal damage calculation
     else:
         ####modifiers united####
         damageModifier = critical * rando * STAB * tyype * burn * screennerf * caught_bonus * collided \
-                    * weatherBonus * hydrosteamBonus
+                    * weatherBonus * hydrosteamBonus * spread
         ####damage calculation####
         ans= np.floor( ((((2.*level)/5. + 2.)*power*attack/defense)/50. + 2.)*damageModifier )
     return ans,tyype,damages

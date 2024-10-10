@@ -483,7 +483,24 @@ moremoves=[
 # blessing - recovery move deals 25% max HP
 # refresh - heals status conditions
 
-
+# range key, thank God for bulbapedia, I owe her my life
+# 0 - hits 1 target (could be ally, in theory) (normal) [tackle]
+#  - hits 1 opponent randomly (1 random) (thrash, petal dance, outrage)
+# 1 - hits 2 targets (has to be opponents i think) (many others) [growl, blizzard, swift]
+# 2 - hits specifically an ally (beneficial usually) (1 ally) [helping hand]
+# 3 - all but the user (all others) earthquake, explosion
+# 4 - all on the field (all) (perish song, rototiller-cut in gen 8)
+#  - affects all on the field and the field itself? (both sides) (rain dance, haze?)
+#  - affects opponent's side (other side) (hazard moves)
+# 5 - affects user (recover, defense curl) (self)
+#  - affects ally (helping hand)
+# 6 - affects user and ally
+# 7 - affects a single opponent (specifically an opponent) (1 other) [me first, doodle, max moves]
+# 8 - user or ally (you can choose!, acupressure) (self/ally)
+#  - affects all allies (all allies, except self)(coaching)
+#  - affects user's whole side (your side) (mist, light screen)
+# - affects whole party, including mons in the back (your party) (heal bell, aromatherpy)
+#  - wildcard, it depends (varies) (counter?, curse)
 
 #constructing dtypes and names to accompany data
 labels = np.dtype( [('name','U25'),('pwr','i4'),('accu','i4'),('pp','i4'),('special?','i4'),('contact?','i4'),('type','i4'),('priority','i4'),('desc','U400'),('notes','U140')] )
