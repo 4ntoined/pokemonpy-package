@@ -11,7 +11,8 @@ here's what im thinking for double battles stuff
 - [ ] invent PPS (Pokémon Positioning System), orient 4 Pokémon in a battle *
 - [x] rework moves.py to target one or two or all mons, got through power 55 moves
 - [x] rework moves.py pt 2, think that's finished
-- [ ] rework move info to report range
+- [x] rework move info to report range
+- [ ] create a dictionary for range indeces
 - [ ] rework game to have player select a target(s)
 - [x] spread damage in the damage calculation, started this need to figure out
 the markers for the damage calc, depends on the moves.py doubles updates

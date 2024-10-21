@@ -3553,7 +3553,7 @@ def moveInfo(moveCode, index=False):
     #print(f"------------ {move['name']} ------------")
     if index:   print('\n'+magic_text(txt=f"{move['name']} | index: {moveCode}",spacing=' ',cha='-',long=game_width))
     else:       print('\n'+magic_text(txt=f"{move['name']}",spacing=' ',cha='-',long=game_width))
-    print(f"Power: {move['pwr']} | Accuracy: {move['accu']}%")
+    print(f"Power: {move['pwr']} | Accuracy: {move['accu']}% | Range: {move['range']}")
     print(f"[{typeStrings[move['type']]}] | [{move_dict[move['special?']]}] | PP: {move['pp']}")
     print("\n",end="")
     for i in descr_parts: print(textwrap.fill(i, game_width))
