@@ -10,7 +10,7 @@ here's what im thinking for double battles stuff
 - [x] implement semifield (big step, im already upset about it); heck yeah
 - [ ] invent PPS (Pokémon Positioning System), orient 4 Pokémon in a battle *
 - [x] rework moves.py to target one or two or all mons, got through power 55 moves
-- [ ] rework moves.py pt 2
+- [x] rework moves.py pt 2, think that's finished
 - [ ] rework move info to report range
 - [ ] rework game to have player select a target(s)
 - [x] spread damage in the damage calculation, started this need to figure out
@@ -24,6 +24,7 @@ the markers for the damage calc, depends on the moves.py doubles updates
 keeping in mind for doubles:
 - fusion bolt and flare do NOT get their boost if a move was used in between the 2 of them.
 need to mark when a fusion move is used and then unmark if the next move is not the other fusion
+- counter and mirror coat users will need to track which pokémon hit them
 
 *
 i am thinking that this "orientation" idea is technically moot for doubles.
