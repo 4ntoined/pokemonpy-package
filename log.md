@@ -12,7 +12,7 @@ here's what im thinking for double battles stuff
 - [x] rework moves.py to target one or two or all mons, got through power 55 moves
 - [x] rework moves.py pt 2, think that's finished
 - [x] rework move info to report range
-- [ ] create a dictionary for range indeces
+- [x] create a dictionary for range indeces
 - [ ] rework game to have player select a target(s)
 - [x] spread damage in the damage calculation, started this need to figure out
 the markers for the damage calc, depends on the moves.py doubles updates

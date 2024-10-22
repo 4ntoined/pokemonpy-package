@@ -188,8 +188,7 @@ class game:
                 break
             if userChoice == "about":
                 #aa:about
-                #print out some credits?
-                #def the current game version
+                #current game version
                 print(f"\nVersion {self.gameversion}")
                 #the people who worked on the game
                 print(f"\nDevelopers:")

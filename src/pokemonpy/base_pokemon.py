@@ -3545,7 +3545,7 @@ def print_dex():
     return
 #moves have pwr, phys/spec, type, accu, descipt
 def moveInfo(moveCode, index=False):
-    global mov, typeStrings, move_dict, game_width
+    global mov, typeStrings, move_dict, game_width, range_dict
     contact_textyes = textwrap.fill("-The user makes contact with the target.", game_width)
     contact_textnot = textwrap.fill("-The user does not make contact with the target.", game_width)
     move=mov[moveCode]
@@ -3553,7 +3553,7 @@ def moveInfo(moveCode, index=False):
     #print(f"------------ {move['name']} ------------")
     if index:   print('\n'+magic_text(txt=f"{move['name']} | index: {moveCode}",spacing=' ',cha='-',long=game_width))
     else:       print('\n'+magic_text(txt=f"{move['name']}",spacing=' ',cha='-',long=game_width))
-    print(f"Power: {move['pwr']} | Accuracy: {move['accu']}% | Range: {move['range']}")
+    print(f"Power: {move['pwr']} | Accuracy: {move['accu']}% | Range: {range_dict[move['range']]}")
     print(f"[{typeStrings[move['type']]}] | [{move_dict[move['special?']]}] | PP: {move['pp']}")
     print("\n",end="")
     for i in descr_parts: print(textwrap.fill(i, game_width))
@@ -3660,6 +3660,8 @@ stageStrings=["fell severely","fell harshly","fell","[BLANK]","rose","rose sharp
 nature_stat_str = ["Atk","Def","SpA","SpD","Spe"]
 stats_dict = dict([('HP',0),('Atk',1),('Def',2),('SpA',3),('SpD',4),('Spe',5)]) #used for showdown save loading
 move_dict = dict([(2,'Status'),(1,'Special'),(0,'Physical')])                  #used for move info displaying
+range_dict = dict([(0,'NORMAL'),(1,'NORMAL - LONG RANGE'),(4,'1 OPPONENT'),(5,'ALL ADJACENT'),\
+                   (6,'ADJACENT OPPONENTS'),(11,'SELF'),(14,'1 RANDOM'),(15,'FIELD'),(16,"OTHER SIDE"),(17,'YOUR SIDE'),(18,'VARIES')])
 weather_dict = dict([('clear',0),('sunny',1),('rain',2),('hail',5),('sandstorm',12)])  #used for turning weather into weatherball typing
 terrain_dict = dict([('none',0),('grassy',3),('electric',4),('psychic',10),('misty',17)]) #used for turning terrain into Terrain Pulse typing
 pumped_dict = dict([(False,0),(True,2)])
