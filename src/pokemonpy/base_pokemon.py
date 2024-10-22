@@ -2948,9 +2948,9 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
         grass=(attacker.field.terrain=="grassy") and (moveTipe==3) and (attacker.grounded)      #there is GRASSY TERRAIN the user is GROUNDED the user is using a GRASS-TYPE move              
         psychic=(attacker.field.terrain=="psychic") and (moveTipe==10) and (attacker.grounded)  #there is PSYCHIC TERRAIN the user is GROUNDED the user is using a PSYCHIC-TYPE move
         fairy=(attacker.field.terrain=="misty") and (moveTipe==14) and (defender.grounded)      #there is MISTY TERRAIN the TARGET is GROUNDED the user is using a DRAGON-TYPE move
-        electric=(attacker.field.terrain=="electric") and (attacker.grounded)
-        electric_psyblade = electric and ('psyblade' in note)   #there is ELECTRIC TERRAIN the user is GROUNDED the user is using PSYBLADE              
-        electric_normal = electric and (moveTipe == 4)          #there is ELECTRIC TERRAIN the user is GROUNDED the user is using an ELECTRIC-TYPE move
+        #electric=
+        electric_psyblade = (attacker.field.terrain=="electric") and ('psyblade' in note)   #there is ELECTRIC TERRAIN the user is using PSYBLADE              
+        electric_normal = (attacker.field.terrain=="electric") and (moveTipe == 4) and (attacker.grounded)          #there is ELECTRIC TERRAIN the user is GROUNDED the user is using an ELECTRIC-TYPE move
         #realized the three of them would have the exact same effect
         if electric_psyblade:
             power *= 1.5
