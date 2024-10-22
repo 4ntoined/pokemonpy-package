@@ -23,7 +23,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # multistrike moves // encore // endeavor // echoed voice // protect-feint
 # entry hazards in battle status, grounded/ungrounded in battle status
 # ***************************************************************************
-import os, copy, sys, argparse
+import os, copy, textwrap
 #import time as t
 from time import localtime, strftime
 from importlib import resources as impr
@@ -32,9 +32,9 @@ from . import base_pokemon
 from .base_pokemon import mon, battle, field, checkBlackout, loadMon, makeMon,\
     makeRandom, makeParty, moveInfo, typeStrings, Weathers, Terrains, \
     shortpause, dramaticpause, micropause, elite4_healquit, print_dex, \
-    print_party, loadMonNpy, saveParty, loadShowdown, copyrigh, \
+    print_party, loadMonNpy, saveParty, loadShowdown, \
     party_fixivs, party_fixevs, print_parties, easter_strings
-from .texter import genborder,magic_text,magic_head
+from .texter import genborder,magic_text,magic_head, copyrigh
 from .moves import getMoveInfo,mov,natures
 #from .dexpoke import dex
 from . import dex
@@ -195,14 +195,15 @@ class game:
                 print(f"\nDevelopers:")
                 for i in self.devs_list: print(f"{i}")
                 #the platforms and tools
-                print("\nBuilt on Python by Python Software Foundation.\nAnd Numpy by NumPy Developers.")
+                print("\n" + textwrap.fill("Built on Python by Python Software Foundation.",self.game_width))
+                print(textwrap.fill("And Numpy by NumPy Developers.", self.game_width))
                 #gamefreak
-                print("\nInspired by the games of the Pokémon franchise by GameFreak, Nintendo, and Creatures.")
+                print("\n" + textwrap.fill("Inspired by the games of the Pokémon franchise by GameFreak, Nintendo, and Creatures.", self.game_width))
                 #special thanks
-                ststring = "\nSpecial thanks to:\nBulbapedia - bulbapedia.bulbagarden.net,"+\
-                        "\nSerebii - serebii.net, and\nBulbapedia-Web-Scraper by github user ryanluuwas."
+                ststring = "\n" + textwrap.fill("Special thanks to:", self.game_width) + "\n" + textwrap.fill("Bulbapedia - bulbapedia.bulbagarden.net,", self.game_width) + \
+                    "\n" + textwrap.fill("Serebii - serebii.net,", self.game_width) + "\n" + textwrap.fill("and Bulbapedia-Web-Scraper by github user ryanluuwas.", self.game_width)
                 print(ststring)
-                print("\nSee CREDITS.txt in documentation/ for more details.")
+                print("\n" + textwrap.fill("See CREDITS.txt in documentation/ for more details.", self.game_width))
                 holdhere = input("\nenter anything to continue...")
                 pass
             if userChoice == "adarius":print("Nice!");shortpause()
