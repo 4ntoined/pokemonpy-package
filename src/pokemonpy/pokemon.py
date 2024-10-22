@@ -47,7 +47,7 @@ from . import saves
 class game:
     def __init__(self):
         #defining bedrock game variables
-        self.gameversion = '0.2.9'
+        self.gameversion = '0.3.0'
         self.devs_list = ( 'Adarius', )
         self.cut_the_line = 1.
         self.full_restore = 1.

@@ -1,12 +1,65 @@
 ## pokemonpy-package log
 
-### v0.2.9
-Title: **hopefully the double battle update is done before i ever feel compelled to push these minor updates ahead of it**
+### v0.3.0
+Title: **Double Battles**
 
-Date: 2024 you know whatever
+Date: 2024 change the pokemon.py gameversion
+
+here's what im thinking for double battles stuff
+
+- [x] implement semifield (big step, im already upset about it); heck yeah
+- [ ] invent PPS (Pokémon Positioning System), orient 4 Pokémon in a battle *
+- [x] rework moves.py to target one or two or all mons, got through power 55 moves
+- [x] rework moves.py pt 2, think that's finished
+- [x] rework move info to report range
+- [ ] create a dictionary for range indeces
+- [ ] rework game to have player select a target(s)
+- [x] spread damage in the damage calculation, started this need to figure out
+the markers for the damage calc, depends on the moves.py doubles updates
+- [ ] spread damage part 2
+- [ ] have the player manage 2 active Pokémon at once
+- [ ] update the battle UI, status screen to account for 4 Pokémon
+- [ ] update the cpu trainer brain to account for its new active mon
+
+
+keeping in mind for doubles:
+- fusion bolt and flare do NOT get their boost if a move was used in between the 2 of them.
+need to mark when a fusion move is used and then unmark if the next move is not the other fusion
+- counter and mirror coat users will need to track which pokémon hit them
+
+*
+i am thinking that this "orientation" idea is technically moot for doubles.
+Moves either target (1) one of the two opponents, (2) both opponents at once [rock slide],
+(3) the user's ally [helping hand], (4) both the user and its ally [Life Dew],
+(5) all Pokémon on the field [Perish Song], (6) everyone but the user [Earthquake],
+(7) the user [Swords Dance]
+In doubles, targeting has nothing to do with positioning, just allegiance.
+But this is an important thing to do anyway for Triple+ Battles,
+where some Pokémon are out of range of other Pokémon's moves because of where they are in
+"physical" space.
+
+
 Thinking about:
-[ ] more trainer call outs
-[ ] text wrap in about text, elsewhere as I think of it
+
+#### Major
+- double battles 0.3.0
+- abilities 0.4.0
+- defog + grounding/ungrounding + hazards + status screen completion 0.5.0
+- triple+ battles
+- rotation battles
+
+#### Minor
+- move unification
+- snow
+- battle texts
+- savefile versioning
+- we start the battle with the player's lead pokémon
+even if that pokémon is fainted...
+- multiparty tweaks:
+- opponent party setting should use all of player's parties for selection,
+- allow user to equip an empty party, so that you can load mons into a fresh party
+        - proof the game for in case the player has equipped an empty party
+- allow user to choose which party loaded mons are stored in
 
 ### v0.2.8
 Title: **version number hotfix**
