@@ -277,6 +277,7 @@ moremoves=[
         ("Jet Punch",       60,100,15,0,1,2,+1,0,"The user summons a torrent around its fist and punches at blinding speed.\n-Priority +1.","null"),
         ("Frost Breath",    60,90,10,1,0,5,0,0,"The user blows cold breath on the target!\n-Always lands a critical hit.","frostbreath"),
         ("Storm Throw",     60,100,10,0,1,6,0,0,"The user strikes the target with a fierce blow!\n-Always lands a critical hit.","frostbreath"),
+        ("Bulldoze",        60,100,20,0,0,8,0,5,"The user strikes everything around it by stomping on the ground!\n-Lowers the target's Spe. 1 stage.\n-Power is halved if used on Grassy Terrain.","nerfGrassy stat targ,sp,-1,100"),
         ("Air Cutter",      60,95,25,1,0,9,0,6,"The user launches razor-sharp winds to slash opponents!\n-Increased crit' ratio.","highCrit"),
         ("Aerial Ace",      60,100,20,0,1,9,0,1,"The user confounds the target with speed, then slashes!\n-Bypasses accuracy checks.","noMiss"),
         ("Silver Wind",     60,100,5,1,0,11,0,0,"The user attacks with powderly scales carried on the wind!\n-10% chance to raise all stats 1. stage each.","stat self,at:de:sa:sd:sp,1:1:1:1:1,10"), #not in SwSh, but IN LegendsArceus so we move!
