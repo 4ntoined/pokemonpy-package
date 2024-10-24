@@ -7,19 +7,19 @@ Date: 2024 change the pokemon.py gameversion
 
 here's what im thinking for double battles stuff
 
-- [x] implement semifield (big step, im already upset about it); heck yeah
 - [ ] invent PPS (Pokémon Positioning System), orient 4 Pokémon in a battle *
+- [ ] have the player manage 2 active Pokémon at once
+- [ ] rework game to have player select a target(s)
+- [ ] spread damage part 2
+- [ ] update the battle UI, status screen to account for 4 Pokémon
+- [ ] update the cpu trainer brain to account for its new active mon
+- [x] implement semifield (big step, im already upset about it); heck yeah
 - [x] rework moves.py to target one or two or all mons, got through power 55 moves
 - [x] rework moves.py pt 2, think that's finished
 - [x] rework move info to report range
 - [x] create a dictionary for range indeces
-- [ ] rework game to have player select a target(s)
 - [x] spread damage in the damage calculation, started this need to figure out
 the markers for the damage calc, depends on the moves.py doubles updates
-- [ ] spread damage part 2
-- [ ] have the player manage 2 active Pokémon at once
-- [ ] update the battle UI, status screen to account for 4 Pokémon
-- [ ] update the cpu trainer brain to account for its new active mon
 
 
 keeping in mind for doubles:

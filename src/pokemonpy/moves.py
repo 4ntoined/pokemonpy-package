@@ -416,8 +416,8 @@ moremoves=[
         ("Take Heart",      0,100,10,2,0,2,0,11,"The user focuses on the positives to lift its spirits!\n-Raises the user's Sp.A Sp.D 1 stage each.\n-Heals status conditions.","stat self,sa:sd,1:1,100 refresh noMiss noTarg"),
         ("Synthesis",       0,100,5,2,0,3,0,11,"The user takes in sunlight to restore HP!\n-Restores 2/3 of the user's max HP in harsh sunlight.\n-1/2 max HP in clear weather.\n-1/4 max HP in rain, sandstorm, hail.","heals synthesis noMiss noTarg"),
         ("Shore Up",        0,100,5,2,0,8,0,11,"The user draws in sand to restore itself!\n-Restores 2/3 of the user's max HP in a sandstorm.\n-1/2 max HP in all other conditions.","heals shoreup"),
-        ("Jungle Healing",  0,100,5,2,0,3,0,11,"The user becomes one with the jungle!\n-Restores 25% of the user's max HP.\n-Heals status conditions.","heals blessing refresh noMiss noTarg"),
-        ("Lunar Blessing",  0,100,5,2,0,10,0,11,"The user receives a blessing from the crescent moon!\n-Restores 25% of the user's max HP.\n-Heals status conditions.","heals blessing refresh noMiss noTarg"),
+        ("Jungle Healing",  0,100,5,2,0,3,0,9,"The user becomes one with the jungle!\n-Restores 25% of the user's max HP.\n-Heals status conditions.","heals blessing refresh noMiss noTarg"),
+        ("Lunar Blessing",  0,100,5,2,0,10,0,9,"The user receives a blessing from the crescent moon!\n-Restores 25% of the user's max HP.\n-Heals status conditions.","heals blessing refresh noMiss noTarg"),
         ("Moonlight",       0,100,5,2,0,17,0,11,"The user basks in the moonlight to restore HP!\n-Restores 2/3 of the user's max HP in harsh sunlight.\n-1/2 max HP in clear weather.\n-1/4 max HP in rain, sandstorm, hail.","heals synthesis noMiss noTarg"),
 
          #stat(istic) changes

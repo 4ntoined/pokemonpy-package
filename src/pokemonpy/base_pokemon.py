@@ -1124,7 +1124,9 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
     def hit(self,attacker,damagepoints,effectiveness,notes,move_index,comments):
         global mov
         moveTipe = mov[move_index]['type']
-        if effectiveness==0. and not ('arrows' in notes): print(f"{self.name} is immune!")
+        if effectiveness==0. and not ('arrows' in notes):
+            print(f"{self.name} is immune!")
+            micropause()
         else:
             if ('arrows' in notes) and (not self.grounded or self.flying): #will need to further generalize for smack down?
                 print(f"\nThe arrows can reach {self.name}!")
@@ -1553,8 +1555,15 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
 #zz:monclass
 #aa:battleclass
 class battle:
-    def __init__(self, usr_party, cpu_party, fields, usr_name='', cpu_name='OPPONENT', full_restore_on = False):
+    def __init__(self, usr_party, cpu_party, fields, usr_name='', cpu_name='OPPONENT', format=1, full_restore_on = False):
         ###can i get a uhhhhhhh
+        # battle format, 0 or 1 for singles, 2 for doubles
+        self.format = format
+        # battle flags/settings
+        self.field = fields
+        self.user_won = False
+        self.fullrestore_on = full_restore_on
+        # trainer names
         if not usr_name:
             self.usr_name = 'You'
             self.usr_named = False
@@ -1562,16 +1571,15 @@ class battle:
             self.usr_name = usr_name
             self.usr_named = True
         self.cpu_name = cpu_name
+        # trainer parties
         self.usrs = usr_party
         self.cpus = cpu_party
+        # active on the field
         self.usr_mon = usr_party[0]
         self.cpu_mon = cpu_party[0]
         self.usr_ind = 0
         self.cpu_ind = 0
-        self.field = fields
-        self.user_won = False
-        self.fullrestore_on = full_restore_on
-        #self.playercpu_dict = dict([ (False, usr_name), (True, cpu_name)])
+
 
     #check status of battle
     #this needs to go IN battle()
@@ -3664,6 +3672,7 @@ range_dict = dict([(0,'NORMAL'),(1,'NORMAL - LONG RANGE'),(4,'1 OPPONENT'),(5,'A
                    (6,'ADJACENT OPPONENTS'),(11,'SELF'),(14,'1 RANDOM'),(15,'FIELD'),(16,"OTHER SIDE"),(17,'YOUR SIDE'),(18,'VARIES')])
 weather_dict = dict([('clear',0),('sunny',1),('rain',2),('hail',5),('sandstorm',12)])  #used for turning weather into weatherball typing
 terrain_dict = dict([('none',0),('grassy',3),('electric',4),('psychic',10),('misty',17)]) #used for turning terrain into Terrain Pulse typing
+bformat_dict = dict([(0,1),(1,1),(2,2)]) #used for battle() format variable index to number of mons on each side
 pumped_dict = dict([(False,0),(True,2)])
 Weathers=['clear','sunny','rain','sandstorm','hail']
 Terrains=['none','electric','grassy','misty','psychic']
