@@ -1575,10 +1575,24 @@ class battle:
         self.usrs = usr_party
         self.cpus = cpu_party
         # active on the field
-        self.usr_mon = usr_party[0]
-        self.cpu_mon = cpu_party[0]
-        self.usr_ind = 0
-        self.cpu_ind = 0
+        if (format == 0) or (format == 1):
+            #singles
+            self.usr_mon = [usr_party[0]]
+            self.cpu_mon = [cpu_party[0]]
+            self.usr_ind = [0]
+            self.cpu_ind = [0]
+            pass
+        elif format == 2:
+            #doubles
+            self.usr_mon = [usr_party[0],usr_party[1]]
+            self.cpu_mon = [cpu_party[0],cpu_party[1]]
+            self.usr_ind = [0,1]
+            self.cpu_ind = [0,1]
+            pass
+        else:
+            pass
+        #next in battle setup
+        
 
 
     #check status of battle
