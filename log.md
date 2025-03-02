@@ -11,7 +11,8 @@ here's what im thinking for double battles stuff
 - [ ] have the player manage 2 active Pokémon at once
 - [ ] rework game to have player select a target(s)
 - [ ] spread damage part 2
-- [ ] update the battle UI, status screen to account for 4 Pokémon
+- [x] update the battle UI,
+- [ ] status screen to account for 4 Pokémon
 - [ ] update the cpu trainer brain to account for its new active mon
 - [x] implement semifield (big step, im already upset about it); heck yeah
 - [x] rework moves.py to target one or two or all mons, got through power 55 moves

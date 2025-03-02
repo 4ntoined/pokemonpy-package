@@ -1775,24 +1775,52 @@ class battle:
     def UI(self): #turnnumber, cpumon, usrsmon, usrname, whether user is named, 
         #print('\n'+magic_text(txt=f'Turn {turn}',spacing=' ',cha='=',long=game_width))
         if self.usr_named:
-            youi_1 = f"{self.usr_name}:"
+            youi_1 = f"{self.usr_name}:\n"
         else:
             youi_1 = "Your team:"
-        youi_2 = f"{self.usr_mon.name} // Level {self.usr_mon.level}"
-        youi_3 = f"HP: {format(self.usr_mon.currenthp,'.2f')}/{format(self.usr_mon.maxhp,'.2f')} ({format(self.usr_mon.currenthpp,'.2f')}%)" 
-        youi_longs = [ len(i) for i in (youi_1,youi_2,youi_3) ]
+        #your_poke1
+        battleui_usrlines = [youi_1]
+        for i in range(len(self.usr_mon)):
+            usrmonline1 = f"{self.usr_mon[i].name} // Level {self.usr_mon[i].level}"
+            usrmonline2 = f"HP: {format(self.usr_mon[i].currenthp,'.2f')}/{format(self.usr_mon[i].maxhp,'.2f')} ({format(self.usr_mon[i].currenthpp,'.2f')}%)" 
+            battleui_usrlines += [usrmonline1, usrmonline2]
+        #youi_22 = f"{self.usr_mon[1].name} // Level {self.usr_mon[1].level}"
+        #youi_32 = f"HP: {format(self.usr_mon[1].currenthp,'.2f')}/{format(self.usr_mon[1].maxhp,'.2f')} ({format(self.usr_mon[1].currenthpp,'.2f')}%)" 
+        youi_longs = [ len(i) for i in battleui_usrlines ]
         ndots = game_width - max(youi_longs)
         if ndots < 0:
             ndots = 0
         ndots = 24
         dotsdots = genborder(cha='.',num=ndots)
-        print(f"\n{self.cpu_name}:\n{self.cpu_mon.name} // Level {self.cpu_mon.level}")
-        print(f"HP: {format(self.cpu_mon.currenthpp,'.2f')}%")
-        print(f"\n{dotsdots}{youi_1}")
-        #if self.usr_named:  print(f"\n{dotsdots}{youi_1}")
-        #else:               print("\n............Your team:")
-        print(f"{dotsdots}{youi_2}")
-        print(f"{dotsdots}{youi_3}")
+        battleui_usrlines_2 = []
+        for i in battleui_usrlines:
+            battleui_usrlines_2.append(dotsdots+i)
+        #opponent name
+        battleui_cpuname = f"\n{self.cpu_name}:"
+        #add to the list of lines to print for CPU
+        battleui_cpulines = [battleui_cpuname]
+        #for each mon
+        for i in range(len(self.cpu_mon)):
+            #first line for this mon
+            cpumonline1 = f"\n{self.cpu_mon[i].name} // Level {self.cpu_mon[i].level}"
+            #second line for this mon
+            cpumonline2 = f"HP: {format(self.cpu_mon[i].currenthpp,'.2f')}%"
+            #add them to the list of lines to print
+            battleui_cpulines += [cpumonline1,cpumonline2]
+        #battleui_cpumon1line1 = f"\n{self.cpu_mon[0].name} // Level {self.cpu_mon[0].level}"
+        #battleui_cpumon1line2 = f"HP: {format(self.cpu_mon[0].currenthpp,'.2f')}%"
+        #battleui_cpumon2line1 = f"\n{self.cpu_mon[1].name} // Level {self.cpu_mon[1].level}"
+        #battleui_cpumon2line2 = f"HP: {format(self.cpu_mon[1].currenthpp,'.2f')}%"
+        for i in battleui_cpulines: print(i)
+        print()
+        for i in range(len(battleui_usrlines_2)):
+            if i%2 == 1: print(dotsdots)
+            print(battleui_usrlines_2[i])
+        #print(f"\n{dotsdots}{battleui_usrlines[0]}\n{dotsdots}")
+        #print(f"{dotsdots}{youi_2}")
+        ##print(f"{dotsdots}{youi_3}\n{dotsdots}")
+        #print(f"{dotsdots}{youi_22}")
+        #print(f"{dotsdots}{youi_32}")
         return
     
     def switchpokemon(self, newmon_index, cpu_switch = False):
@@ -2503,11 +2531,12 @@ class battle:
         return
 #zz:battleclass
 class semifield:
-    def __init__(self,color):
+    def __init__(self,color,format=1):
         self.color = color #'should' be red or blue
+        self.npoke = format
         self.tailwindCounter = 0
-        self.futures = 0   #realized I dont need to specify its a counter
-        self.fainted = False
+        self.futureslots = [0 for i in range(self.npoke)] 
+        self.fainted = [False for i in range(self.npoke)]
         self.rocks=False
         self.sticky=False
         self.steel=False
@@ -2519,7 +2548,7 @@ class semifield:
         return
     def clear(self):
         self.tailwindCounter = 0
-        self.futures = 0   #realized I dont need to specify its a counter
+        self.futureslots = [0 for i in range(self.npoke)] 
         self.fainted = False
         self.rocks=False
         self.sticky=False
@@ -2536,10 +2565,17 @@ class semifield:
 
 ##aa:fieldclass
 class field:
-    def __init__(self, weath = 'clear', terra = 'none', rando = False):
+    def __init__(self, format=1, weath = 'clear', terra = 'none', rando = False):
         global Weathers
         global Terrains
         #### field-wide variables
+        #how many pokemon on each side of the field?
+        if format == 2:
+            self.npoke = 2
+        elif format >= 3:
+            self.npoke = format
+        else:
+            self.npoke = 1
         # weather, terrain, fusion trackers, trick room (eventually)
         if rando:
             self.weather=rng.choice(Weathers)
@@ -2555,8 +2591,8 @@ class field:
         # fusion bolt flare trackers
         self.fusionb=False
         self.fusionf=False
-        self.a_field = semifield('red')
-        self.b_field = semifield('blue')
+        self.a_field = semifield('red',format=self.npoke)
+        self.b_field = semifield('blue',format=self.npoke)
         ### semi-field variables
         # tailwind, future sight, fainted, rocks, steelspikes, sticky webs
         # spikes, toxicspikes, screens [3], 
@@ -2612,9 +2648,9 @@ class field:
             i.lightscCounter = 0
             i.veilCounter = 0
             #battle conditions
-            i.fainted = False
+            i.fainted = [False for i in self.npoke]
             i.tailwindCounter = 0
-            i.futures = 0
+            i.futureslots = [0 for i in self.npoke]
         return
         
         #etc, etc
