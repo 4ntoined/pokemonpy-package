@@ -342,13 +342,16 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
         self.currenthp=self.maxhp
         self.currenthpp=100.
     #sending a pokemon out
-    def chosen(self, trainer, fields):
+    def chosen(self, trainer, fields, spot):
         self.field = fields
         self.firstturnout = True
         if trainer == "user":
-            self.battlespot = "red"
+            bs1 = "red"
         elif trainer == "cpu":
-            self.battlespot = "blue"
+            bs1 = "blue"
+        else:
+            bs1 = "green"
+        self.battlespot = (bs1,spot) #battlespot is a tuple(str-color side, int-number slot on that side)
     ####things to reset upon being withdrawn
     def withdraw(self):
         #reset stat stages
@@ -1150,16 +1153,16 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
             if ('fusion-f' in notes):
                 self.field.fusionf=True
             #with successful hit from brick break, break active screens
-            screens_up = np.count_nonzero(( self.field.checkScreen(self.battlespot,'reflect'), \
-                    self.field.checkScreen(self.battlespot,'lightscreen'), self.field.checkScreen(self.battlespot,'veil') ))
+            screens_up = np.count_nonzero(( self.field.checkScreen(self.battlespot[0],'reflect'), \
+                    self.field.checkScreen(self.battlespot[0],'lightscreen'), self.field.checkScreen(self.battlespot[0],'veil') ))
             if (screens_up >= 1.) and ('breakScreens' in notes):
-                if (self.battlespot=='red'):
+                if (self.battlespot[0]=='red'):
                     self.field.a_field.reflectCounter=0
                     self.field.a_field.lightscCounter=0
                     self.field.a_field.veilCounter=0
                     micropause()
                     print("It broke the screen(s)!")
-                elif (self.battlespot=='blue'):
+                elif (self.battlespot[0]=='blue'):
                     self.field.b_field.reflectCounter=0
                     self.field.b_field.lightscCounter=0
                     self.field.b_field.veilCounter=0
@@ -1555,12 +1558,12 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
 #zz:monclass
 #aa:battleclass
 class battle:
-    def __init__(self, usr_party, cpu_party, fields, usr_name='', cpu_name='OPPONENT', format=1, full_restore_on = False):
+    def __init__(self, usr_party, cpu_party, fields, usr_name='', cpu_name='OPPONENT', full_restore_on = False):
         ###can i get a uhhhhhhh
         # battle format, 0 or 1 for singles, 2 for doubles
-        self.format = format
         # battle flags/settings
         self.field = fields
+        self.format = self.field.npoke
         self.user_won = False
         self.fullrestore_on = full_restore_on
         # trainer names
@@ -1575,19 +1578,21 @@ class battle:
         self.usrs = usr_party
         self.cpus = cpu_party
         # active on the field
-        if (format == 0) or (format == 1):
+        if (self.format == 0) or (self.format == 1):
             #singles
-            self.usr_mon = [usr_party[0]]
-            self.cpu_mon = [cpu_party[0]]
-            self.usr_ind = [0]
-            self.cpu_ind = [0]
+            starters_i = 0
+            self.usr_mon = [usr_party[starters_i]]
+            self.cpu_mon = [cpu_party[starters_i]]
+            self.usr_ind = [starters_i]
+            self.cpu_ind = [starters_i]
             pass
-        elif format == 2:
+        elif self.format == 2:
             #doubles
-            self.usr_mon = [usr_party[0],usr_party[1]]
-            self.cpu_mon = [cpu_party[0],cpu_party[1]]
-            self.usr_ind = [0,1]
-            self.cpu_ind = [0,1]
+            starters_i = (0,1)
+            self.usr_mon = [usr_party[starters_i[0]],usr_party[starters_i[1]]]
+            self.cpu_mon = [cpu_party[starters_i[0]],cpu_party[starters_i[1]]]
+            self.usr_ind = [starters_i[0],starters_i[1]]
+            self.cpu_ind = [starters_i[0],starters_i[1]]
             pass
         else:
             pass
@@ -1823,24 +1828,25 @@ class battle:
         #print(f"{dotsdots}{youi_32}")
         return
     
-    def switchpokemon(self, newmon_index, cpu_switch = False):
+    def switchpokemon(self, newmon_index, spot, cpu_switch = False):
         """
         activemon: mon() object that is currently in battle
         newmon_index: int, index of pokemon selected to be entered in battle
+        spot: int, which slot is switching out?
         cpu_switch: bool, is this the player switching or the cpu?
         """
         if cpu_switch:
-            activemon = self.cpu_mon
+            activemon = self.cpu_mon[spot]
+            ind = self.cpu_ind[spot]
             party = self.cpus
             trainername = self.cpu_name 
-            ind = self.cpu_ind
             siding = "cpu"
             pass
         else:
-            activemon = self.usr_mon
+            activemon = self.usr_mon[spot]
+            ind = self.usr_ind[spot]
             party = self.usrs
             trainername = self.usr_name
-            ind = self.usr_ind
             siding = "user"
             pass
         #put current pokemon back?
@@ -1855,18 +1861,18 @@ class battle:
         #set new selection as user pokemon
         #ind = newmon_index
         if cpu_switch:
-            self.cpu_ind = newmon_index
-            self.cpu_mon = self.cpus[ newmon_index ]
-            activemon = self.cpu_mon
+            self.cpu_ind[spot] = newmon_index
+            self.cpu_mon[spot] = self.cpus[ newmon_index ]
+            activemon = self.cpu_mon[spot]
         else:
-            self.usr_ind = newmon_index
-            self.usr_mon = self.usrs[ newmon_index ]
-            activemon = self.usr_mon
+            self.usr_ind[spot] = newmon_index
+            self.usr_mon[spot] = self.usrs[ newmon_index ]
+            activemon = self.usr_mon[spot]
         #print(f"{self.usr_mon.name}, it's your turn!")
         print( f"\n{ trainername }: " + call_out( activemon.name ))
         shortpause()
         # assign the pokemon to its trainer's side of the field
-        activemon.chosen(siding,self.field)
+        activemon.chosen(siding,self.field,spot)
         # calculate the pokemon's stats, considering the weather and status conditions
         activemon.inBattle()
         # apply the field to the pokemon (entry hazards)
@@ -3479,14 +3485,14 @@ def checkBlackout(party):
             alive.append(i)
     return (p,alive)
 ## aa:createpokemon
-def maker(nparty,psize,nfield,level=100,how_created='random'):
+def maker(nparty,psize,nfield,level=100,format=1,how_created='random'):
     # making parties
     parties = []
     for i in range(nparty): parties.append( makeParty(numb=psize,level=level,how_created=how_created) )
     # making the fields
     fields = []
     for i in range(nfield):
-        newfield = field(rando=True)
+        newfield = field(rando=True,format=format)
         fields.append(newfield)
     return (parties, fields)
 def makeParty(numb=1,level=100, how_created='random', doevs=False):
