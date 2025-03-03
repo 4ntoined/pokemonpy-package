@@ -9,6 +9,7 @@ class cpu:
         self.party = battlefield.cpus
         self.activemon = battlefield.cpu_mon
         self.enemymon = battlefield.usr_mon
+        self.npoke = battlefield.format
         self.bfield = battlefield
         self.switch_chance = switch_c           #chance to switch for random switching
         self.status_chance = status_c           #chance to use a status move for random chance to use a status move
@@ -342,7 +343,7 @@ def codexer():
     codex[5,1],codex[5,2],codex[5,3],codex[5,5],codex[5,8],\
             codex[5,9],codex[5,14],codex[5,16]=\
             0.5,0.5,2.0,0.5,2.0,2.0,2.0,0.5 #ice
-    codex[6,1],codex[6,5],codex[6,7],codex[6,9],codex[6,10],codex[6,11],\
+    codex[6,0],codex[6,5],codex[6,7],codex[6,9],codex[6,10],codex[6,11],\
             codex[6,12],codex[6,13],codex[6,15],codex[6,16],codex[6,17]=\
             2.0,2.0,0.5,0.5,0.5,0.5,2.0,0.0,2.0,2.0,0.5 #fighting
     codex[7,3],codex[7,7],codex[7,8],codex[7,12],\

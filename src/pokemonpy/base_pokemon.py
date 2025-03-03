@@ -2056,7 +2056,7 @@ class battle:
                                     print(f"{self.usr_mon[zz].name} can only Struggle!")
                                     fighting=True
                                     moveDex=struggle_i
-                                    user_directions[zz] = "struggle"
+                                    user_directions[zz] = "struggling"
                                     shortpause()
                                     break
                                 userFight=input(f"\nWhat move should {self.usr_mon[zz].name} use?\n(Lead with 'i' to see move info)\n[#] or [b]: ")
@@ -2099,8 +2099,22 @@ class battle:
                                         print("\n**Enter one of the numbers above.**")
                                         micropause()
                 # by right here, the user should have been forced to make an option for each of their pokemon        
-                ####after either swithing or attacking
-                if fighting or switching or resting or charging:
+                #
+                # the cpu trainer should decide all of their choices (including switching) before moves clash
+                # then we'll compare speeds of all pokemon on the field to decide the order of operations
+                #
+                trainerShift = False
+                nfp, nfpList = checkBlackout( self.cpus )
+                if cpu_logic == 'basic':    rivalgo = rivalbrain.go(nfp,self.cpu_mon,self.usr_mon)
+                elif cpu_logic == 'random': rivalgo = rivalbrain.go_randomchoices(nfp,self.cpu_mon,self.usr_mon)
+                else:                       rivalgo = rivalbrain.go(nfp,self.cpu_mon,self.usr_mon)
+                if (nfp > 1) and (rivalgo == 'switch') and (not self.cpu_mon.resting) and (not self.cpu_mon.charged): #if trainer has more than 1 non fainted pokemon, 10% of the time, but not if their pokemon was charging a move or is resting from a move
+                    #hey
+                    del nfpList[ int( np.argwhere( np.array( nfpList ) == self.cpu_ind ))] #removing the current pokemon from the list of nonfainted pokemon in the party
+                    ntind = rng.choice( nfpList )
+                    self.switchpokemon( newmon_index = ntind, cpu_switch = True)
+                    trainerShift = True
+                    rivalgo = 0
                     #user shifting?
                     if switching:
                         #switching
@@ -2118,18 +2132,6 @@ class battle:
                     else:
                         #trainerCharge=False
                         pass
-                    trainerShift = False
-                    nfp, nfpList = checkBlackout( self.cpus )
-                    if cpu_logic == 'basic':    rivalgo = rivalbrain.go(nfp,self.cpu_mon,self.usr_mon)
-                    elif cpu_logic == 'random': rivalgo = rivalbrain.go_randomchoices(nfp,self.cpu_mon,self.usr_mon)
-                    else:                       rivalgo = rivalbrain.go(nfp,self.cpu_mon,self.usr_mon)
-                    if (nfp > 1) and (rivalgo == 'switch') and (not self.cpu_mon.resting) and (not self.cpu_mon.charged): #if trainer has more than 1 non fainted pokemon, 10% of the time, but not if their pokemon was charging a move or is resting from a move
-                        #hey
-                        del nfpList[ int( np.argwhere( np.array( nfpList ) == self.cpu_ind ))] #removing the current pokemon from the list of nonfainted pokemon in the party
-                        ntind = rng.choice( nfpList )
-                        self.switchpokemon( newmon_index = ntind, cpu_switch = True)
-                        trainerShift = True
-                        rivalgo = 0
                     ########################################################
                     # if both pokemon are attacking, compare move priority #
                     # then compare pokemon speeds ##########################

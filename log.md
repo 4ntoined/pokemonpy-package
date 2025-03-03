@@ -67,8 +67,10 @@ even if that pokémon is fainted...
 - multiparty tweaks:
 - opponent party setting should use all of player's parties for selection,
 - allow user to equip an empty party, so that you can load mons into a fresh party
-        - proof the game for in case the player has equipped an empty party
+	- proof the game for in case the player has equipped an empty party
 - allow user to choose which party loaded mons are stored in
+- keep track of certain stats during a play session and print them out when the
+game is properly quitted. save this data as a log-text file, adapt the game loading to retrieve and restore this data too.
 
 ### v0.2.8
 Title: **version number hotfix**
