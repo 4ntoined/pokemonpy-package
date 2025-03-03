@@ -2,14 +2,15 @@
 #and make some determinations thereabout
 import numpy as np
 from . import moves
+from .base_pokemon import checkParty
 mov = moves.mov
 
 class cpu:
     def __init__(self,battlefield, switch_c = 0.1, status_c = 0.2, switch_cf = 0.8, switch_cm = 0.05):
         self.party = battlefield.cpus
-        self.activemon = battlefield.cpu_mon
-        self.enemymon = battlefield.usr_mon
-        self.npoke = battlefield.format
+        self.activemon = battlefield.cpu_mon #this is now the list of pokemon the trainer has on the field
+        self.enemymon = battlefield.usr_mon #this is now the list of pokemon the user has on the field
+        self.npoke = battlefield.format #this is the number of pokemon to expect in each of the above lists
         self.bfield = battlefield
         self.switch_chance = switch_c           #chance to switch for random switching
         self.status_chance = status_c           #chance to use a status move for random chance to use a status move
@@ -27,14 +28,16 @@ class cpu:
         print(memon.name)
         return
     
-    def go_randomchoices(self, n_nonfainted, pokeme = '', pokeyou = '', switch_chance = None, status_chance = None):
+    def go_randomchoices(self, n_nonfainted, pokeme = '', pokeyou = '', switch_chance = None, status_chance = None, disable_switch = False):
         global mov
-        if not pokeme:  pokeme = self.activemon
+        if not pokeme:  pokeme = self.activemon[0]
         if not pokeyou: pokeyou = self.enemymon
         if switch_chance is None: switch_chance = self.switch_chance
         if status_chance is None: status_chance = self.status_chance
-        #
-        if n_nonfainted <= 1:   choice1 = 'fight'
+        # TARGETING
+        usr_field_n, usr_field_list = checkParty(self.enemymon)
+        # nonfainted pokemon needs to consider non fainted, non active pokemon
+        if (n_nonfainted <= 0) or (disable_switch):   choice1 = 'fight'
         else:                   choice1 = rng.choice( ('fight','switch'), p = (1. - switch_chance, switch_chance))
         if choice1 == 'switch':
             #switch pokemon, for now randomly, but maybe not forever
@@ -69,17 +72,21 @@ class cpu:
                 #print(mov[pokeme.knownMoves[choice2]]['name'] )
                 return choice2
     
-    def go(self,n_nonfainted,pokeme='',pokeyou='', switch_chance_factor = None, status_chance = None, switch_chance_minimum = None):
+    def go(self,n_nonfainted,pokeme='',pokeyou='', switch_chance_factor = None, status_chance = None, switch_chance_minimum = None,  disable_switch = False):
         global mov
-        if not pokeme:  pokeme = self.activemon
+        if not pokeme:  pokeme = self.activemon[0]
         if not pokeyou: pokeyou = self.enemymon
         if status_chance is None: status_chance = self.status_chance
         if switch_chance_factor is None: switch_chance_factor = self.switch_chance_factor
         if switch_chance_minimum is None: switch_chance_minimum = self.switch_chance_minimum
         #
-        choice1 = self.fightswitch( n_nonfainted, pokeme=pokeme, pokeyou=pokeyou, switch_chance_factor = switch_chance_factor, \
+        # TARGETING
+        usr_field_n, usr_field_list = checkParty(self.enemymon)
+        # nonfainted pokemon needs to consider non fainted, non active pokemon
+        if disable_switch:  choice1 = 'fight'
+        else:               choice1 = self.fightswitch( n_nonfainted, pokeme=pokeme, pokeyou=pokeyou, switch_chance_factor = switch_chance_factor, \
                                    switch_chance_minimum = switch_chance_minimum)    #will be 'fight' or 'switch'
-        if choice1 == 'switch':
+        if (choice1 == 'switch'):
             #switch pokemon, for now randomly, but maybe not forever
             #print('switching')
             return 'switch'
@@ -92,7 +99,7 @@ class cpu:
             damages = np.reshape( np.squeeze( np.argwhere( \
                     np.logical_and( np.logical_or( movecat==0, movecat==1 ), np.array(movepp) > 0))),\
                     (-1))      #indeces from knownMoves of damaging moves
-            #damages = [   ] np.where(  pokeme.PP[damages_] ) 
+            
             #do we use a damage move or status move
             #status move logic doesnt exist yet so we'll set some ~20% chance to use a status
             # vv need to replace with proper status move logic vv #
@@ -121,12 +128,12 @@ class cpu:
             > switch pres. ratio is further weighted for fine tuning > if it is less than 0.05, it is set to 0.05
             > this value becomes the probabilty that the cpu will switch
         """
-        if not pokeme:  pokeme = self.activemon
+        if not pokeme:  pokeme = self.activemon[0]
         if not pokeyou: pokeyou = self.enemymon
         if switch_chance_factor is None: switch_chance_factor = self.switch_chance_factor
         if switch_chance_minimum is None: switch_chance_minimum = self.switch_chance_minimum
         #ans = 'fight'
-        if n_nonfainted <= 1:
+        if n_nonfainted <= 0:
             return 'fight'
         else:
             #switchpressure = 0.
@@ -244,7 +251,7 @@ class cpu:
         #this function will look at a move of poke, apply
         #base power, type, category with opponent mon self.enemymon
         global mov,statStages
-        if not pokeme:  pokeme = self.activemon
+        if not pokeme:  pokeme = self.activemon[0]
         if not pokeyou: pokeyou = self.enemymon
         #if not targetmon: targetmon = self.enemymon
         #check the weather
@@ -300,7 +307,7 @@ class cpu:
         determine if one pokemon has a type advantage over the other
         considers only pokemon-typing, not move-typing!
         """
-        if not defender:    defender = self.activemon
+        if not defender:    defender = self.activemon[0]
         if not attacker:    attacker = self.enemymon
         defending = defender.tipe
         attacking = attacker.tipe

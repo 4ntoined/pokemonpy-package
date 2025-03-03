@@ -29,7 +29,7 @@ from time import localtime, strftime
 from importlib import resources as impr
 import numpy as np
 from . import base_pokemon
-from .base_pokemon import mon, battle, field, checkBlackout, loadMon, makeMon,\
+from .base_pokemon import mon, battle, field, checkParty, loadMon, makeMon,\
     makeRandom, makeParty, moveInfo, typeStrings, Weathers, Terrains, \
     shortpause, dramaticpause, micropause, elite4_healquit, print_dex, \
     print_party, loadMonNpy, saveParty, loadShowdown, \
@@ -332,7 +332,7 @@ class game:
             ####  E4  #### aa:elite4mode
             if userChoice=='4':
                 ## can't play if all your pokemon are fainted
-                ni, ny = checkBlackout(userParty)
+                ni, nx, ilist, xlist = checkParty(userParty)
                 if ni==0:
                     print("\nYou can't battle without a healthy Pokémon!")
                     shortpause()
@@ -452,7 +452,7 @@ class game:
             ### end of e4? mode ### zz:elite4mode
             #### Classic Battle #### aa:battlemode
             if userChoice=="b" or userChoice=="B":
-                ni, ny = checkBlackout(userParty)
+                ni, nx, ilist, xlist = checkParty(userParty)
                 if ni==0:
                     print("\nYou can't battle without a healthy Pokémon!")
                     shortpause()

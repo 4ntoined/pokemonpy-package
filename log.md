@@ -5,13 +5,26 @@ Title: **Double Battles**
 
 Date: 2025 change the pokemon.py gameversion
 
+3 march
+
+i have done so much that it feels easier to list what is left to do
+- still need to refine user switching to disallow switching to a mon
+already on the field and a mon already selected to be switched in
+- still need to have the player choose target(s) based on the range of
+the move they select
+- 
+
+
+2 march
+
 i am a like halfway through the battle logic with the double battle mods
 this is a reminder that I need to
 - go into pokemon switch to make necessary edits to highlight
 that there are 2 active pokemon that cannot be switched in and
 - in choosing a move, we need to make a step in non-singles battles
 to choose targets, depending on the range of the move chosen
-
+- im somehow still about halfway through the battle function, i have worked up to the new speed check part, after that we are coding possible switch-ins,
+hence the need to tidy up the user switching stuff
 
 here's what im thinking for double battles stuff
 
@@ -21,7 +34,9 @@ here's what im thinking for double battles stuff
 - [ ] spread damage part 2
 - [x] update the battle UI,
 - [ ] status screen to account for 4 Pokémon
-- [ ] update the cpu trainer brain to account for its new active mon
+- [x] update the cpu trainer brain to account for its new active mon
+- [ ] update trainer brain to be able to target one or more opponents
+- [ ] update mon.move() to give mons the option to target more than one mon
 - [x] implement semifield (big step, im already upset about it); heck yeah
 - [x] rework moves.py to target one or two or all mons, got through power 55 moves
 - [x] rework moves.py pt 2, think that's finished
