@@ -1,9 +1,17 @@
 ## pokemonpy-package log
 
-### v0.3.0
+### v1.0.0
 Title: **Double Battles**
 
-Date: 2024 change the pokemon.py gameversion
+Date: 2025 change the pokemon.py gameversion
+
+i am a like halfway through the battle logic with the double battle mods
+this is a reminder that I need to
+- go into pokemon switch to make necessary edits to highlight
+that there are 2 active pokemon that cannot be switched in and
+- in choosing a move, we need to make a step in non-singles battles
+to choose targets, depending on the range of the move chosen
+
 
 here's what im thinking for double battles stuff
 
