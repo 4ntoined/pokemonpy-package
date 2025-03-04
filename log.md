@@ -12,7 +12,7 @@ i have done so much that it feels easier to list what is left to do
 already on the field and a mon already selected to be switched in
 - still need to have the player choose target(s) based on the range of
 the move they select
-- 
+- sigh, so i need to put some thought into charging moves 
 
 
 2 march

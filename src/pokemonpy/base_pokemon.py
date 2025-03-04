@@ -1914,7 +1914,7 @@ class battle:
                 fighting = [False for i in range(self.format)]
                 charging = [False for i in range(self.format)]
                 running = False
-                nuserInd = False #resetting this variable
+                user_switch_indeces = []
                 usr_alivefield_n, usr_alivefield_list = checkParty(self.usr_mon) #number and indices user nonfainted pokemon on the field
                 cpu_alivefield_n, cpu_alivefield_list = checkParty(self.cpu_mon) #number and indices cpu nonfainted pokemon on the field
                 for i in range(usr_alivefield_n): self.usr_mon[usr_alivefield_list[i]].inBattle()
@@ -1925,13 +1925,13 @@ class battle:
                 print('\n'+magic_text(txt=f'Turn {turn}',spacing=' ',cha='=',long=game_width))
                 self.UI()
                 #usr_readyfield_n, usr_readyfield_list = checkParty(self.usr_mon) #number and indices user nonfainted pokemon on the field ready to take a command
-                user_directions = ["null" for i in range(self.format)] #what the user wants each pokemon to do
+                user_directions = [("null","null") for i in range(self.format)] #what the user wants each pokemon to do
                 for i in range(self.format):
-                    if self.usr_mon[i].rolling_out: user_directions[i] = "rolling out"
-                    if self.usr_mon[i].charged: user_directions[i] = "charged move"
-                    if self.usr_mon[i].resting: user_directions[i] = "resting"
-                    if self.usr_mon[i].fainted: user_directions[i] = "fainted"
-                takingdirection_list = np.squeeze( np.argwhere ( np.array(user_directions) == "null" )) #indices along usr_mon of whom need an order
+                    if self.usr_mon[i].rolling_out: user_directions[i] = ("rolling out","null")
+                    if self.usr_mon[i].charged: user_directions[i] = ("charged move","null")
+                    if self.usr_mon[i].resting: user_directions[i] = ("resting","null")
+                    if self.usr_mon[i].fainted: user_directions[i] = ("fainted","null")
+                takingdirection_list = np.squeeze( np.argwhere ( np.array(user_directions)[:,0] == "null" )) #indices along usr_mon of whom need an order
                 takingdirection_n = len(takingdirection_list)
                 zz = 0
                 while zz < takingdirection_n:
