@@ -680,11 +680,14 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
     
     #pokemon move
     #aa:movefunction
-    def move(self, opponent, moveIndex):
+    def move(self, targets, moveIndex):
+        # target: list, of mon() that this mon is attacking
+        # moveIndex: int, index of the move this mon is using
         global acevStages
         moveI=getMoveInfo(moveIndex)
         notas=moveI['notes'].split()
-        #frozen, can't move #thinking out loud: maybe we should track
+        moverange = moveI['range']
+        # frozen, can't move #thinking out loud: maybe we should track
         if self.frozen:  #when a pokemons move fails/doesn't execute for whatever reason
             if "thaws" in notas:
                 self.frozen=False
@@ -763,7 +766,7 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                 if "solar" in notas:
                     print(f"\n{self.name} is taking in sunlight!")
                     shortpause()
-                    self.charged=True
+                    self.charged=(True, moveIndex, targets)
                     if self.field.weather=="sunny": #if sun is out, continue to use the move
                         self.charged=False
                     else: #otherwise end the move
@@ -771,7 +774,7 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                 if "electroshot" in notas:
                     print(f"\n{self.name} is absorbing electricity!")
                     shortpause()
-                    self.charged=True
+                    self.charged=(True, moveIndex, targets)
                     self.stageChange("sa",1)
                     if self.field.weather=="rain": #if rain is out continue to use move
                         self.charged=False
@@ -782,36 +785,36 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                 elif "skullbash" in notas:
                     print(f"\n{self.name} tucks its head in...")
                     shortpause()
-                    self.charged=True
+                    self.charged=(True, moveIndex, targets)
                     self.stageChange("de",1)
                     return
                 elif "geomance" in notas:
                     print(f"\n{self.name} is absorbing energy!")
                     shortpause()
-                    self.charged=True
+                    self.charged=(True, moveIndex, targets)
                     return
                 elif 'flying' in notas:
                     print(f"\n{self.name} flies up high!")
-                    self.charged = True
+                    self.charged = (True, moveIndex, targets)
                     self.flying=True
                     self.grounded=False
                     shortpause()
                     return
                 elif 'diving' in notas:
                     print(f"\n{self.name} dives underwater!")
-                    self.charged = True
+                    self.charged = (True, moveIndex, targets)
                     self.diving=True
                     shortpause()
                     return
                 elif 'digging' in notas:
                     print(f"\n{self.name} digs underground!")
-                    self.charged = True
+                    self.charged = (True, moveIndex, targets)
                     self.digging=True
                     shortpause()
                     return
                 elif 'shadowforce' in notas:
                     print(f"\n{self.name} vanishes into the shadows!")
-                    self.charged = True
+                    self.charged = (True, moveIndex, targets)
                     self.shadowing=True
                     shortpause()
                     return
@@ -821,309 +824,277 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
             self.PP[int(np.argwhere(np.array(self.knownMoves)==moveIndex))]-=1 #deduct PP for move usage
         shortpause()
         ###accuracy check##aa:accuracy#
-        if "noTarg" in notas: #move can execute independent of whats up with the opponent
-            hitCheck=True
-        ## target is in semi-invulnerable turn
-        #sky uppercut, twister
-        ## flying hit by thousand arrows, smack down, thunder, hurricane, gust
-        elif opponent.flying and not (('thunder' in notas) or ('arrows' in notas) or ('gust' in notas)):
-            hitCheck=False
-        ## diving hit by surf and whirlpool
-        elif opponent.diving and not ('surf' in notas):
-            hitCheck=False
-        ## digging hit by earthquake, fissure, and magnitude
-        elif opponent.digging and not ('nerfGrassy' in notas):
-            hitCheck=False
-        ## those ghosts can't be stopped
-        elif opponent.shadowing:
-            hitCheck=False
-        ## target is not in semi-invulnerable turn
-        elif "noMiss" in notas:
-            hitCheck=True
-        ## moves bypass accuracy under certain conditions
-        elif ('blizzard' in notas) and (self.field.weather=='hail'):
-            hitCheck=True
-        elif ('noMissRain' in notas) and (self.field.weather=='rain'):
-            hitCheck=True
-        elif ('noMissPoisons' in notas) and (7 in self.tipe):
-            hitCheck = True
-        else:
-            #check evasion and accuracy stats
-            effAccu=self.acstage-opponent.evstage+6 #get difference in evasion/accuracy stats, offset by proper center, index 6
-            if effAccu>12:
-                effAccu=12
-            elif effAccu<0:
-                effAccu=0
-            effAccu=acevStages[effAccu]
-            ##rain-moves in sun get accuracies tweaked
-            if ('thunder' in notas) and (self.field.weather=='sunny'):
-                hitCheck = rng.random() <= effAccu * ( 50. / 100. )
-            else:
-                hitCheck = rng.random() <= effAccu * ( moveI['accu'] / 100. )
-            pass
-        if hitCheck==False: #move misses
-            print(f"\n{self.name}'s attack misses!")
-            self.rolling_out = 0
-            shortpause()
-            # move failed 
-            return
-        else: #move will connect
-            ##===========================status moves==========================##
-            if moveI['special?']==2:
-                ## stat changes ##
+        ### we now need to run an accuracy check for each target! ###
+        accucheck_list = [ accuracyCheck(self,i,moveI) for i in targets ]
+        # before running attacks as usual... let's get the easy, function-ending moves
+        # out of the way
+        #basic self-interested moves... usually no target and bypasses accuracy check
+
+        for i in range(len(targets)):
+            # iterating through all targets
+            if accucheck_list[i] == False: #move misses
+                print(f"\n{self.name}'s attack misses {targets[i].name}!")
+                self.rolling_out = 0
+                shortpause()
+                # move failed 
+                return
+            else: #move will connect
+                ##===========================status moves==========================##
+                if moveI['special?']==2:
+                    ## stat changes ##
+                    if "stat" in notas:
+                        statInfo=notas[1+int(np.argwhere(np.array(notas)=='stat'))]
+                        targ,stat,phase=statInfo.split(",")[0:3]
+                        stat=stat.split(":")
+                        phase=phase.split(":")
+                        if targ=='self':
+                            if ("growth" in notas) and self.field.weather=='sunny':
+                                phase=np.array([2,2],dtype=int)
+                            for i in range(len(stat)):
+                                self.stageChange(stat[i],int(phase[i]))
+                            self.inBattle()
+                        if targ=='targ':
+                            for i in range(len(stat)):
+                                targets[i].stageChange(stat[i],int(phase[i]))
+                            targets[i].inBattle()
+                    ### end of stat changes ###
+                    #### defense curl, rollout boost ####
+                    if 'curled' in notas:
+                        self.curled=True
+                        print(f"{self.name} curled up!")
+                        shortpause()
+                    ## weathers ##
+                    if "sun" in notas:
+                        if self.field.weather=='sunny':
+                            print("\nThe move fails! It's already sunny!")
+                            shortpause()
+                        else:
+                            self.field.weather='sunny'
+                            self.field.weatherCounter=5
+                            print("\nThe sunlight turns harsh!")
+                            shortpause()
+                    if "rain" in notas:
+                        if self.field.weather=='rain':
+                            print("\nThe move fails! It's already raining!")
+                            shortpause()
+                        else:
+                            self.field.weather='rain'
+                            self.field.weatherCounter=5
+                            print("\nIt starts raining!")
+                            shortpause()
+                    if 'sand' in notas:
+                        if self.field.weather=='sandstorm':
+                            print("\nThe move fails! There's already a sandstorm!")
+                            shortpause()
+                        else:
+                            self.field.weather='sandstorm'
+                            self.field.weatherCounter=5
+                            print("\nA sandstorm kicks up!")                
+                            shortpause()
+                    if 'hail' in notas:
+                        if self.field.weather=='hail':
+                            print("\nThe move fails! It's already hailing")
+                            shortpause()
+                        else:
+                            self.field.weather='hail'
+                            self.field.weatherCounter=5
+                            print("\nIt starts hailing!")
+                            shortpause()
+                    ### end of the weathers ###
+                    ## terrains ##
+                    if "electric" in notas:
+                        if self.field.terrain=="electric":
+                            print("\nThe move fails! The battlefield is already electrified!")
+                            shortpause()
+                        else:
+                            self.field.terrain="electric"
+                            self.field.terrainCounter=5
+                            print("\nElectricity surges throughout the battlefield!")
+                            shortpause()
+                    if "grassy" in notas:
+                        if self.field.terrain=="grassy":
+                            print("\nThe move fails! The battlefield is already grassy!")
+                            shortpause()
+                        else:
+                            self.field.terrain="grassy"
+                            self.field.terrainCounter=5
+                            print("\nGrass grows all over the place!")
+                            shortpause()
+                    if "misty" in notas:
+                        if self.field.terrain=="misty":
+                            print("\nThe move fails! The battlefield is already covered in mist!")
+                            shortpause()
+                        else:
+                            self.field.terrain="misty"
+                            self.field.terrainCounter=5
+                            print("\nA mist descends on the battlefield!")
+                            shortpause()
+                    if "psychic" in notas:
+                        if self.field.terrain=="psychic":
+                            print("\nThe move fails! The battlefield is already weird!")
+                            shortpause()
+                        else:
+                            self.field.terrain="psychic"
+                            self.field.terrainCounter=5
+                            print("\nThe battlefield gets weird!")
+                            shortpause()
+                    ## statuses bro ##
+                    statuses=[]
+                    if "para" in notas: #yeah these if statements are literally all the same besides the strings, i can for loop this
+                        statuses.append("para")
+                        statuses.append(int(notas[1+int(np.argwhere(np.array(notas)=="para"))]))
+                    if "burn" in notas:
+                        statuses.append("burn")
+                        statuses.append(int(notas[1+int(np.argwhere(np.array(notas)=="burn"))]))
+                    if "pois" in notas:
+                        statuses.append("pois")
+                        statuses.append(int(notas[1+int(np.argwhere(np.array(notas)=="pois"))]))
+                    if "badPois" in notas:
+                        statuses.append("badPois")
+                        statuses.append(int(notas[1+int(np.argwhere(np.array(notas)=="badPois"))]))
+                    if "frze" in notas:
+                        statuses.append("frze")
+                        statuses.append(int(notas[1+int(np.argwhere(np.array(notas)=="frze"))]))
+                    if "sleep" in notas:
+                        statuses.append("sleep")
+                        statuses.append(int(notas[1+int(np.argwhere(np.array(notas)=="sleep"))]))
+                    if "conf" in notas:
+                        statuses.append("conf")
+                        statuses.append(int(notas[1+int(np.argwhere(np.array(notas)=="conf"))]))
+                    if len(statuses)>0:
+                        opponent.afflictStatuses(statuses)
+                    ## entry hazards oh boy oh geeze ##
+                    hazs = ("rocks", "spikes", "toxspk", "sticky")
+                    haz_dialog = ["Pointed rocks are scattered on the opposing side!", "Pointy spikes are scattered on the opposing side!",\
+                            "Poison spikes are scattered on the opposing side!", "The opposing side is covered in a sticky web!"]
+                    for i in range(len(hazs)):
+                        if hazs[i] in notas:
+                            if self.battlespot[0]=="red": #user's pokemon
+                                xx = self.field.hazarding(hazs[i], "blue")
+                            elif self.battlespot[0]=="blue": #cpu
+                                xx = self.field.hazarding(hazs[i], "red")
+                            if xx == "x": #makes sure hazard was executed successfully before printing the dialog
+                                print(haz_dialog[i])
+                    ### end of entry hazards ###
+                    ## healing ## heal pulse? healing the target instead of the user, in the future (life dew)
+                    if 'heals' in notas:
+                        if 'recover' in notas:
+                            healamount = self.maxhp/2.
+                        if 'shoreup' in notas:
+                            if self.field.weather == 'sandstorm':
+                                healamount = 2.*self.maxhp/3.
+                            else:
+                                healamount = self.maxhp/2.
+                        if 'synthesis' in notas:
+                            if (self.field.weather == 'rain') or (self.field.weather == 'sandstorm') or (self.field.weather == 'hail'):
+                                healamount = self.maxhp/4.
+                            elif self.field.weather == 'sunny':
+                                healamount = 2.*self.maxhp/3.
+                            else:
+                                healamount = self.maxhp/2.
+                        if 'blessing' in notas:
+                            healamount = self.maxhp/4.
+                        self.healing(healamount)
+                    ### end of healing ###
+                    ### healing conditions ###
+                    if 'refresh' in notas:
+                        self.refreshing()
+                    ### end of healing conditions
+                    if ('veil' in notas) and (self.field.weather != 'hail'):
+                        print("\nThe move fails! There isn't enough hail...")
+                        shortpause()
+                        return
+                    ## screens ##
+                    screenz = ("reflect","lightscreen","veil")
+                    for i in range(len(screenz)):
+                        if screenz[i] in notas:
+                            if self.battlespot[0]=='red':
+                                self.field.upScreens(screenz[i], 'red')
+                            elif self.battlespot[0]=='blue':
+                                self.field.upScreens(screenz[i], 'blue')
+                            pass
+                        #end if, if not, move on
+                    ### end of screens ###
+                    ## aqua ring ##
+                    if 'aquaring' in notas:
+                        if self.aquaring:
+                            print(f"The move fails! {self.name} already has an Aqua Ring...")
+                            shortpause()
+                        else:
+                            self.aquaring=True
+                            print(f"{self.name} is covered by a veil of water!")
+                            shortpause()
+                    ### end of a ring ###
+                    ## focus energy ##
+                    if 'focusenergy' in notas:
+                        self.getPumped()
+                        print(f"{self.name} is getting pumped!")
+                        micropause()
+                    #what's next
+                    return
+                ##==========================    end of status moves    =======================================##
+                #fake out fails if its the not pokemons first turn out
+                if ('fakeout' in notas) and (not self.firstturnout):
+                    print('\nThe move fails!')
+                    shortpause()
+                    return
+                # catching use and set up of future sight
+                if ('futuresight' in notas):
+                    # set up a future sight attack to be executed in 2 turns
+                    # so my idea is that the counters will start at 3, be reduced by 1
+                    #at the end of every turn. They should be at 0 at the right time, we'll
+                    #do the check after the deduction 
+                    if self.battlespot[0]=='red':
+                        if self.field.a_field.futures > 0.: #user fails, fs already up
+                            print("The move fails!")
+                            shortpause()
+                            return "failed"
+                        else:
+                            self.field.a_field.futures = 3
+                            print(f"{self.name} foresaw an attack!")
+                            shortpause()
+                            return
+                    elif self.battlespot[0]=='blue':
+                        if self.field.b_field.futures > 0.: #cpu fails, fs already up
+                            print("The move fails!")
+                            shortpause()
+                            return "failed"
+                        else:
+                            self.field.b_field.futures = 3
+                            print(f"\n{self.name} foresaw an attack!")
+                            shortpause()
+                            return
+                # priority moves are PROHIBITED against grounded mons on psychic terrain
+                if (self.field.terrain == 'psychic') and (moveI['priority'] >= 1) and targets[i].grounded:
+                    print(f"\nPsychic Terrain protects {targets[i].name} from the priority move!")
+                    shortpause()
+                    return
+                ans,eff,comment=damage(self,targets[i],moveI['pwr'],moveI['type'],moveI['special?'],notas)
+                if len(comment)>0: 
+                    if comment[0] == "failed": #bad mirror coat or counter
+                        print("\nThe move fails!")
+                        shortpause()
+                        return
+                opponent.hit(self,ans,eff,notas,moveIndex,comment)
+                #stat changes
                 if "stat" in notas:
                     statInfo=notas[1+int(np.argwhere(np.array(notas)=='stat'))]
-                    targ,stat,phase=statInfo.split(",")[0:3]
-                    stat=stat.split(":")
-                    phase=phase.split(":")
-                    if targ=='self':
-                        if ("growth" in notas) and self.field.weather=='sunny':
-                            phase=np.array([2,2],dtype=int)
-                        for i in range(len(stat)):
-                            self.stageChange(stat[i],int(phase[i]))
-                        self.inBattle()
-                    if targ=='targ':
-                        for i in range(len(stat)):
-                            opponent.stageChange(stat[i],int(phase[i]))
-                        opponent.inBattle()
-                ### end of stat changes ###
-                #### defense curl, rollout boost ####
-                if 'curled' in notas:
-                    self.curled=True
-                    print(f"{self.name} curled up!")
-                    shortpause()
-                ## weathers ##
-                if "sun" in notas:
-                    if self.field.weather=='sunny':
-                        print("\nThe move fails! It's already sunny!")
-                        shortpause()
-                    else:
-                        self.field.weather='sunny'
-                        self.field.weatherCounter=5
-                        print("\nThe sunlight turns harsh!")
-                        shortpause()
-                if "rain" in notas:
-                    if self.field.weather=='rain':
-                        print("\nThe move fails! It's already raining!")
-                        shortpause()
-                    else:
-                        self.field.weather='rain'
-                        self.field.weatherCounter=5
-                        print("\nIt starts raining!")
-                        shortpause()
-                if 'sand' in notas:
-                    if self.field.weather=='sandstorm':
-                        print("\nThe move fails! There's already a sandstorm!")
-                        shortpause()
-                    else:
-                        self.field.weather='sandstorm'
-                        self.field.weatherCounter=5
-                        print("\nA sandstorm kicks up!")                
-                        shortpause()
-                if 'hail' in notas:
-                    if self.field.weather=='hail':
-                        print("\nThe move fails! It's already hailing")
-                        shortpause()
-                    else:
-                        self.field.weather='hail'
-                        self.field.weatherCounter=5
-                        print("\nIt starts hailing!")
-                        shortpause()
-                ### end of the weathers ###
-                ## terrains ##
-                if "electric" in notas:
-                    if self.field.terrain=="electric":
-                        print("\nThe move fails! The battlefield is already electrified!")
-                        shortpause()
-                    else:
-                        self.field.terrain="electric"
-                        self.field.terrainCounter=5
-                        print("\nElectricity surges throughout the battlefield!")
-                        shortpause()
-                if "grassy" in notas:
-                    if self.field.terrain=="grassy":
-                        print("\nThe move fails! The battlefield is already grassy!")
-                        shortpause()
-                    else:
-                        self.field.terrain="grassy"
-                        self.field.terrainCounter=5
-                        print("\nGrass grows all over the place!")
-                        shortpause()
-                if "misty" in notas:
-                    if self.field.terrain=="misty":
-                        print("\nThe move fails! The battlefield is already covered in mist!")
-                        shortpause()
-                    else:
-                        self.field.terrain="misty"
-                        self.field.terrainCounter=5
-                        print("\nA mist descends on the battlefield!")
-                        shortpause()
-                if "psychic" in notas:
-                    if self.field.terrain=="psychic":
-                        print("\nThe move fails! The battlefield is already weird!")
-                        shortpause()
-                    else:
-                        self.field.terrain="psychic"
-                        self.field.terrainCounter=5
-                        print("\nThe battlefield gets weird!")
-                        shortpause()
-                ## statuses bro ##
-                statuses=[]
-                if "para" in notas: #yeah these if statements are literally all the same besides the strings, i can for loop this
-                    statuses.append("para")
-                    statuses.append(int(notas[1+int(np.argwhere(np.array(notas)=="para"))]))
-                if "burn" in notas:
-                    statuses.append("burn")
-                    statuses.append(int(notas[1+int(np.argwhere(np.array(notas)=="burn"))]))
-                if "pois" in notas:
-                    statuses.append("pois")
-                    statuses.append(int(notas[1+int(np.argwhere(np.array(notas)=="pois"))]))
-                if "badPois" in notas:
-                    statuses.append("badPois")
-                    statuses.append(int(notas[1+int(np.argwhere(np.array(notas)=="badPois"))]))
-                if "frze" in notas:
-                    statuses.append("frze")
-                    statuses.append(int(notas[1+int(np.argwhere(np.array(notas)=="frze"))]))
-                if "sleep" in notas:
-                    statuses.append("sleep")
-                    statuses.append(int(notas[1+int(np.argwhere(np.array(notas)=="sleep"))]))
-                if "conf" in notas:
-                    statuses.append("conf")
-                    statuses.append(int(notas[1+int(np.argwhere(np.array(notas)=="conf"))]))
-                if len(statuses)>0:
-                    opponent.afflictStatuses(statuses)
-                ## entry hazards oh boy oh geeze ##
-                hazs = ("rocks", "spikes", "toxspk", "sticky")
-                haz_dialog = ["Pointed rocks are scattered on the opposing side!", "Pointy spikes are scattered on the opposing side!",\
-                        "Poison spikes are scattered on the opposing side!", "The opposing side is covered in a sticky web!"]
-                for i in range(len(hazs)):
-                    if hazs[i] in notas: #i know theres a better way to do this but if i sit here and fixate on that before i start a rough draft i'm never gonna get anywhere
-                        if self.battlespot[0]=="red": #user's pokemon
-                            xx = self.field.hazarding(hazs[i], "blue")
-                        elif self.battlespot[0]=="blue": #cpu
-                            xx = self.field.hazarding(hazs[i], "red")
-                        if xx == "x": #makes sure hazard was executed successfully before printing the dialog
-                            print(haz_dialog[i])
-                ### end of entry hazards ###
-                ## healing ## heal pulse? healing the target instead of the user, in the future
-                if 'heals' in notas:
-                    if 'recover' in notas:
-                        healamount = self.maxhp/2.
-                    if 'shoreup' in notas:
-                        if self.field.weather == 'sandstorm':
-                            healamount = 2.*self.maxhp/3.
-                        else:
-                            healamount = self.maxhp/2.
-                    if 'synthesis' in notas:
-                        if (self.field.weather == 'rain') or (self.field.weather == 'sandstorm') or (self.field.weather == 'hail'):
-                            healamount = self.maxhp/4.
-                        elif self.field.weather == 'sunny':
-                            healamount = 2.*self.maxhp/3.
-                        else:
-                            healamount = self.maxhp/2.
-                    if 'blessing' in notas:
-                        healamount = self.maxhp/4.
-                    self.healing(healamount)
-                ### end of healing ###
-                ### healing conditions ###
-                if 'refresh' in notas:
-                    self.refreshing()
-                ### end of healing conditions
-                if ('veil' in notas) and (self.field.weather != 'hail'):
-                    print("\nThe move fails! There isn't enough hail...")
-                    shortpause()
-                    return
-                ## screens ##
-                screenz = ("reflect","lightscreen","veil")
-                for i in range(len(screenz)):
-                    if screenz[i] in notas:
-                        if self.battlespot[0]=='red':
-                            self.field.upScreens(screenz[i], 'red')
-                        elif self.battlespot[0]=='blue':
-                            self.field.upScreens(screenz[i], 'blue')
-                        pass
-                    #end if, if not, move on
-                ### end of screens ###
-                ## aqua ring ##
-                if 'aquaring' in notas:
-                    if self.aquaring:
-                        print(f"The move fails! {self.name} already has an Aqua Ring...")
-                        shortpause()
-                    else:
-                        self.aquaring=True
-                        print(f"{self.name} is covered by a veil of water!")
-                        shortpause()
-                ### end of a ring ###
-                ## focus energy ##
-                if 'focusenergy' in notas:
-                    self.getPumped()
-                    print(f"{self.name} is getting pumped!")
-                    micropause()
-                #what's next
-                return
-            ##==========================    end of status moves    =======================================##
-            #fake out fails if its the not pokemons first turn out
-            if ('fakeout' in notas) and (not self.firstturnout):
-                print('\nThe move fails!')
-                shortpause()
-                return
-            # catching use and set up of future sight
-            if ('futuresight' in notas):
-                # set up a future sight attack to be executed in 2 turns
-                # so my idea is that the counters will start at 3, be reduced by 1
-                #at the end of every turn. They should be at 0 at the right time, we'll
-                #do the check after the deduction 
-                if self.battlespot[0]=='red':
-                    if self.field.a_field.futures > 0.: #user fails, fs already up
-                        print("The move fails!")
-                        shortpause()
-                        return "failed"
-                    else:
-                        self.field.a_field.futures = 3
-                        print(f"{self.name} foresaw an attack!")
-                        shortpause()
-                        return
-                elif self.battlespot[0]=='blue':
-                    if self.field.b_field.futures > 0.: #cpu fails, fs already up
-                        print("The move fails!")
-                        shortpause()
-                        return "failed"
-                    else:
-                        self.field.b_field.futures = 3
-                        print(f"\n{self.name} foresaw an attack!")
-                        shortpause()
-                        return
-            # priority moves are PROHIBITED against grounded mons on psychic terrain
-            if (self.field.terrain == 'psychic') and (moveI['priority'] >= 1) and opponent.grounded:
-                print(f"\nPsychic Terrain protects {opponent.name} from the priority move!")
-                shortpause()
-                return
-            ans,eff,comment=damage(self,opponent,moveI['pwr'],moveI['type'],moveI['special?'],notas)
-            if len(comment)>0: 
-                if comment[0] == "failed": #bad mirror coat or counter
-                    print("\nThe move fails!")
-                    shortpause()
-                    return
-            opponent.hit(self,ans,eff,notas,moveIndex,comment)
-            #stat changes
-            if "stat" in notas:
-                statInfo=notas[1+int(np.argwhere(np.array(notas)=='stat'))]
-                prob=int(statInfo.split(",")[3])/100.
-                if rng.random()<=prob:
-                    targ,stat,phase=statInfo.split(",")[0:3]
-                    stat=stat.split(":")
-                    phase=phase.split(":")
-                    if targ=='self':
-                        for i in range(len(stat)):
-                            self.stageChange(stat[i],int(phase[i]))
-                        self.inBattle() #recalc battle stats
-                    if targ=='targ':
-                        for i in range(len(stat)):
-                            opponent.stageChange(stat[i],int(phase[i]))
-                        opponent.inBattle() #recalc battle stats
-                #end of stat changes
-            #anything else to do after a successful hit?
-        #anything else to do after either moving or missing?
+                    prob=int(statInfo.split(",")[3])/100.
+                    if rng.random()<=prob:
+                        targ,stat,phase=statInfo.split(",")[0:3]
+                        stat=stat.split(":")
+                        phase=phase.split(":")
+                        if targ=='self':
+                            for i in range(len(stat)):
+                                self.stageChange(stat[i],int(phase[i]))
+                            self.inBattle() #recalc battle stats
+                        if targ=='targ':
+                            for i in range(len(stat)):
+                                targets[i].stageChange(stat[i],int(phase[i]))
+                            targets[i].inBattle() #recalc battle stats
+                    #end of stat changes
+                #anything else to do after a successful hit?
+            #anything else to do after either moving or missing?
         #end of move
     #zz:movefunction
     #aa:hitfunction
@@ -1138,7 +1109,7 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                 print(f"\nThe arrows can reach {self.name}!")
                 micropause()
                 self.grounded=True
-                if self.flying and self.charged: self.charged = False    #cancel charged move only if it was fly or bounce
+                if self.flying and self.charged[0]: self.charged = (False, "null")    #cancel charged move only if it was fly or bounce
                 self.flying=False
                 self.field.grounding(self)
                 effectiveness=1. 
@@ -3731,6 +3702,49 @@ def turnprompt(monname,restore_on=False,back_on=False):
     if restore_on: ans += restore
     ans += endpiece
     return ans
+#aa:accuracycheck
+def accuracyCheck(attacker,target,notas,moveinfo):
+    if "noTarg" in notas: #move can execute independent of whats up with the opponent
+        hitCheck=True
+    ## target is in semi-invulnerable turn
+    #sky uppercut, twister
+    ## flying hit by thousand arrows, smack down, thunder, hurricane, gust
+    elif target.flying and not (('thunder' in notas) or ('arrows' in notas) or ('gust' in notas)):
+        hitCheck=False
+    ## diving hit by surf and whirlpool
+    elif target.diving and not ('surf' in notas):
+        hitCheck=False
+    ## digging hit by earthquake, fissure, and magnitude
+    elif target.digging and not ('nerfGrassy' in notas):
+        hitCheck=False
+    ## those ghosts can't be stopped
+    elif target.shadowing:
+        hitCheck=False
+    ## target is not in semi-invulnerable turn
+    elif "noMiss" in notas:
+        hitCheck=True
+    ## moves bypass accuracy under certain conditions
+    elif ('blizzard' in notas) and (attacker.field.weather=='hail'):
+        hitCheck=True
+    elif ('noMissRain' in notas) and (attacker.field.weather=='rain'):
+        hitCheck=True
+    elif ('noMissPoisons' in notas) and (7 in attacker.tipe):
+        hitCheck = True
+    else:
+        #check evasion and accuracy stats
+        effAccu=attacker.acstage-target.evstage+6 #get difference in evasion/accuracy stats, offset by proper center, index 6
+        if effAccu>12:
+            effAccu=12
+        elif effAccu<0:
+            effAccu=0
+        effAccu=acevStages[effAccu]
+        ##rain-moves in sun get accuracies tweaked
+        if ('thunder' in notas) and (attacker.field.weather=='sunny'):
+            hitCheck = rng.random() <= effAccu * ( 50. / 100. )
+        else:
+            hitCheck = rng.random() <= effAccu * ( moveinfo['accu'] / 100. )
+        pass
+    return hitCheck
 ##aa:trainerdialogue
 def call_out(monname, coming_back = False):
     global sayings_out, sayings_back

@@ -5,6 +5,14 @@ Title: **Double Battles**
 
 Date: 2025 change the pokemon.py gameversion
 
+4march
+
+yeah i don't know whats going on at this point I was doing well
+I was working through figuring out how to rework mon.move() for
+the idea of multiple targets and I just caught something that made
+me mad so im walking away
+
+
 3 march
 
 i have done so much that it feels easier to list what is left to do

@@ -491,23 +491,24 @@ moremoves=[
 # range key, thank God for bulbapedia, I owe her my life
 # 0  - (NORMAL) hits 1 target (could be ally, in theory) [tackle]
 # 1  - (NORMAL - LONG) hits 1 target, long range (gust, dragon pulse)
+# 5  - (ALL OTHERS (ADJACENT)) all adjacent but the user [earthquake, explosion]
+# 6  - (MANY OTHERS) hits 2 targets (has to be opponents i think) [growl, blizzard, swift]
+# 9  - (YOUR SIDE (POKEMON)) affects whole side, introduced after triple battles died (howl, life dew)
+# 11 - (SELF) affects user (recover, defense curl)
+# 15 - (BOTH SIDES) affects the field itself? (rain dance, haze?)   - weather, terrain setters
+# 16 - (OTHER SIDE) affects opponent's side (hazard moves) -        - hazards
+# 17 - (YOUR SIDE) affects user's whole side (mist, light screen)   - screens
+# 18 - (VARIES) wildcard, it depends (counter?, curse)
+
 # 2  - (SELF/ALLY) user or ally (you can choose!, acupressure)
 # 3  - (1 ALLY) affects ally (helping hand)
 # 4  - (1 OTHER) affects a single opponent (specifically an opponent) [me first, doodle, max moves]
-# 5  - (ALL OTHERS (ADJACENT)) all adjacent but the user [earthquake, explosion]
-# 6  - (MANY OTHERS) hits 2 targets (has to be opponents i think) [growl, blizzard, swift]
 # 7  - (YOUR PARTY (PARTY)) affects whole side, long range, including mons in the back (heal bell, aromatherpy-deaded)
 # 8  - (YOUR PARTY (YOUR SIDE)) affects whole side, long-range, NOT including mons in the back (magnetic flux)
-# 9  - (YOUR SIDE (POKEMON)) affects whole side, introduced after triple battles died (howl, life dew)
 # 10 - (ALL ALLIES, EXCEPT SELF) affects all allies (coaching, dragon cheer)
-# 11 - (SELF) affects user (recover, defense curl)
 # 12 - (ALL - LONG) all on the field, long-range (perish song, rototiller-cut in gen 8, flower shield-also cut)
 # 13 - (ALL) all on the field, intro after triple (teatime)
 # 14 - (1 RANDOM) hits 1 opponent randomly (thrash, petal dance, outrage)
-# 15 - (BOTH SIDES) affects the field itself? (rain dance, haze?)
-# 16 - (OTHER SIDE) affects opponent's side (hazard moves)
-# 17 - (YOUR SIDE) affects user's whole side (mist, light screen)
-# 18 - (VARIES) wildcard, it depends (counter?, curse)
 #    - affects user and ally [thinking i made this category up i guess]
 
 #constructing dtypes and names to accompany data
