@@ -681,7 +681,7 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
     #pokemon move
     #aa:movefunction
     def move(self, targets, moveIndex):
-        # target: list, of mon() that this mon is attacking
+        # targets: list of mon(), that this mon is attacking
         # moveIndex: int, index of the move this mon is using
         global acevStages
         moveI=getMoveInfo(moveIndex)
@@ -829,15 +829,13 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
         # before running attacks as usual... let's get the easy, function-ending moves
         # out of the way
         #basic self-interested moves... usually no target and bypasses accuracy check
-
         for i in range(len(targets)):
             # iterating through all targets
             if accucheck_list[i] == False: #move misses
                 print(f"\n{self.name}'s attack misses {targets[i].name}!")
                 self.rolling_out = 0
                 shortpause()
-                # move failed 
-                return
+                # move failed, slips to return after the target for-loop
             else: #move will connect
                 ##===========================status moves==========================##
                 if moveI['special?']==2:
@@ -1000,20 +998,19 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                     if 'refresh' in notas:
                         self.refreshing()
                     ### end of healing conditions
-                    if ('veil' in notas) and (self.field.weather != 'hail'):
+                    screenz = ("reflect","lightscreen","veil")
+                    if (screenz[2] in notas) and (self.field.weather != 'hail'):
                         print("\nThe move fails! There isn't enough hail...")
                         shortpause()
-                        return
-                    ## screens ##
-                    screenz = ("reflect","lightscreen","veil")
-                    for i in range(len(screenz)):
-                        if screenz[i] in notas:
-                            if self.battlespot[0]=='red':
-                                self.field.upScreens(screenz[i], 'red')
-                            elif self.battlespot[0]=='blue':
-                                self.field.upScreens(screenz[i], 'blue')
-                            pass
-                        #end if, if not, move on
+                    else:
+                        for i in range(len(screenz)):
+                            if screenz[i] in notas:
+                                if self.battlespot[0]=='red':
+                                    self.field.upScreens(screenz[i], 'red')
+                                elif self.battlespot[0]=='blue':
+                                    self.field.upScreens(screenz[i], 'blue')
+                                pass
+                            #end if, if not, move on
                     ### end of screens ###
                     ## aqua ring ##
                     if 'aquaring' in notas:
@@ -1031,19 +1028,21 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                         print(f"{self.name} is getting pumped!")
                         micropause()
                     #what's next
-                    return
                 ##==========================    end of status moves    =======================================##
                 #fake out fails if its the not pokemons first turn out
                 if ('fakeout' in notas) and (not self.firstturnout):
                     print('\nThe move fails!')
                     shortpause()
-                    return
                 # catching use and set up of future sight
                 if ('futuresight' in notas):
                     # set up a future sight attack to be executed in 2 turns
                     # so my idea is that the counters will start at 3, be reduced by 1
                     #at the end of every turn. They should be at 0 at the right time, we'll
-                    #do the check after the deduction 
+                    #do the check after the deduction
+
+                    ## okay so we need to use targets informations (mons()) to determine where future sight will hit
+                    #  futureslot[i] -> i -> mon().battlespot[1]
+                    #  semifield a/b -> mon().battlespot[0]
                     if self.battlespot[0]=='red':
                         if self.field.a_field.futures > 0.: #user fails, fs already up
                             print("The move fails!")
@@ -1095,6 +1094,7 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                     #end of stat changes
                 #anything else to do after a successful hit?
             #anything else to do after either moving or missing?
+        return
         #end of move
     #zz:movefunction
     #aa:hitfunction

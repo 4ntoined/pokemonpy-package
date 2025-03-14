@@ -5,6 +5,10 @@ Title: **Double Battles**
 
 Date: 2025 change the pokemon.py gameversion
 
+13 march
+
+had an idea... consolidate the end-turn checks, weather damages, burns and poisons, eventually speed boost into a function of mon() so we can call on it at the end of the turn... much better than the current model of doing the checks 1by1 and for each pokemon on the field seperately...
+
 4march
 
 yeah i don't know whats going on at this point I was doing well
@@ -36,7 +40,7 @@ hence the need to tidy up the user switching stuff
 
 here's what im thinking for double battles stuff
 
-- [ ] invent PPS (Pokémon Positioning System), orient 4 Pokémon in a battle *
+- [x] invent PPS (Pokémon Positioning System), orient 4 Pokémon in a battle *
 - [ ] have the player manage 2 active Pokémon at once
 - [ ] rework game to have player select a target(s)
 - [ ] spread damage part 2
