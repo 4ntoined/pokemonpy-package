@@ -5,12 +5,13 @@ Title: **Vegeta**
 
 Date: 2025 March 29
 * UPDATE: Added some more Dragon Ball references.
+* UPDATE: Every move has a characteristic range, which is now reported in moveInfo().
+* FIXED: Psyblade is now boosted on Electric Terrain regardless of grounded-ness.
 * TECHNICAL UPDATE: Lots of Double Battles stuff cooking under the hood.
 * TECHNICAL UPDATE: Also cooking Abilities.
 * TECHNICAL UPDATE: Unified the two versions of the game by deleting the deprecated one. 
 
 #### 1.0 notes...
-* adding moves by name teaches the moves and also gives "already knows move" message. -fixed this
 
 
 ### v0.2.8
