@@ -1043,6 +1043,11 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                     ## okay so we need to use targets informations (mons()) to determine where future sight will hit
                     #  futureslot[i] -> i -> mon().battlespot[1]
                     #  semifield a/b -> mon().battlespot[0]
+                    futureslots_dict = dict([
+                        ('red',self.field.a_field.futureslots),
+                        ('blue',self.field.b_field.futureslots)
+                    ])
+                    targcolor, targspot = targets[i].battlespot
                     if self.battlespot[0]=='red':
                         if self.field.a_field.futures > 0.: #user fails, fs already up
                             print("The move fails!")

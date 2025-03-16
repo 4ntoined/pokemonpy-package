@@ -5,6 +5,10 @@ Title: **Double Battles**
 
 Date: 2025 change the pokemon.py gameversion
 
+16 march
+
+sigh... future sight... sigh....
+
 13 march
 
 had an idea... consolidate the end-turn checks, weather damages, burns and poisons, eventually speed boost into a function of mon() so we can call on it at the end of the turn... much better than the current model of doing the checks 1by1 and for each pokemon on the field seperately...
