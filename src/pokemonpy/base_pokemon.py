@@ -261,7 +261,7 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
         global mov
         try:
             mismatched_one = False
-            learned_all = False
+            learned_all = True
             learned_one = False
             checkedit = False
             learner = []

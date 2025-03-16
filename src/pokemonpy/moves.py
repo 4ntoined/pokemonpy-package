@@ -173,8 +173,9 @@ moremoves=[
         ("Spin Out",            100,100,5,0,1,16,0,0,"The user spins furiously by straining its legs!\n-Lowers the user's Spe. 2 stages.","stat self,sp,-2,100"),
         ("Springtide Storm",    100,80,10,1,0,17,0,6,"The user wraps the target in fierce winds brimming with love and hate!\n-30% chance to lower the target's Atk. 1 stage.","stat targ,at,-1,30"),
 
-        ("Heat Wave",   95,90,10,1,0,1,0,6,"The user exhales hot breath on the target!\n-10% chance to burn.","burn 10"),
-        ("Moonblast",   95,100,15,1,0,17,0,0,"The user calls on the power of the Moon to attack the target!\n-30% chance to lower the target's Sp.A 1 stage.","stat targ,sa,-1,30"),
+        ("Heat Wave",           95,90,10,1,0,1,0,6,"The user exhales hot breath on the target!\n-10% chance to burn.","burn 10"),
+        ("Big Bang Attack",     95,95,15,1,0,4,0,0,"The user condenses their ki into an explosive sphere and fires it at the target!\n-30% chance to paralyze.","para 30"),
+        ("Moonblast",           95,100,15,1,0,17,0,0,"The user calls on the power of the Moon to attack the target!\n-30% chance to lower the target's Sp.A 1 stage.","stat targ,sa,-1,30"),
         
         ("Revelation Dance",90,100,15,1,0,0,0,0,"The user attacks the target by dancing with all its might!\n-Changes type to match the user's primary type.\n-Dance move.","revelation dance"), #dance moves activate the dancer ability
         #("Revelation Dance",90,100,15,1,0,1,0,0,"The user attacks the target by dancing with all its might!\n-This is the Fire-type version.","null"),
@@ -490,23 +491,24 @@ moremoves=[
 # range key, thank God for bulbapedia, I owe her my life
 # 0  - (NORMAL) hits 1 target (could be ally, in theory) [tackle]
 # 1  - (NORMAL - LONG) hits 1 target, long range (gust, dragon pulse)
+# 5  - (ALL OTHERS (ADJACENT)) all adjacent but the user [earthquake, explosion]
+# 6  - (MANY OTHERS) hits 2 targets (has to be opponents i think) [growl, blizzard, swift]
+# 9  - (YOUR SIDE (POKEMON)) affects whole side, introduced after triple battles died (howl, life dew)
+# 11 - (SELF) affects user (recover, defense curl)
+# 15 - (BOTH SIDES) affects the field itself? (rain dance, haze?)   - weather, terrain setters
+# 16 - (OTHER SIDE) affects opponent's side (hazard moves) -        - hazards
+# 17 - (YOUR SIDE) affects user's whole side (mist, light screen)   - screens
+# 18 - (VARIES) wildcard, it depends (counter?, curse)
+
 # 2  - (SELF/ALLY) user or ally (you can choose!, acupressure)
 # 3  - (1 ALLY) affects ally (helping hand)
 # 4  - (1 OTHER) affects a single opponent (specifically an opponent) [me first, doodle, max moves]
-# 5  - (ALL OTHERS (ADJACENT)) all adjacent but the user [earthquake, explosion]
-# 6  - (MANY OTHERS) hits 2 targets (has to be opponents i think) [growl, blizzard, swift]
 # 7  - (YOUR PARTY (PARTY)) affects whole side, long range, including mons in the back (heal bell, aromatherpy-deaded)
 # 8  - (YOUR PARTY (YOUR SIDE)) affects whole side, long-range, NOT including mons in the back (magnetic flux)
-# 9  - (YOUR SIDE (POKEMON)) affects whole side, introduced after triple battles died (howl, life dew)
 # 10 - (ALL ALLIES, EXCEPT SELF) affects all allies (coaching, dragon cheer)
-# 11 - (SELF) affects user (recover, defense curl)
 # 12 - (ALL - LONG) all on the field, long-range (perish song, rototiller-cut in gen 8, flower shield-also cut)
 # 13 - (ALL) all on the field, intro after triple (teatime)
 # 14 - (1 RANDOM) hits 1 opponent randomly (thrash, petal dance, outrage)
-# 15 - (BOTH SIDES) affects the field itself? (rain dance, haze?)
-# 16 - (OTHER SIDE) affects opponent's side (hazard moves)
-# 17 - (YOUR SIDE) affects user's whole side (mist, light screen)
-# 18 - (VARIES) wildcard, it depends (counter?, curse)
 #    - affects user and ally [thinking i made this category up i guess]
 
 #constructing dtypes and names to accompany data
