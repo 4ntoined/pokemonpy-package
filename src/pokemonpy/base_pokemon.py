@@ -131,7 +131,7 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
         self.counter_damage = (0.0, "none") #damage points taken, "phys" or "spec"
         self.flinched=False     #might not necessarily need this? idk
         self.resting=False      #for moves where pokemon need to recharge
-        self.charged=False      #when true, pokemon has a 2turn move ready to use
+        self.charged= [False, None]      #when true, pokemon has a 2turn move ready to use
         self.firstturnout=False
         self.curled=False
         self.aquaring=False
@@ -687,6 +687,7 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
         moveI=getMoveInfo(moveIndex)
         notas=moveI['notes'].split()
         moverange = moveI['range']
+        ntargets = checkParty(targets)[0] #confirm the number of non-fainted pokemon being targeted
         # frozen, can't move #thinking out loud: maybe we should track
         if self.frozen:  #when a pokemons move fails/doesn't execute for whatever reason
             if "thaws" in notas:
@@ -829,10 +830,10 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
         # before running attacks as usual... let's get the easy, function-ending moves
         # out of the way
         #basic self-interested moves... usually no target and bypasses accuracy check
-        for i in range(len(targets)):
+        for yy in range(len(targets)):
             # iterating through all targets
-            if accucheck_list[i] == False: #move misses
-                print(f"\n{self.name}'s attack misses {targets[i].name}!")
+            if accucheck_list[yy] == False: #move misses
+                print(f"\n{self.name}'s attack misses {targets[yy].name}!")
                 self.rolling_out = 0
                 shortpause()
                 # move failed, slips to return after the target for-loop
@@ -853,8 +854,8 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                             self.inBattle()
                         if targ=='targ':
                             for i in range(len(stat)):
-                                targets[i].stageChange(stat[i],int(phase[i]))
-                            targets[i].inBattle()
+                                targets[yy].stageChange(stat[i],int(phase[i]))
+                            targets[yy].inBattle()
                     ### end of stat changes ###
                     #### defense curl, rollout boost ####
                     if 'curled' in notas:
@@ -1043,43 +1044,49 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                     ## okay so we need to use targets informations (mons()) to determine where future sight will hit
                     #  futureslot[i] -> i -> mon().battlespot[1]
                     #  semifield a/b -> mon().battlespot[0]
-                    futureslots_dict = dict([
-                        ('red',self.field.a_field.futureslots),
-                        ('blue',self.field.b_field.futureslots)
-                    ])
-                    targcolor, targspot = targets[i].battlespot
-                    if self.battlespot[0]=='red':
-                        if self.field.a_field.futures > 0.: #user fails, fs already up
+                    #futureslots_dict = dict([
+                    #    ('red',self.field.a_field.futureslots),
+                    #    ('blue',self.field.b_field.futureslots)
+                    #])
+                    targcolor, targspot = targets[yy].battlespot
+                    redcheckfuture = np.array([self.field.a_field.futureslots[yy][0] > 0 for i in range(self.field.npoke)])
+                    redissighted = bool(np.any(redcheckfuture))
+                    bluecheckfuture = np.array([self.field.b_field.futureslots[yy][0] > 0 for i in range(self.field.npoke)])
+                    blueissighted = bool(np.any(bluecheckfuture))
+                    if targcolor == 'blue':
+                        if blueissighted: #user fails, fs already up
                             print("The move fails!")
                             shortpause()
-                            return "failed"
+                            #"failed"
                         else:
-                            self.field.a_field.futures = 3
+                            self.field.b_field.futureslots[targspot][0] = 3
+                            self.field.b_field.futureslots[targspot][1] = self
                             print(f"{self.name} foresaw an attack!")
                             shortpause()
-                            return
-                    elif self.battlespot[0]=='blue':
-                        if self.field.b_field.futures > 0.: #cpu fails, fs already up
+                            #
+                    elif targcolor=='red':
+                        if redissighted: #cpu fails, fs already up
                             print("The move fails!")
                             shortpause()
-                            return "failed"
+                            #return "failed"
                         else:
-                            self.field.b_field.futures = 3
+                            self.field.a_field.futureslots[targspot][0] = 3
+                            self.field.a_field.futureslots[targspot][1] = self
                             print(f"\n{self.name} foresaw an attack!")
                             shortpause()
-                            return
+                            #return
                 # priority moves are PROHIBITED against grounded mons on psychic terrain
-                if (self.field.terrain == 'psychic') and (moveI['priority'] >= 1) and targets[i].grounded:
-                    print(f"\nPsychic Terrain protects {targets[i].name} from the priority move!")
+                if (self.field.terrain == 'psychic') and (moveI['priority'] >= 1) and targets[yy].grounded:
+                    print(f"\nPsychic Terrain protects {targets[yy].name} from the priority move!")
                     shortpause()
                     return
-                ans,eff,comment=damage(self,targets[i],moveI['pwr'],moveI['type'],moveI['special?'],notas)
+                ans,eff,comment=damage(self,targets[yy],moveI['pwr'],moveI['type'],moveI['special?'],notas,ntargets=ntargets)
                 if len(comment)>0: 
                     if comment[0] == "failed": #bad mirror coat or counter
                         print("\nThe move fails!")
                         shortpause()
                         return
-                opponent.hit(self,ans,eff,notas,moveIndex,comment)
+                targets[yy].hit(self,ans,eff,notas,moveIndex,comment)
                 #stat changes
                 if "stat" in notas:
                     statInfo=notas[1+int(np.argwhere(np.array(notas)=='stat'))]
@@ -1094,8 +1101,8 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
                             self.inBattle() #recalc battle stats
                         if targ=='targ':
                             for i in range(len(stat)):
-                                targets[i].stageChange(stat[i],int(phase[i]))
-                            targets[i].inBattle() #recalc battle stats
+                                targets[yy].stageChange(stat[i],int(phase[i]))
+                            targets[yy].inBattle() #recalc battle stats
                     #end of stat changes
                 #anything else to do after a successful hit?
             #anything else to do after either moving or missing?
@@ -1811,7 +1818,7 @@ class battle:
     def switchpokemon(self, newmon_index, spot, cpu_switch = False):
         """
         activemon: mon() object that is currently in battle
-        newmon_index: int, index of pokemon selected to be entered in battle
+        newmon_index: int, index along the party of the pokemon selected to be entered in battle
         spot: int, which slot is switching out?
         cpu_switch: bool, is this the player switching or the cpu?
         """
@@ -1890,23 +1897,43 @@ class battle:
                 fighting = [False for i in range(self.format)]
                 charging = [False for i in range(self.format)]
                 running = False
+                rivalgo = 0
                 user_switch_indeces = []
-                usr_alivefield_n, usr_alivefield_list = checkParty(self.usr_mon) #number and indices user nonfainted pokemon on the field
-                cpu_alivefield_n, cpu_alivefield_list = checkParty(self.cpu_mon) #number and indices cpu nonfainted pokemon on the field
+                usr_alivefield_n, ubage1, usr_alivefield_list, ubage2 = checkParty(self.usr_mon) #number and indices user nonfainted pokemon on the field
+                cpu_alivefield_n, cbagw1, cpu_alivefield_list, cbage2= checkParty(self.cpu_mon) #number and indices cpu nonfainted pokemon on the field
                 for i in range(usr_alivefield_n): self.usr_mon[usr_alivefield_list[i]].inBattle()
                 for i in range(cpu_alivefield_n): self.usr_mon[cpu_alivefield_list[i]].inBattle()
                 #self.usr_mon.inBattle()
                 #self.cpu_mon.inBattle()
+                #checks the cpu's whole party, to get info about switching
+                cpu_nonfainted_n, cpu_nonfainted_list, cpu_reserve_i, cpu_reserve_list = checkParty( self.cpus, onthefield=self.cpu_ind )
+                cpu_disableswitch_list = [True for i in range(cpu_alivefield_n)] #disable switch for all cpus active nonfainted pokemon
+                cpu_disableswitch_list[rng.integers(cpu_alivefield_n)] = False #randomly allow the nonfainted mon on the field to switch this turn
                 #----UI----#
                 print('\n'+magic_text(txt=f'Turn {turn}',spacing=' ',cha='=',long=game_width))
                 self.UI()
                 #usr_readyfield_n, usr_readyfield_list = checkParty(self.usr_mon) #number and indices user nonfainted pokemon on the field ready to take a command
-                user_directions = [("null","null") for i in range(self.format)] #what the user wants each pokemon to do
+                user_directions = [["null","null"] for i in range(self.format)] #what the user wants each pokemon to do
+                cpu_directions = [["null","null"] for i in range(self.format)]
                 for i in range(self.format):
-                    if self.usr_mon[i].rolling_out: user_directions[i] = ("rolling out","null")
-                    if self.usr_mon[i].charged: user_directions[i] = ("charged move","null")
-                    if self.usr_mon[i].resting: user_directions[i] = ("resting","null")
-                    if self.usr_mon[i].fainted: user_directions[i] = ("fainted","null")
+                    # these choices have been made for the user for mon i
+                    if self.usr_mon[i].fainted: user_directions[i] = ["fainted","null"]
+                    elif self.usr_mon[i].rolling_out: user_directions[i] = ["rolling out","null"]
+                    elif self.usr_mon[i].charged: user_directions[i] = ["charged move","null"]
+                    elif self.usr_mon[i].resting: user_directions[i] = ["resting","null"]
+                    # the choices have been made for the cpu for mon i
+                    if self.cpu_mon[i].fainted: cpu_directions[i] = ["fainted","null"]
+                    elif self.cpu_mon[i].rolling_out: cpu_directions[i] = ["rolling out","null"]
+                    elif self.cpu_mon[i].charged: cpu_directions[i] = ["charged move","null"]
+                    elif self.cpu_mon[i].resting: cpu_directions[i] = ["resting","null"]
+                    else:
+                        if cpu_logic == 'random':   rivalgo = rivalbrain.go_randomchoices(cpu_reserve_i,self.cpu_mon[i],self.usr_mon,disable_switch=cpu_disableswitch_list[i])
+                        else:                       rivalgo = rivalbrain.go(cpu_reserve_i,self.cpu_mon[i],self.usr_mon,disable_switch=cpu_disableswitch_list[i])
+                        cpu_directions[i] = rivalgo
+                        #if cpu_logic == 'basic':    rivalgo = rivalbrain.go(cpu_reserve_i,self.cpu_mon,self.usr_mon)
+                        pass
+                    # trainer has chosen to switch or fight for this mon
+                    pass
                 takingdirection_list = np.squeeze( np.argwhere ( np.array(user_directions)[:,0] == "null" )) #indices along usr_mon of whom need an order
                 takingdirection_n = len(takingdirection_list)
                 zz = 0
@@ -2046,11 +2073,12 @@ class battle:
                                                 micropause()
                                                 break #back to party
                                             switching=True
-                                            user_directions[zz] = "switch"
+                                            user_directions[zz] = ["switch", nuserInd]
+                                            zz+=1
                                             break
                                         #anything other than approved things repeat the loop
                                     if switching:
-                                        break #breaks the party loop and throws you back into the turn loop, user will switch pokemon
+                                        break #breaks the party loop and throws you back to mons choices loop
                                 #end of pokemon selection loop
                             #end of party pokemon block
                             #just dawned on me that user pokemon switching does not need to take place entirely in this if statement
@@ -2067,7 +2095,7 @@ class battle:
                                     print(f"{self.usr_mon[takingdirection_list[zz]].name} can only Struggle!")
                                     fighting=True
                                     moveDex=struggle_i
-                                    user_directions[zz] = "struggling"
+                                    user_directions[zz] = ["struggling", "null"]
                                     shortpause()
                                     break
                                 userFight=input(f"\nWhat move should {self.usr_mon[takingdirection_list[zz]].name} use?\n(Lead with 'i' to see move info)\n[#] or [b]: ")
@@ -2104,7 +2132,7 @@ class battle:
                                             continue
                                         moveDex=self.usr_mon[takingdirection_list[zz]].knownMoves[fightChoice]
                                         fighting=True
-                                        user_directions[zz] = "fighting"
+                                        user_directions[zz] = ["fighting", moveDex]
                                         break
                                     except:
                                         print("\n**Enter one of the numbers above.**")
@@ -2118,8 +2146,7 @@ class battle:
                 # then we'll compare speeds of all pokemon on the field to decide the order of operations
                 #
                 trainerShift = False
-                #checks the cpu's whole party, to get info about switching
-                cpu_nonfainted_n, cpu_nonfainted_list, cpu_reserve_i, cpu_reserve_list = checkParty( self.cpus, onthefield=self.cpu_ind )
+                
                 #checks the cpu's nonfainted active pokemon to get info about making choices for the turn
                 #cpu_field_n, cpu_field_list = checkParty(self.cpu_mon)
                 #checks the user's nonfainted active pokemon to get info about making choices for the turn
@@ -2132,27 +2159,76 @@ class battle:
                 # we'll have to upgrade its logic to remember what choices it's already made within a turn
                 # so it knows to follow the rules, right now it makes choices one turn at a time, only considering
                 # the exact details of the battle right now, with no memory of its own choices
-                cpu_disableswitch_list = [True for i in range(cpu_alivefield_n)] #disable switch for all cpus active nonfainted pokemon
-                cpu_disableswitch_list[rng.integers(cpu_alivefield_n)] = False #randomly allow the nonfainted mon on the field to switch this turn
-                cpu_directions = ["null" for i in range(self.format)]
                 #iterate over all nonfainted pokemon on the cpus side of the field
-                for zz in range(self.format):
-                    if self.cpu_mon[zz].fainted:
-                        cpu_directions.append("fainted")
-                    else:
-                        if cpu_logic == 'random':   rivalgo = rivalbrain.go_randomchoices(cpu_reserve_i,self.cpu_mon[zz],self.usr_mon,disable_switch=cpu_disableswitch_list[zz])
-                        else:                       rivalgo = rivalbrain.go(cpu_reserve_i,self.cpu_mon[zz],self.usr_mon,disable_switch=cpu_disableswitch_list[zz])
-                        cpu_directions.append(rivalgo)
-                        #if cpu_logic == 'basic':    rivalgo = rivalbrain.go(cpu_reserve_i,self.cpu_mon,self.usr_mon)
-                    # trainer has chosen to switch or fight for this mon
-                #cpu_directions contains 'switch' or a move to use for everymon in cpu_field_list
+                #cpu_directions contains ['switch',0] or a ['fighting',moveindex] to use for everymon in cpu_field_list
                 # SPEED CHECK
                 all_directions = user_directions + cpu_directions   #the choices made by the user and the cpu
                 fieldmons = self.usr_mon + self.cpu_mon             #all the pokemon on the field
                 fieldmons_directions = [ (fieldmons[i], all_directions[i]) for i in range(len(fieldmons)) ]
                 fieldmons_directions_speedsort = speedCheck(fieldmons_directions) #pokemon on the field and their instructions, sorted by poke,speed
-                switchers = np.where( np.array(fieldmons_directions_speedsort,dtype=object)[:,1] == "switch") #array of indices along field_mons where mons are switching
+                fieldmons_directions_speedsort_array = np.array(fieldmons_directions_speedsort,dtype=object)
+                commands = [ str(fieldmons_directions_speedsort_array[i,1][0]) for i in range(len(fieldmons_directions_speedsort))]
+                commands_arr = np.array(commands,dtype=str)
+                switchers = np.argwhere( commands_arr == "switch") #array of indices along fieldmons_directions_speedsort where mons are switching
                 #iterate over switchers, switch them out
+                for i in range(len(switchers)):
+                    monspot = fieldmons_directions_speedsort[switchers[i]][0].battlespot
+                    switch_index = fieldmons_directions_speedsort[switchers[i]][1][1]
+                    iscpu =  monspot[0] == 'blue'
+                    self.switchpokemon( newmon_index = switch_index, spot = monspot[1], cpu_switch = iscpu)
+                    pass
+                # okay that's all the switching i think
+                # now all the other pokemon should attack (includes charging and discharging a move), or recharge or be fainted and invisible on the field
+                fighting_check = np.logical_or( np.logical_or( np.logical_or( commands_arr == "rolling out", commands_arr == "resting"), commands_arr == "charged move" ), commands_arr == "fighting")
+                fighters = np.argwhere( fighting_check ) #array of indices along fieldmons_directions_speedsort where mons are fighting (roll out, charging moves, resting for recharge turn)
+                for i in range(len(fighters)):
+                    mon_direction = fieldmons_directions_speedsort[fighters[i]][1] #directions are 2-item lists [main,support details]
+                    thismon = fieldmons_directions_speedsort[fighters[i]][0]
+                    if mon_direction[0] == 'resting':
+                        #recharge turn
+                        print(f"\n{thismon.name} must recharge and cannot attack!")
+                        micropause()
+                        pass
+                    else:
+                        #using a charged move, or attacking like normal
+                        # can't attack if fainted
+                        # can't attack if flinched
+                        # can't attack if there are no targets!
+                        # is there a nonfainted mon() in at least one targeted slot?
+                        # if not, is there a nonfainted mon() in an adjacent slot?
+                        # if not, there are no nonfainted mons to target, the move executes with no target
+                        if thismon.fainted:
+                            #no attacking
+                            pass
+                        elif thismon.flinched:
+                            thismon.rolling_out=0
+                            print(f"\n{self.cpu_name}'s {self.cpu_mon.name} flinches and can't attack!")
+                            shortpause()
+                            thismon.flinched = False
+                        elif "blaj":
+                            pass
+                        else:
+                            #attacking like normal
+
+                    
+                    #elif mon_direction[0] == 'charged move':
+                    #    #unleashed the charged move
+                    #    pass
+                    #elif mon_direction[0] == 'rolling out':
+                    #    #continue rolling out
+                    #    pass
+                    #elif mon_direction[0] == 'fighting':
+                    #    pass
+                    #else:
+                    #    #what else is there... no
+                    #    print("\nSomething's not right...")
+                    #    pass
+                    pass
+                #all pokemon have switched out or traded blows...
+                #check and record the fainted
+                #bring on the end turn checks
+                #check and record the fainted again
+                #force switch for any fillable vacancies
 
                 # speed checks, immediately to determine the order of switch outs, then to order move usage!
                 if (nfp > 1) and (rivalgo[] == 'switch') and (not self.cpu_mon.resting) and (not self.cpu_mon.charged): #if trainer has more than 1 non fainted pokemon, 10% of the time, but not if their pokemon was charging a move or is resting from a move
@@ -2169,7 +2245,7 @@ class battle:
                     #does the trainer mon need to rest?
                     if self.cpu_mon.resting:
                         #trainerRest=True
-                        print(f"\n{self.cpu_mon.name} must recharge and cannot attack!")
+                        
                     else:
                         #trainerRest=False
                         pass
@@ -2596,7 +2672,7 @@ class semifield:
         self.color = color #'should' be red or blue
         self.npoke = format
         self.tailwindCounter = 0
-        self.futureslots = [0 for i in range(self.npoke)] 
+        self.futureslots = [[0,None] for i in range(self.npoke)] # each futureslot is a tuple (a:int,b:mon()), a is the number of turns until the slot is attacked by a future sight coming from b, mon()
         self.fainted = [False for i in range(self.npoke)]
         self.rocks=False
         self.sticky=False
@@ -2609,8 +2685,8 @@ class semifield:
         return
     def clear(self):
         self.tailwindCounter = 0
-        self.futureslots = [0 for i in range(self.npoke)] 
-        self.fainted = False
+        self.futureslots = [[0,None] for i in range(self.npoke)] 
+        self.fainted = [False for i in range(self.npoke)]
         self.rocks=False
         self.sticky=False
         self.steel=False
@@ -2711,7 +2787,7 @@ class field:
             #battle conditions
             i.fainted = [False for i in self.npoke]
             i.tailwindCounter = 0
-            i.futureslots = [0 for i in self.npoke]
+            i.futureslots = [[0,None] for i in self.npoke]
         return
         
         #etc, etc
@@ -2904,7 +2980,7 @@ class field:
     #more functions of field
 ##zz:fieldclass
 #aa:damagefunction #aa:functions
-def damage(attacker,defender,power,moveTipe,isSpecial,note):
+def damage(attacker,defender,power,moveTipe,isSpecial,note,ntargets=1):
     global statStages, crit_tiers, weather_dict, terrain_dict, pumped_dict
     ####damage read-out strings####
     damages=[]
@@ -3133,7 +3209,10 @@ def damage(attacker,defender,power,moveTipe,isSpecial,note):
         collided = 5461./4096.
         damages.append("The super-effective hit is more powerful than normal!")
     #### spread damage nerf, more than one target
-    spread = 1.
+    #nonfainted_targets = checkParty(targets)
+    #n_nonfaintedtargets = nonfainted_targets[0]
+    if ntargets > 1: spread = 0.75
+    else: spread = 1.
     #check if the burn nerf survives (non-crit and non-facade)
     if burn < 1.0:
         damages.append("The burn reduces damage...")
@@ -3524,7 +3603,7 @@ def loadMon(savefile, configload=False):
 def speedCheck(pokelist):
     '''
     pokelist : list of tuples of (mon(), instruction), instruction can be string, int, or tuple
-    returns : list of tuples (mon(0), instruction) sorted by mon() battle speed fastest to slowest
+    returns : list of tuples (mon(), instruction) sorted by mon() battle speed fastest to slowest
     '''
     return pokelist.sort(key=speedCheckKey,reverse=True)
 def speedCheckKey(poke):

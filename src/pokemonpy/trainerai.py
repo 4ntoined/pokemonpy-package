@@ -36,12 +36,14 @@ class cpu:
         if status_chance is None: status_chance = self.status_chance
         # TARGETING
         usr_field_n, usr_field_list = checkParty(self.enemymon)
+        cpu_nonfainted_n, cpu_nonfainted_list, cpu_reserve_i, cpu_reserve_list = checkParty( self.party, onthefield=self.activemon )
         # nonfainted pokemon needs to consider non fainted, non active pokemon
         if (n_nonfainted <= 0) or (disable_switch):   choice1 = 'fight'
         else:                   choice1 = rng.choice( ('fight','switch'), p = (1. - switch_chance, switch_chance))
         if choice1 == 'switch':
             #switch pokemon, for now randomly, but maybe not forever
-            return 'switch'
+            randomswitch_i = rng.choice(cpu_reserve_list)
+            return ['switch', randomswitch_i]
         elif choice1 == 'fight':
             movecat = mov[pokeme.knownMoves]['special?'].copy()
             movepp = pokeme.PP.copy()
@@ -60,7 +62,7 @@ class cpu:
                 # randomly choose a status move
                 choice3 = rng.choice(status)
                 #print(mov[pokeme.knownMoves[choice3]]['name'] )
-                return choice3
+                return ["fighting",choice3]
             else:   #you have 1+ damage move, and ( no status moves or roll didnt hit)
                 #use a damage move USING logic
                 #ratings = [ self.damageMoveRating(pokeme.knownMoves[i],pokeme=pokeme,pokeyou=pokeyou)**3. for i in damages ]
@@ -70,7 +72,7 @@ class cpu:
                 # randomly choose a damage dealing move
                 choice2 = rng.choice(damages)
                 #print(mov[pokeme.knownMoves[choice2]]['name'] )
-                return choice2
+                return ["fighting",choice2]
     
     def go(self,n_nonfainted,pokeme='',pokeyou='', switch_chance_factor = None, status_chance = None, switch_chance_minimum = None,  disable_switch = False):
         global mov
@@ -82,6 +84,7 @@ class cpu:
         #
         # TARGETING
         usr_field_n, usr_field_list = checkParty(self.enemymon)
+        cpu_nonfainted_n, cpu_nonfainted_list, cpu_reserve_i, cpu_reserve_list = checkParty( self.party, onthefield=self.activemon )
         # nonfainted pokemon needs to consider non fainted, non active pokemon
         if disable_switch:  choice1 = 'fight'
         else:               choice1 = self.fightswitch( n_nonfainted, pokeme=pokeme, pokeyou=pokeyou, switch_chance_factor = switch_chance_factor, \
@@ -89,7 +92,8 @@ class cpu:
         if (choice1 == 'switch'):
             #switch pokemon, for now randomly, but maybe not forever
             #print('switching')
-            return 'switch'
+            randomswitch_i = rng.choice(cpu_reserve_list)
+            return ['switch', randomswitch_i]
         elif choice1 == 'fight':
             movecat = mov[pokeme.knownMoves]['special?'].copy()
             movepp = pokeme.PP.copy()
@@ -108,7 +112,7 @@ class cpu:
                 #use a status move at random
                 choice3 = rng.choice(status)
                 #print(mov[pokeme.knownMoves[choice3]]['name'] )
-                return choice3
+                return ["fighting", choice3]
             else:   #you have 1+ damage move, and ( no status moves or roll didnt hit)
                 #use a damage move USING logic
                 ratings = [ self.damageMoveRating(pokeme.knownMoves[i],pokeme=pokeme,pokeyou=pokeyou)**3. for i in damages ]
@@ -117,7 +121,7 @@ class cpu:
                 ratp = ratinga / rat_sum
                 choice2 = rng.choice(damages,p=ratp)
                 #print(mov[pokeme.knownMoves[choice2]]['name'] )
-                return choice2
+                return ["fighting", choice2]
 
     def fightswitch(self,n_nonfainted,pokeme='',pokeyou='', switch_chance_factor = None, switch_chance_minimum = None):
         """

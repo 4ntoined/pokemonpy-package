@@ -5,6 +5,10 @@ Title: **Double Battles**
 
 Date: 2025 change the pokemon.py gameversion
 
+17 march
+
+i feel like i'm done with mon.move()... back to battle()... i was at speed checks... but also i skipped the user target selection step... also need to fully implement how the cpu trainer choses a target(s)
+
 16 march
 
 sigh... future sight... sigh....
