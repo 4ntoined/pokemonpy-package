@@ -1,6 +1,6 @@
 ## pokemonpy-package log
 
-### v1.0.0
+### v2.0.0
 Title: **Double Battles**
 
 Date: 2025 change the pokemon.py gameversion
@@ -51,12 +51,12 @@ here's what im thinking for double battles stuff
 - [x] invent PPS (Pokémon Positioning System), orient 4 Pokémon in a battle *
 - [ ] have the player manage 2 active Pokémon at once
 - [ ] rework game to have player select a target(s)
-- [ ] spread damage part 2
+- [x] spread damage part 2
 - [x] update the battle UI,
 - [ ] status screen to account for 4 Pokémon
 - [x] update the cpu trainer brain to account for its new active mon
 - [ ] update trainer brain to be able to target one or more opponents
-- [ ] update mon.move() to give mons the option to target more than one mon
+- [x] update mon.move() to give mons the option to target more than one mon
 - [x] implement semifield (big step, im already upset about it); heck yeah
 - [x] rework moves.py to target one or two or all mons, got through power 55 moves
 - [x] rework moves.py pt 2, think that's finished
