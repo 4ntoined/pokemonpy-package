@@ -1,9 +1,13 @@
 ## pokemonpy-package log
 
 ### v2.0.0
-Title: **Double Battles**
+Title: **DOUBLES**
 
 Date: 2025 change the pokemon.py gameversion
+
+19 march
+
+so, it was going well, i am continually making progress and solving problems I foresaw days ago... then i remembered that priority is currently broken and i haven't fully devised a solution... and now I'm mad...
 
 17 march
 

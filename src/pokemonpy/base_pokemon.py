@@ -25,7 +25,7 @@ import textwrap
 import numpy as np
 from .texter import genborder,magic_text,magic_head
 from . import dex
-from .moves import mov,natures,struggle,futuresigh,tackl,getMoveInfo
+from .moves import mov,natures,struggle,futuresigh,tackl,rollo,getMoveInfo
 from .trainerai import cpu
 from . import saves
 #classes: mon, battle, field | functions: damage, checkParty, loadMon, makeMon, checktype effectiveness, HP, stats
@@ -131,7 +131,6 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
         self.counter_damage = (0.0, "none") #damage points taken, "phys" or "spec"
         self.flinched=False     #might not necessarily need this? idk
         self.resting=False      #for moves where pokemon need to recharge
-        self.charged= [False, None]      #when true, pokemon has a 2turn move ready to use
         self.firstturnout=False
         self.curled=False
         self.aquaring=False
@@ -139,7 +138,8 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
         self.diving=False       #used dive
         self.digging=False      #used dig
         self.shadowing=False    #used shadow force or phantom force
-        self.rolling_out=0
+        self.rolling_out = [0, None] #rollout counter, list of target(s)
+        self.charged = [False, [None, None]]      # (2turn move ready?, [moveindex, list_of_targets])
     #tweaking birthcircumstances, mostly for when we copy mons
     def set_born(self,how_created=''):
         self.timebornLOCAL = t.localtime(t.time())
@@ -1930,9 +1930,7 @@ class battle:
                         if cpu_logic == 'random':   rivalgo = rivalbrain.go_randomchoices(cpu_reserve_i,self.cpu_mon[i],self.usr_mon,disable_switch=cpu_disableswitch_list[i])
                         else:                       rivalgo = rivalbrain.go(cpu_reserve_i,self.cpu_mon[i],self.usr_mon,disable_switch=cpu_disableswitch_list[i])
                         cpu_directions[i] = rivalgo
-                        #if cpu_logic == 'basic':    rivalgo = rivalbrain.go(cpu_reserve_i,self.cpu_mon,self.usr_mon)
                         pass
-                    # trainer has chosen to switch or fight for this mon
                     pass
                 takingdirection_list = np.squeeze( np.argwhere ( np.array(user_directions)[:,0] == "null" )) #indices along usr_mon of whom need an order
                 takingdirection_n = len(takingdirection_list)
@@ -2204,11 +2202,30 @@ class battle:
                             thismon.rolling_out=0
                             print(f"\n{self.cpu_name}'s {self.cpu_mon.name} flinches and can't attack!")
                             shortpause()
-                            thismon.flinched = False
+                            #thismon.flinched = False #think we should do this at the end of the turn...
                         elif "blaj":
                             pass
                         else:
                             #attacking like normal
+                            #use the move; using the move index, the list of targets
+                            # a mon with a charge move is either about to charge the move (immediately directed)...
+                            # or has already charged the move, we can carry move index (and targets?) in the mon().charged variable
+                            #
+                            # a mon that is rolling out has its move index set to Rollout, NEED TO SOMEHOW CARRY TARGET INFORMATION
+                            if thismon.rolling_out[0] > 0:
+                                target_hers = thismon.rolling_out[1]
+                                #thismon.move(target_hers, rollo)
+                                pass
+                            elif thismon.charged[0]:
+                                target_hers = thismon.charged[1][1]
+                                charged_move_index = thismon.charged[1][0]
+                                #thismon.move(target_hers, charged_move_index)
+                                pass
+                            else:
+                                #target
+                                #thismon.move(targetss, usingmoveindex)
+                                pass
+                            pass
 
                     
                     #elif mon_direction[0] == 'charged move':
