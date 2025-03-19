@@ -1,18 +1,15 @@
 ## pokemonpy-package log
 
 ### v1.0.0
-Title: **Vegeta**
+Title: **The Vegeta Anniversary**
 
 Date: 2025 March 29
 * UPDATE: Added some more Dragon Ball references.
-* UPDATE: Every move has a characteristic range, which is now reported in moveInfo().
+* UPDATE: Every move now has a characteristic range, which is now reported in moveInfo().
 * FIXED: Psyblade is now boosted on Electric Terrain regardless of grounded-ness.
 * TECHNICAL UPDATE: Lots of Double Battles stuff cooking under the hood.
 * TECHNICAL UPDATE: Also cooking Abilities.
 * TECHNICAL UPDATE: Unified the two versions of the game by deleting the deprecated one. 
-
-#### 1.0 notes...
-
 
 ### v0.2.8
 Title: **version number hotfix**

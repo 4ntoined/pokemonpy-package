@@ -48,7 +48,7 @@ class game:
     def __init__(self):
         #defining bedrock game variables
         self.gameversion = '1.0.0'
-        self.devs_list = ( 'Adarius', )
+        self.devs_list = ( 'Adarius', ) #if you add/edit anything, add your name!
         self.cut_the_line = 1.
         self.full_restore = 1.
         self.classicbattlelogic = 'basic'
