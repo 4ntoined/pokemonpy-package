@@ -9,6 +9,8 @@ Date: 2025 March 29
 * FIXED: Psyblade is now boosted on Electric Terrain regardless of grounded-ness.
 * TECHNICAL UPDATE: Lots of Double Battles stuff cooking under the hood.
 * TECHNICAL UPDATE: Also cooking Abilities.
+* TECHNICAL UPDATE: Pokemon.py game version variable now calls on the `pyproject.toml` version
+declaration. This should mean fewer version number hotfixes going forward.
 * TECHNICAL UPDATE: Unified the two versions of the game by deleting the deprecated one. 
 
 ### v0.2.8

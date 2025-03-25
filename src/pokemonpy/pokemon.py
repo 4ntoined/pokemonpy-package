@@ -38,6 +38,7 @@ from .texter import genborder,magic_text,magic_head, copyrigh
 from .moves import getMoveInfo,mov,natures
 #from .dexpoke import dex
 from . import dex
+from . import package_version
 from .victoryroad import make_teams, random_evs
 from .trainerai import cpu
 from . import configurations
@@ -47,7 +48,7 @@ from . import saves
 class game:
     def __init__(self):
         #defining bedrock game variables
-        self.gameversion = '1.0.0'
+        self.gameversion = package_version
         self.devs_list = ( 'Adarius', ) #if you add/edit anything, add your name!
         self.cut_the_line = 1.
         self.full_restore = 1.
