@@ -18,4 +18,3 @@ Did I leave out your favorite 'mon or a move essential to your E4 strategy? Do i
  -  E4 + Champion teams are pre-saved and can be loaded into the game as your own.
  -  Multi-party support through "Boxes" on the main menu.
  -  Perfect all IVs of individual Pokémon or your whole party at once. Fully EV train individual Pokémon or your whole party at once (EVs are distributed randomly, but in multiples of 4 so none are wasted.)
- -  
