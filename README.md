@@ -3,8 +3,8 @@ Just me? That's fine.
 
 This program is a text-based game that simulates Pokémon and Pokémon battles and runs right in the terminal.
 For a more detailed description of the game, check out [game_blurb.md](https://github.com/4ntoined/pokemonpy/blob/master/documentation/game_blurb.md).
-For a demonstration of how to play the game, check out [this YouTube video](https://youtu.be/0SFg-sSOZBY) (and like and comment and subscribe).
-The packaged version of the game is maintained here: https://github.com/4ntoined/pokemonpy-package.
+For a demonstration of how to play the game, check out [this YouTube video](https://youtu.be/0SFg-sSOZBY).
+The game is maintained here: https://github.com/4ntoined/pokemonpy-package.
 
 ## Installing the game
 Installing and playing the game requires (1) access to the command line and (2) Python 3.
@@ -12,47 +12,57 @@ Installing and playing the game requires (1) access to the command line and (2) 
 #### Access to the command line/terminal:
    - Search your computer for 'terminal' or 'command line'.
    - On Windows, you'll probably want to use PowerShell and NOT the Command Prompt (cmd.exe).
-   - Alternatively, there is [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/install), which gives you a Linux-like command line environment, if you're willing to jump through a few hoops. This is my preferred way to play in Windows as I have no idea how to use PowerShell or CMD.
+   - Alternatively, there is [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/install), which gives you a Linux-like command line environment, if you're willing to jump through a few hoops. This is my preferred way to play in Windows as I have no idea how to use PowerShell.
 #### Python:
-   - Python 3.9(ish) or later
+   - Python 3.9 or later
    - https://www.python.org
    - For Windows players check out: https://learn.microsoft.com/en-us/windows/python/beginners
 
 ### pip
 The game is available on the Python Package Index [(package here)](https://pypi.org/project/pokemonpy/) and can be installed via [pip](https://packaging.python.org/en/latest/tutorials/installing-packages/):
 
-`pip install pokemonpy`
+```
+pip install pokemonpy
+```
 
 ### conda
 The game is also available as a package through the [Anaconda distribution](https://www.anaconda.com/data-science-platform) of Python [(package here)](https://anaconda.org/antoi/pokemonpy) and can be installed with [conda](https://conda.io/projects/conda/en/latest/user-guide/install/index.html):
 
-`conda install antoi::pokemonpy`
+```
+conda install antoi::pokemonpy
+```
 
 ## Starting the game
-With the package installed, you can start the game using the `rungame.py` script [found here](https://github.com/4ntoined/pokemonpy-package/blob/d02cc526a1b903d4ffbf25067d265481353a8274/src/pokemonpy/scripts/rungame.py):
+With the package installed, you can start the game using the `rungame.py` script [found here](https://github.com/4ntoined/pokemonpy-package/blob/d02cc526a1b903d4ffbf25067d265481353a8274/src/pokemonpy/scripts/rungame.py).
+(Technically, it is already downloaded with all the other source files for the package, but that might be less accessible to you than the previous link.)
+However you find the script on your computer, run it with:
 
-`python3 rungame.py`
+```
+python3 your/path/here/rungame.py
+```
 
 You can give the script some optional arguments when you call it:
 
 ```
-python3 rungame.py -m -c config_file_path -n "your name" -o "rival's name" -w how_big_to_display_the_game -p number_of_starter_parties -s number_of_pokémon_per_party
+python3 ./rungame.py -m -c config_file_path -n "your name" -o "rival's name" -w how_wide_to_display_the_game -p number_of_starter_parties -s number_of_pokémon_per_party
 
--m to skip the game start-up text
+-m to skip the game start-up
 -c to have the game use a particular configuration file
 -n to set your name
 -o to set the name of your opponent in the Battle! mode
 -w to set the length of banners and headers
 -p to set the number of Pokémon parties you start with
 -s to set the number of Pokémon in each party
--h to have all of this told to you again but by python
+-h to have all of this told to you again but by Python
 ```
 
 Alternatively, you can:
 
 1. start a live session of Python:
 
-```python3```
+```
+python3
+```
 
 2. import the package, initialize the game object, and start the game:
 
@@ -66,7 +76,7 @@ The options for the startgame() function:
 
 ```
 pokemonpy.pokemon.game.startgame(
-    configname='config.txt', mutegame=(True or False), username="Your Name", opponentname="Op Name", nparty=1, nstart=6, gw=64)
+    configname='config.txt', mutegame=(True or False), username="Your Name", opponentname="Rival's Name", nparty=1, nstart=6, gw=64)
 
 configname - str, to have the game use a particular configuration file
 mutegame - bool, set to True to skip the game start-up text
@@ -83,7 +93,7 @@ Start a battle:
 ```
 from pokemonpy.base_pokemon import *
 parties, fields = maker(2, 6, 2)
-bb = battle(parties[0], parties[1], fields[0], usr_name = 'Your Name', cpu_name = 'The Ops')
+bb = battle(parties[0], parties[1], fields[0], usr_name = 'Your Name', cpu_name = 'The Opps')
 bb.start_withai( cpu_logic = 'random' )
 ```
 
