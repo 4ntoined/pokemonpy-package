@@ -87,29 +87,42 @@ where some Pokémon are out of range of other Pokémon's moves because of where 
 "physical" space.
 
 
-Thinking about:
+### pokemonpy development roadmap
+
 
 #### Major
-- double battles 0.3.0
-- abilities 0.4.0
-- defog + grounding/ungrounding + hazards + status screen completion 0.5.0
-- triple+ battles
-- rotation battles
+- double battles - 2.0.0
+- abilities - x.0.0
+- automate retrieval and reorganization of various pokémon data - x.0.0
 
 #### Minor
-- move unification
+- Gen 9
+- MaxZ Moves
+- Megas
+- defog + grounding/ungrounding + hazards
+- savefile overhaul
+- keep track of certain stats during a play session and print them out when the
+game is properly quitted. save this data as a log-text file,
+adapt the game loading to retrieve and restore this data too.
 - snow
+
+#### Minor-Minor
+- move unification
 - battle texts
-- savefile versioning
+- in-battle status screen update
 - we start the battle with the player's lead pokémon
 even if that pokémon is fainted...
 - multiparty tweaks:
-- opponent party setting should use all of player's parties for selection,
-- allow user to equip an empty party, so that you can load mons into a fresh party
-	- proof the game for in case the player has equipped an empty party
-- allow user to choose which party loaded mons are stored in
-- keep track of certain stats during a play session and print them out when the
-game is properly quitted. save this data as a log-text file, adapt the game loading to retrieve and restore this data too.
+	- opponent party setting should use all of player's parties for selection,
+	- allow user to equip an empty party, so that you can load mons into a fresh party
+		- proof the game for in case the player has equipped an empty party
+	- allow user to choose which party loaded mons are stored in
+- next bullet
+
+#### Too rich for my blood
+- triple+ battles
+- rotation battles
+
 
 
 ### v1.0.0
