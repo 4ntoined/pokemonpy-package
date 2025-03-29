@@ -261,7 +261,7 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
         global mov
         try:
             mismatched_one = False
-            learned_all = False
+            learned_all = True
             learned_one = False
             checkedit = False
             learner = []
@@ -1544,7 +1544,7 @@ class mon: #aa:monclass #open up sypder and rename these from hpbase to hbp, etc
 #zz:monclass
 #aa:battleclass
 class battle:
-    def __init__(self, usr_party, cpu_party, fields, usr_name='', cpu_name='OPPONENT', full_restore_on = False):
+    def __init__(self, usr_party, cpu_party, fields, usr_name='', cpu_name='OPPONENT', format=1, full_restore_on = False):
         ###can i get a uhhhhhhh
         # battle format, 0 or 1 for singles, 2 for doubles
         # battle flags/settings

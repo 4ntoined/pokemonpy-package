@@ -111,6 +111,20 @@ even if that pokémon is fainted...
 - keep track of certain stats during a play session and print them out when the
 game is properly quitted. save this data as a log-text file, adapt the game loading to retrieve and restore this data too.
 
+
+### v1.0.0
+Title: **The Vegeta Anniversary**
+
+Date: 2025 March 29
+* UPDATE: Added some more Dragon Ball references.
+* UPDATE: Every move now has a characteristic range, which is now reported in moveInfo().
+* FIXED: Psyblade is now boosted on Electric Terrain regardless of grounded-ness.
+* TECHNICAL UPDATE: Lots of Double Battles stuff cooking under the hood.
+* TECHNICAL UPDATE: Also cooking Abilities.
+* TECHNICAL UPDATE: Pokemon.py game version variable now calls on the `pyproject.toml` version
+declaration. This should mean fewer version number hotfixes going forward.
+* TECHNICAL UPDATE: Unified the two versions of the game by deleting the deprecated one.
+
 ### v0.2.8
 Title: **version number hotfix**
 

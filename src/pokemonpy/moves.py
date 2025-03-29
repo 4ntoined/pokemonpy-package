@@ -174,7 +174,7 @@ moremoves=[
         ("Springtide Storm",    100,80,10,1,0,17,0,6,"The user wraps the target in fierce winds brimming with love and hate!\n-30% chance to lower the target's Atk. 1 stage.","stat targ,at,-1,30"),
 
         ("Heat Wave",           95,90,10,1,0,1,0,6,"The user exhales hot breath on the target!\n-10% chance to burn.","burn 10"),
-        ("Big Bang Attack",     95,95,15,1,0,4,1,0,"Big bang attack\n-Priority +1.\n10% chance to paralyze.","para 10"),
+        ("Big Bang Attack",     95,95,15,1,0,4,0,0,"The user condenses their ki into an explosive sphere and fires it at the target!\n-30% chance to paralyze.","para 30"),
         ("Moonblast",           95,100,15,1,0,17,0,0,"The user calls on the power of the Moon to attack the target!\n-30% chance to lower the target's Sp.A 1 stage.","stat targ,sa,-1,30"),
         
         ("Revelation Dance",90,100,15,1,0,0,0,0,"The user attacks the target by dancing with all its might!\n-Changes type to match the user's primary type.\n-Dance move.","revelation dance"), #dance moves activate the dancer ability

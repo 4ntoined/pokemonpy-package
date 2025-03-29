@@ -38,6 +38,7 @@ from .texter import genborder,magic_text,magic_head, copyrigh
 from .moves import getMoveInfo,mov,natures
 #from .dexpoke import dex
 from . import dex
+from . import package_version
 from .victoryroad import make_teams, random_evs
 from .trainerai import cpu
 from . import configurations
@@ -47,8 +48,8 @@ from . import saves
 class game:
     def __init__(self):
         #defining bedrock game variables
-        self.gameversion = '0.3.0'
-        self.devs_list = ( 'Adarius', )
+        self.gameversion = package_version
+        self.devs_list = ( 'Adarius', ) #if you add/edit anything, add your name!
         self.cut_the_line = 1.
         self.full_restore = 1.
         self.classicbattlelogic = 'basic'
@@ -369,7 +370,7 @@ class game:
                     nnnP= nnns_stuff[1]
                     chaP= chps_stuff[1]
                     #
-                    battle1 = battle(userParty, silP, gold, usr_name=self.username, cpu_name = sils_stuff[0])
+                    battle1 = battle(userParty, silP, gold, usr_name=self.username, cpu_name = sils_stuff[0], full_restore_on = cutline_dict[ self.full_restore ])
                     resu1 = battle1.start_withai(e4=True)
                     #resu1=True
                     if not (resu1 or cutline_dict[self.cut_the_line]): #the user lost, cheats off
@@ -381,7 +382,7 @@ class game:
                     hea_1 = elite4_healquit(userParty)
                     if hea_1 =='quitted': continue
                     #zinnia's battle
-                    battle2 = battle(userParty,zinP,sapphire, usr_name=self.username, cpu_name = zins_stuff[0])
+                    battle2 = battle(userParty,zinP,sapphire, usr_name=self.username, cpu_name = zins_stuff[0], full_restore_on = cutline_dict[ self.full_restore ])
                     resu2 = battle2.start_withai(e4=True)
                     #resu2=True
                     #win check
@@ -394,7 +395,7 @@ class game:
                     hea_2 = elite4_healquit(userParty)
                     if hea_2 =='quitted': continue
                     #cynthias battle
-                    battle3 = battle(userParty,cynP,diamond,usr_name=self.username, cpu_name = cyns_stuff[0])
+                    battle3 = battle(userParty,cynP,diamond,usr_name=self.username, cpu_name = cyns_stuff[0], full_restore_on = cutline_dict[ self.full_restore ])
                     resu3 = battle3.start_withai(e4=True)
                     #resu3 = True
                     if not (resu3 or cutline_dict[self.cut_the_line]): #the user lost, cheats off
@@ -406,7 +407,7 @@ class game:
                     hea_3 = elite4_healquit(userParty)
                     if hea_3 =='quitted': continue
                     #N's battle
-                    battle4 = battle(userParty, nnnP, black,usr_name=self.username, cpu_name = nnns_stuff[0])
+                    battle4 = battle(userParty, nnnP, black,usr_name=self.username, cpu_name = nnns_stuff[0], full_restore_on = cutline_dict[ self.full_restore ])
                     resu4 = battle4.start_withai(e4=True)
                     #resu4=True
                     #win
@@ -419,7 +420,7 @@ class game:
                     hea_4 = elite4_healquit(userParty)
                     if hea_4 =='quitted': continue
                     #champ
-                    battle5 = battle(userParty, chaP, indigo,usr_name=self.username, cpu_name = chps_stuff[0])
+                    battle5 = battle(userParty, chaP, indigo,usr_name=self.username, cpu_name = chps_stuff[0], full_restore_on = cutline_dict[ self.full_restore ])
                     resu5 = battle5.start_withai(e4=True)
                     #resu5=True
                     #if you won, you won, like it's over
