@@ -531,6 +531,7 @@ struggle=int(mov[ind]["index"])
 ind2 = np.argwhere(mov["name"]=="Future Sight")
 futuresigh=int(mov[ind2]["index"])
 tackl = int(mov[int(np.argwhere(mov["name"]=="Tackle"))]["index"])
+rollo = int(mov[int(np.argwhere(mov["name"]=="Rollout"))]["index"])
 ### find the max and z moves, keep their indices stored somewhere so as to easily exclude them ###
 maxx = [ "maxmove" in i for i in mov['notes'] ]
 max2 = np.argwhere( maxx )

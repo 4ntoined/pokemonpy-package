@@ -1,5 +1,117 @@
 ## pokemonpy-package log
 
+### v2.0.0
+Title: **DOUBLES**
+
+Date: 2025 change the pokemon.py gameversion
+
+19 march
+
+so, it was going well, i am continually making progress and solving problems I foresaw days ago... then i remembered that priority is currently broken and i haven't fully devised a solution... and now I'm mad...
+
+17 march
+
+i feel like i'm done with mon.move()... back to battle()... i was at speed checks... but also i skipped the user target selection step... also need to fully implement how the cpu trainer choses a target(s)
+
+16 march
+
+sigh... future sight... sigh....
+
+13 march
+
+had an idea... consolidate the end-turn checks, weather damages, burns and poisons, eventually speed boost into a function of mon() so we can call on it at the end of the turn... much better than the current model of doing the checks 1by1 and for each pokemon on the field seperately...
+
+4march
+
+yeah i don't know whats going on at this point I was doing well
+I was working through figuring out how to rework mon.move() for
+the idea of multiple targets and I just caught something that made
+me mad so im walking away
+
+
+3 march
+
+i have done so much that it feels easier to list what is left to do
+- still need to refine user switching to disallow switching to a mon
+already on the field and a mon already selected to be switched in
+- still need to have the player choose target(s) based on the range of
+the move they select
+- sigh, so i need to put some thought into charging moves 
+
+
+2 march
+
+i am a like halfway through the battle logic with the double battle mods
+this is a reminder that I need to
+- go into pokemon switch to make necessary edits to highlight
+that there are 2 active pokemon that cannot be switched in and
+- in choosing a move, we need to make a step in non-singles battles
+to choose targets, depending on the range of the move chosen
+- im somehow still about halfway through the battle function, i have worked up to the new speed check part, after that we are coding possible switch-ins,
+hence the need to tidy up the user switching stuff
+
+here's what im thinking for double battles stuff
+
+- [x] invent PPS (Pokémon Positioning System), orient 4 Pokémon in a battle *
+- [ ] have the player manage 2 active Pokémon at once
+- [ ] rework game to have player select a target(s)
+- [x] spread damage part 2
+- [x] update the battle UI,
+- [ ] status screen to account for 4 Pokémon
+- [x] update the cpu trainer brain to account for its new active mon
+- [ ] update trainer brain to be able to target one or more opponents
+- [x] update mon.move() to give mons the option to target more than one mon
+- [x] implement semifield (big step, im already upset about it); heck yeah
+- [x] rework moves.py to target one or two or all mons, got through power 55 moves
+- [x] rework moves.py pt 2, think that's finished
+- [x] rework move info to report range
+- [x] create a dictionary for range indeces
+- [x] spread damage in the damage calculation, started this need to figure out
+the markers for the damage calc, depends on the moves.py doubles updates
+
+
+keeping in mind for doubles:
+- fusion bolt and flare do NOT get their boost if a move was used in between the 2 of them.
+need to mark when a fusion move is used and then unmark if the next move is not the other fusion
+- counter and mirror coat users will need to track which pokémon hit them
+
+*
+i am thinking that this "orientation" idea is technically moot for doubles.
+Moves either target (1) one of the two opponents, (2) both opponents at once [rock slide],
+(3) the user's ally [helping hand], (4) both the user and its ally [Life Dew],
+(5) all Pokémon on the field [Perish Song], (6) everyone but the user [Earthquake],
+(7) the user [Swords Dance]
+In doubles, targeting has nothing to do with positioning, just allegiance.
+But this is an important thing to do anyway for Triple+ Battles,
+where some Pokémon are out of range of other Pokémon's moves because of where they are in
+"physical" space.
+
+
+Thinking about:
+
+#### Major
+- double battles 0.3.0
+- abilities 0.4.0
+- defog + grounding/ungrounding + hazards + status screen completion 0.5.0
+- triple+ battles
+- rotation battles
+
+#### Minor
+- move unification
+- snow
+- battle texts
+- savefile versioning
+- we start the battle with the player's lead pokémon
+even if that pokémon is fainted...
+- multiparty tweaks:
+- opponent party setting should use all of player's parties for selection,
+- allow user to equip an empty party, so that you can load mons into a fresh party
+	- proof the game for in case the player has equipped an empty party
+- allow user to choose which party loaded mons are stored in
+- keep track of certain stats during a play session and print them out when the
+game is properly quitted. save this data as a log-text file, adapt the game loading to retrieve and restore this data too.
+
+
 ### v1.0.0
 Title: **The Vegeta Anniversary**
 
@@ -11,7 +123,7 @@ Date: 2025 March 29
 * TECHNICAL UPDATE: Also cooking Abilities.
 * TECHNICAL UPDATE: Pokemon.py game version variable now calls on the `pyproject.toml` version
 declaration. This should mean fewer version number hotfixes going forward.
-* TECHNICAL UPDATE: Unified the two versions of the game by deleting the deprecated one. 
+* TECHNICAL UPDATE: Unified the two versions of the game by deleting the deprecated one.
 
 ### v0.2.8
 Title: **version number hotfix**
