@@ -53,6 +53,7 @@ class game:
         self.cut_the_line = 1.
         self.full_restore = 1.
         self.classicbattlelogic = 'basic'
+        self.time_atstart = localtime()
                 
         #setting variables 
         self.mute_set = False
@@ -175,7 +176,11 @@ class game:
             if hallfame_count > 0:
                 bord = genborder(num=self.game_width, cha='—')
                 nameline = magic_text(txt=self.username,spacing='  ',cha='*',long=self.game_width)
-                hfline = magic_text(txt=f'Hall of Fame entries: {hallfame_count:0>3}',cha=' ',spacing=' ',long=self.game_width)
+                if hallfame_count > 9999:
+                    hallfame_count_display = 9999
+                else:
+                    hallfame_count_display = hallfame_count
+                hfline = magic_text(txt=f'Hall of Fame entries: {hallfame_count_display:0>3}',cha=' ',spacing=' ',long=self.game_width)
                 #nameline = magic_text(txt=username,spacing='  ',cha='*',long=self.game_width)
                 if self.username_set:    print(f"\n{nameline}\n{hfline}")
                 else:               print(f"\n{hfline}")
@@ -1622,7 +1627,7 @@ class game:
                     self.cut_the_line *= -1.
                     cheat_receipt()
                 elif yoo == "champed":
-                    hallfame_count = 2024
+                    hallfame_count += self.time_atstart.tm_year
                     cheat_receipt()
                 elif yoo == 'chansey':
                     self.full_restore *= -1.
