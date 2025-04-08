@@ -3,7 +3,7 @@
 ### v1.0.1
 Title: **move range dictionary hotfix**
 
-Date: 2025 April 1
+Date: 2025 April 9
 * FIXED: Forgot to include a move range in the dictionary that relates indices to names. Fixed this.
 * UPDATE: Improved the functionality of a cheat code.
 
