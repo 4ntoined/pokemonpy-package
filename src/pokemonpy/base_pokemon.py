@@ -3669,7 +3669,7 @@ nature_stat_str = ["Atk","Def","SpA","SpD","Spe"]
 stats_dict = dict([('HP',0),('Atk',1),('Def',2),('SpA',3),('SpD',4),('Spe',5)]) #used for showdown save loading
 move_dict = dict([(2,'Status'),(1,'Special'),(0,'Physical')])                  #used for move info displaying
 range_dict = dict([(0,'NORMAL'),(1,'NORMAL - LONG RANGE'),(4,'1 OPPONENT'),(5,'ALL ADJACENT'),\
-                   (6,'ADJACENT OPPONENTS'),(11,'SELF'),(14,'1 RANDOM'),(15,'FIELD'),(16,"OTHER SIDE"),(17,'YOUR SIDE'),(18,'VARIES')])
+                   (6,'ADJACENT OPPONENTS'),(9,'YOUR SIDE'),(11,'SELF'),(14,'1 RANDOM'),(15,'FIELD'),(16,"OTHER SIDE"),(17,'YOUR SIDE'),(18,'VARIES')])
 weather_dict = dict([('clear',0),('sunny',1),('rain',2),('hail',5),('sandstorm',12)])  #used for turning weather into weatherball typing
 terrain_dict = dict([('none',0),('grassy',3),('electric',4),('psychic',10),('misty',17)]) #used for turning terrain into Terrain Pulse typing
 bformat_dict = dict([(0,1),(1,1),(2,2)]) #used for battle() format variable index to number of mons on each side
